@@ -1,0 +1,2393 @@
+{
+  "version": "strict_6step_excel_flow_v23",
+  "startId": "STEP_1_OPENING",
+  "questions": [
+    {
+      "id": "STEP_1_OPENING",
+      "title": "STEP 1 — Приветствие",
+      "question": "STEP 1 — Приветствие\n\nЗдравствуйте! [Имя] Это Вадим из Дубая ZVONIT. Вы оставляли заявку по недвижимости в Дубае на нашей странице, верно?",
+      "hint": "",
+      "fontScale": 40,
+      "x": 80,
+      "y": 80,
+      "answers": [
+        {
+          "id": "a_step_1_opening_1",
+          "text": "Да, интересно",
+          "nextId": "STEP_2_PERMISSION"
+        },
+        {
+          "id": "a_step_1_opening_2",
+          "text": "Клиент отвечает иначе / возражает",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_step_1_opening_3",
+          "text": "Не интересно",
+          "nextId": "OBJ_R4_HANDLE"
+        },
+        {
+          "id": "a_step_1_opening_4",
+          "text": "Уже работаю с кем-то",
+          "nextId": "OBJ_R5_HANDLE"
+        },
+        {
+          "id": "a_step_1_opening_5",
+          "text": "Уже купил недвижимость",
+          "nextId": "OBJ_R6_HANDLE"
+        },
+        {
+          "id": "a_step_1_opening_6",
+          "text": "Я не оставлял заявку",
+          "nextId": "OBJ_R7_HANDLE"
+        },
+        {
+          "id": "a_step_1_opening_7",
+          "text": "Отправьте всё в WhatsApp",
+          "nextId": "OBJ_R8_HANDLE"
+        },
+        {
+          "id": "a_step_1_opening_8",
+          "text": "У меня мало времени",
+          "nextId": "OBJ_R9_HANDLE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_1_opening",
+        "step": 1
+      }
+    },
+    {
+      "id": "STEP_2_PERMISSION",
+      "title": "STEP 2.1 — Получить разрешение",
+      "question": "STEP 2.1 — Получить разрешение\n\nОтлично, давайте быстро пообщаемся, чтобы понять ваш интерес. У меня есть несколько вопросов, чтобы лучше помочь вам с запросом. После этого предложу пару вариантов, исходя из того, что увижу. Если всё будет совпадать с вашими ожиданиями, подготовлю для вас презентацию. Подходит?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 680,
+      "y": 80,
+      "answers": [
+        {
+          "id": "a_step_2_permission_1",
+          "text": "Ответил / идём дальше",
+          "nextId": "STEP_2_CONTEXT"
+        },
+        {
+          "id": "a_step_2_permission_2",
+          "text": "Клиент возражает / прыгает по теме",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_step_2_permission_3",
+          "text": "Вернуть разговор в структуру",
+          "nextId": "STEP_CONTROL"
+        },
+        {
+          "id": "a_step_2_permission_4",
+          "text": "Не хочет продолжать",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_2_qualification",
+        "step": 2
+      }
+    },
+    {
+      "id": "STEP_2_CONTEXT",
+      "title": "STEP 2.2 — Ситуация / город",
+      "question": "STEP 2.2 — Ситуация / город\n\nЯ хочу лучше понять вашу ситуацию. Как вы пришли к этой идее?\nЧто именно побудило вас оставить заявку на нашем сайте?\nНасколько хорошо вы знакомы с городом?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1200,
+      "y": 80,
+      "answers": [
+        {
+          "id": "a_step_2_context_1",
+          "text": "Ответил / идём дальше",
+          "nextId": "STEP_2_GOAL"
+        },
+        {
+          "id": "a_step_2_context_2",
+          "text": "Клиент возражает / прыгает по теме",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_step_2_context_3",
+          "text": "Вернуть разговор в структуру",
+          "nextId": "STEP_CONTROL"
+        },
+        {
+          "id": "a_step_2_context_4",
+          "text": "Не хочет продолжать",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_2_qualification",
+        "step": 2
+      }
+    },
+    {
+      "id": "STEP_2_GOAL",
+      "title": "STEP 2.3 — Цель / ожидания",
+      "question": "STEP 2.3 — Цель / ожидания\n\nКаковы ваши ожидания от этой инвестиции? Какая главная цель?\nВы ориентируетесь на аренду, перепродажу или планируете использовать недвижимость для себя?\nВы предпочитаете что-то у моря, в центре города или у вас пока нет чётких предпочтений?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1720,
+      "y": 80,
+      "answers": [
+        {
+          "id": "a_step_2_goal_1",
+          "text": "Ответил / идём дальше",
+          "nextId": "STEP_2_BUDGET"
+        },
+        {
+          "id": "a_step_2_goal_2",
+          "text": "Клиент возражает / прыгает по теме",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_step_2_goal_3",
+          "text": "Вернуть разговор в структуру",
+          "nextId": "STEP_CONTROL"
+        },
+        {
+          "id": "a_step_2_goal_4",
+          "text": "Не хочет продолжать",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_2_qualification",
+        "step": 2
+      }
+    },
+    {
+      "id": "STEP_2_BUDGET",
+      "title": "STEP 2.4 — Бюджет",
+      "question": "STEP 2.4 — Бюджет\n\nКакой бюджет вы рассматриваете?\nСпрашиваю, потому что на рынке много проектов и локаций, и чтобы сэкономить ваше время, если вы поделитесь диапазоном, я подберу только то, что подходит под ваши цели.\nСкажите, указанный бюджет — это жёсткий предел?\nИли если я покажу вам вариант, который идеально подходит под ваши критерии, но немного выше бюджета, вы бы рассмотрели его?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 2240,
+      "y": 80,
+      "answers": [
+        {
+          "id": "a_step_2_budget_1",
+          "text": "Ответил / идём дальше",
+          "nextId": "STEP_2_ANALYSIS"
+        },
+        {
+          "id": "a_step_2_budget_2",
+          "text": "Клиент возражает / прыгает по теме",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_step_2_budget_3",
+          "text": "Вернуть разговор в структуру",
+          "nextId": "STEP_CONTROL"
+        },
+        {
+          "id": "a_step_2_budget_4",
+          "text": "Не хочет продолжать",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_2_qualification",
+        "step": 2
+      }
+    },
+    {
+      "id": "STEP_2_ANALYSIS",
+      "title": "STEP 2.5 — Что уже анализирует",
+      "question": "STEP 2.5 — Что уже анализирует\n\nПеред тем как я дам информацию, что вы сейчас анализируете, чтобы я понял, могу ли предложить что-то лучше?\nЯ ничего не упустил?\nМожет, есть что-то важное, что мне стоит знать, прежде чем мы пойдём дальше?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 2760,
+      "y": 80,
+      "answers": [
+        {
+          "id": "a_step_2_analysis_1",
+          "text": "Ответил / идём дальше",
+          "nextId": "STEP_2_ZOOM"
+        },
+        {
+          "id": "a_step_2_analysis_2",
+          "text": "Клиент возражает / прыгает по теме",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_step_2_analysis_3",
+          "text": "Вернуть разговор в структуру",
+          "nextId": "STEP_CONTROL"
+        },
+        {
+          "id": "a_step_2_analysis_4",
+          "text": "Не хочет продолжать",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_2_qualification",
+        "step": 2
+      }
+    },
+    {
+      "id": "STEP_2_ZOOM",
+      "title": "STEP 2.6 — Назначить Zoom",
+      "question": "STEP 2.6 — Назначить Zoom\n\nХорошо, предлагаю назначить короткий Zoom-звонок, где я покажу вам проекты, которые подходят под ваши требования, и проведу по всем деталям.\nКак вам звучит? Какой день и время вам удобно?\nКстати, что вы хотите увидеть там в первую очередь — окупаемость, цифры, факты или какие-то другие особенности?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 3280,
+      "y": 80,
+      "answers": [
+        {
+          "id": "a_step_2_zoom_1",
+          "text": "Zoom согласован",
+          "nextId": "ZOOM_BOOKED"
+        },
+        {
+          "id": "a_step_2_zoom_2",
+          "text": "Клиент возражает / прыгает по теме",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_step_2_zoom_3",
+          "text": "Вернуть разговор в структуру",
+          "nextId": "STEP_CONTROL"
+        },
+        {
+          "id": "a_step_2_zoom_4",
+          "text": "Не хочет продолжать",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_2_qualification",
+        "step": 2
+      }
+    },
+    {
+      "id": "STEP_2_EOI",
+      "title": "STEP 2.7 — EOI / бронь",
+      "question": "STEP 2.7 — EOI / бронь\n\nПозвольте кратко объяснить, как работает стадия EOI. Речь не о покупке, а о том, чтобы закрепить за собой место в очереди. Резервируя позицию сейчас, вы получаете приоритетный доступ к лучшим видам, лучшим этажам и самой выгодной стартовой цене до того, как произойдёт повышение. Именно так работают запуски в Дубае.\n\nEOI полностью возвратный, поэтому финансового риска нет. Но ожидание означает потерю приоритета и переход на следующий ценовой уровень.\n\nВ идеале нам нужно внести сумму EOI сейчас — либо как минимум предоставить копию паспорта для регистрации в системе.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 3800,
+      "y": 80,
+      "answers": [
+        {
+          "id": "a_step_2_eoi_1",
+          "text": "EOI понятно / дальше",
+          "nextId": "ZOOM_BOOKED"
+        },
+        {
+          "id": "a_step_2_eoi_2",
+          "text": "Клиент возражает / прыгает по теме",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_step_2_eoi_3",
+          "text": "Вернуть разговор в структуру",
+          "nextId": "STEP_CONTROL"
+        },
+        {
+          "id": "a_step_2_eoi_4",
+          "text": "Не хочет продолжать",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_2_qualification",
+        "step": 2
+      }
+    },
+    {
+      "id": "STEP_CONTROL",
+      "title": "Контроль разговора — вернуть на рельсы",
+      "question": "Если клиент прыгает с темы на тему:\n\nПонял вас. Чтобы не запутаться, я верну разговор в структуру.\nСначала ситуация, потом цель, бюджет, что уже смотрели, и только после этого Zoom с нормальными вариантами.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 80,
+      "y": 420,
+      "answers": [
+        {
+          "id": "a_step_control_1",
+          "text": "Ситуация / город",
+          "nextId": "STEP_2_CONTEXT"
+        },
+        {
+          "id": "a_step_control_2",
+          "text": "Цель / ожидания",
+          "nextId": "STEP_2_GOAL"
+        },
+        {
+          "id": "a_step_control_3",
+          "text": "Бюджет",
+          "nextId": "STEP_2_BUDGET"
+        },
+        {
+          "id": "a_step_control_4",
+          "text": "Что уже анализирует",
+          "nextId": "STEP_2_ANALYSIS"
+        },
+        {
+          "id": "a_step_control_5",
+          "text": "К Zoom",
+          "nextId": "STEP_2_ZOOM"
+        },
+        {
+          "id": "a_step_control_6",
+          "text": "Возражение клиента",
+          "nextId": "STEP_3_OBJECTIONS"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "control",
+        "step": "control"
+      }
+    },
+    {
+      "id": "STEP_2_RESUME",
+      "title": "Вернуться в квалификацию",
+      "question": "Возражение обработали. Теперь возвращаем клиента в структуру.\n\nВыберите этап, на котором нужно продолжить.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 680,
+      "y": 420,
+      "answers": [
+        {
+          "id": "a_step_2_resume_1",
+          "text": "STEP 2.2 — ситуация / город",
+          "nextId": "STEP_2_CONTEXT"
+        },
+        {
+          "id": "a_step_2_resume_2",
+          "text": "STEP 2.3 — цель",
+          "nextId": "STEP_2_GOAL"
+        },
+        {
+          "id": "a_step_2_resume_3",
+          "text": "STEP 2.4 — бюджет",
+          "nextId": "STEP_2_BUDGET"
+        },
+        {
+          "id": "a_step_2_resume_4",
+          "text": "STEP 2.5 — что анализирует",
+          "nextId": "STEP_2_ANALYSIS"
+        },
+        {
+          "id": "a_step_2_resume_5",
+          "text": "STEP 2.6 — Zoom",
+          "nextId": "STEP_2_ZOOM"
+        },
+        {
+          "id": "a_step_2_resume_6",
+          "text": "Новое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "resume",
+        "step": 2
+      }
+    },
+    {
+      "id": "STEP_3_OBJECTIONS",
+      "title": "STEP 3 — Что сказал клиент?",
+      "question": "STEP 3 — выберите точную фразу клиента из Excel.\n\nЭто нужно, чтобы не спорить со всем сразу, а обработать конкретное сомнение и вернуть разговор в квалификацию.",
+      "hint": "",
+      "fontScale": 34,
+      "x": 80,
+      "y": 760,
+      "answers": [
+        {
+          "id": "a_step_3_objections_1",
+          "text": "Не интересно.",
+          "nextId": "OBJ_R4_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_2",
+          "text": "Уже работаю с кем-то.",
+          "nextId": "OBJ_R5_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_3",
+          "text": "Уже купил недвижимость.",
+          "nextId": "OBJ_R6_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_4",
+          "text": "Я не оставлял заявку.",
+          "nextId": "OBJ_R7_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_5",
+          "text": "Отправьте всё в WhatsApp.",
+          "nextId": "OBJ_R8_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_6",
+          "text": "У меня мало времени.",
+          "nextId": "OBJ_R9_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_7",
+          "text": "Мне некогда.",
+          "nextId": "OBJ_R10_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_8",
+          "text": "Я работаю напрямую с застройщиком.",
+          "nextId": "OBJ_R11_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_9",
+          "text": "Мне сейчас неудобно финансово / нет ликвидности.",
+          "nextId": "OBJ_R12_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_10",
+          "text": "Общие сомнения.",
+          "nextId": "OBJ_R13_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_11",
+          "text": "Общие сомнения.",
+          "nextId": "OBJ_R14_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_12",
+          "text": "Общие сомнения.",
+          "nextId": "OBJ_R15_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_13",
+          "text": "Скажите, сколько стоит?",
+          "nextId": "OBJ_R16_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_14",
+          "text": "Слишком дорого.",
+          "nextId": "OBJ_R17_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_15",
+          "text": "Цены падают.",
+          "nextId": "OBJ_R18_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_16",
+          "text": "Слишком дорого.",
+          "nextId": "OBJ_R19_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_17",
+          "text": "Я не спешу с покупкой.",
+          "nextId": "OBJ_R20_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_18",
+          "text": "Я не уверен, стоит ли сейчас покупать — рынок на пике.",
+          "nextId": "OBJ_R21_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_19",
+          "text": "Я не знаю, куда именно лучше инвестировать — слишком много вариантов.",
+          "nextId": "OBJ_R22_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_20",
+          "text": "Не доверяю застройщикам / боюсь, что не достроят.",
+          "nextId": "OBJ_R23_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_21",
+          "text": "А если рынок упадёт?",
+          "nextId": "OBJ_R24_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_22",
+          "text": "Я боюсь покупать дистанционно / без визита в Дубай.",
+          "nextId": "OBJ_R25_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_23",
+          "text": "Я обсужу с женой / семьёй / партнёром.",
+          "nextId": "OBJ_R26_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_24",
+          "text": "Я боюсь сложностей с документами / переводом денег / визой.",
+          "nextId": "OBJ_R27_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_25",
+          "text": "Я не уверен, кому доверять — слишком много агентов.",
+          "nextId": "OBJ_R28_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_26",
+          "text": "Сейчас не время / подожду до следующего года.",
+          "nextId": "OBJ_R29_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_27",
+          "text": "Сначала продам другую недвижимость / получу деньги.",
+          "nextId": "OBJ_R30_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_28",
+          "text": "Подожду, может, цены снизятся.",
+          "nextId": "OBJ_R31_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_29",
+          "text": "Не уверен в ROI.",
+          "nextId": "OBJ_R32_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_30",
+          "text": "Я посмотрю сам на сайте / позже вернусь к этому.",
+          "nextId": "OBJ_R33_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_31",
+          "text": "Я не доверяю агентам.",
+          "nextId": "OBJ_R34_HANDLE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_3_objection_menu",
+        "step": 3
+      }
+    },
+    {
+      "id": "STEP_6_CLOSE",
+      "title": "STEP 6 — Мягкое закрытие",
+      "question": "STEP 6 — если клиент не готов продолжать\n\nХорошо, спасибо вам в любом случае. Я вышлю вам свои контакты — сохраните их на будущее, если запрос снова станет актуален. Кстати, у нас есть бонусная программа за рекомендации.\n\nСохраните, пожалуйста, мой номер. Даже если сейчас не время, я могу быть вашей точкой контакта по рынку Дубая: без давления, просто когда понадобится нормальная ориентация по проектам, ценам и рискам.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 680,
+      "y": 760,
+      "answers": [
+        {
+          "id": "a_step_6_close_1",
+          "text": "Контакт сохранит / END",
+          "nextId": "END"
+        },
+        {
+          "id": "a_step_6_close_2",
+          "text": "Интерес вернулся",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_step_6_close_3",
+          "text": "Новое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_6_close",
+        "step": 6
+      }
+    },
+    {
+      "id": "ZOOM_BOOKED",
+      "title": "ZOOM — цель достигнута",
+      "question": "Zoom согласован.\n\nДальше: подготовить проекты под вводные клиента, показать цифры, факты, логику района, риски и следующий шаг.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1280,
+      "y": 760,
+      "answers": [
+        {
+          "id": "a_zoom_booked_1",
+          "text": "END",
+          "nextId": "END"
+        },
+        {
+          "id": "a_zoom_booked_2",
+          "text": "EOI / бронь",
+          "nextId": "STEP_2_EOI"
+        },
+        {
+          "id": "a_zoom_booked_3",
+          "text": "Ещё вопрос клиента",
+          "nextId": "STEP_3_OBJECTIONS"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "success",
+        "step": "zoom"
+      }
+    },
+    {
+      "id": "END",
+      "title": "END",
+      "question": "Звонок завершён.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1880,
+      "y": 760,
+      "answers": [],
+      "meta": {
+        "activeRoute": true,
+        "type": "end"
+      }
+    },
+    {
+      "id": "OBJ_R4_HANDLE",
+      "title": "STEP 4 — Не интересно.",
+      "question": "STEP 3 — клиент сказал:\n«Не интересно.»\n\nSTEP 4 — ваш ответ:\nХорошо, конечно. Давайте на секунду уточним, чтобы в будущем вы не получали лишние звонки. Можно узнать причину? Возможно, есть какие-то сомнения? Или вы уже что-то приобрели? Понимаю — решения по недвижимости даются непросто. Это нормально, важно всё обдумать и не торопиться.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 2560,
+      "y": 1700,
+      "answers": [
+        {
+          "id": "a_obj_r4_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r4_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "OBJ_R4_PUSH"
+        },
+        {
+          "id": "a_obj_r4_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r4_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "OBJ_R4_FINAL"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 4
+      }
+    },
+    {
+      "id": "OBJ_R4_PUSH",
+      "title": "STEP 5 — дожим: Не интересно.",
+      "question": "STEP 5 — если клиент всё ещё не идёт дальше:\n\nПозвольте сначала рассказать вам о нашей компании, о гарантиях, которые мы предоставляем, и о команде специалистов, которая будет сопровождать вас на каждом этапе. Затем я поделюсь реальными кейсами проданных проектов, чтобы вы понимали, как я работаю и почему мне можно доверять. И, конечно, вы можете задать любые вопросы. Кстати, вы можете посмотреть мою лицензию — уверен, вам такое никто не показывает, ведь у 80% её просто нет.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 80,
+      "y": 1960,
+      "answers": [
+        {
+          "id": "a_obj_r4_push_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r4_push_2",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r4_push_3",
+          "text": "Не готов — STEP 6",
+          "nextId": "OBJ_R4_FINAL"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_5_push",
+        "step": 5,
+        "sourceRow": 4
+      }
+    },
+    {
+      "id": "OBJ_R4_FINAL",
+      "title": "STEP 6 — закрыть: Не интересно.",
+      "question": "STEP 6 — если клиент не готов / не видит смысла:\n\nПреимущества работы с нами — это возможность консультироваться с маркетологами, юристами и аналитиками. Мы всегда представляем только ваши интересы — сторону нашего клиента. Наша цель — быстро, грамотно и с учётом всех ваших требований найти оптимальное решение.\n\nСохраните, пожалуйста, мой номер. Я могу быть вашей точкой контакта по Дубаю на будущее.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 700,
+      "y": 1960,
+      "answers": [
+        {
+          "id": "a_obj_r4_final_1",
+          "text": "END",
+          "nextId": "END"
+        },
+        {
+          "id": "a_obj_r4_final_2",
+          "text": "Интерес вернулся",
+          "nextId": "STEP_2_RESUME"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_6_close_specific",
+        "step": 6,
+        "sourceRow": 4
+      }
+    },
+    {
+      "id": "OBJ_R5_HANDLE",
+      "title": "STEP 4 — Уже работаю с кем-то.",
+      "question": "STEP 3 — клиент сказал:\n«Уже работаю с кем-то.»\n\nSTEP 4 — ваш ответ:\nПонимаю. Я не собираюсь перебивать другого специалиста, просто покажу, чем отличается мой подход. В Дубае каждый день появляются новые проекты, и, к сожалению, не все агенты имеют лицензию или предлагают то, что действительно подходит под ваши цели. Поэтому важно сравнить. Я предлагаю коротко созвониться — буквально на пару минут вечером, когда вам удобно. А дальше сами решите, стоит ли двигаться дальше. Как вам такой вариант?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1320,
+      "y": 1960,
+      "answers": [
+        {
+          "id": "a_obj_r5_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r5_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "OBJ_R5_PUSH"
+        },
+        {
+          "id": "a_obj_r5_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r5_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "OBJ_R5_FINAL"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 5
+      }
+    },
+    {
+      "id": "OBJ_R5_PUSH",
+      "title": "STEP 5 — дожим: Уже работаю с кем-то.",
+      "question": "STEP 5 — если клиент всё ещё не идёт дальше:\n\nХорошо, район отличный. Есть ли у вас планы на будущее с этой недвижимостью? Вы слышали об AX CAPITAL раньше?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1940,
+      "y": 1960,
+      "answers": [
+        {
+          "id": "a_obj_r5_push_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r5_push_2",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r5_push_3",
+          "text": "Не готов — STEP 6",
+          "nextId": "OBJ_R5_FINAL"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_5_push",
+        "step": 5,
+        "sourceRow": 5
+      }
+    },
+    {
+      "id": "OBJ_R5_FINAL",
+      "title": "STEP 6 — закрыть: Уже работаю с кем-то.",
+      "question": "STEP 6 — если клиент не готов / не видит смысла:\n\nКстати, знаете такое понятие — принудительные сбережения? Мы все когда-то покупали что-то, что вроде бы не могли себе позволить, но благодаря платёжному плану справлялись. Недвижимость работает по тому же принципу — только лучше. Каждый платёж автоматически превращается в капитал. Вы не тратите — вы создаёте актив, даже не замечая этого.\n\nСохраните, пожалуйста, мой номер. Я могу быть вашей точкой контакта по Дубаю на будущее.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 2560,
+      "y": 1960,
+      "answers": [
+        {
+          "id": "a_obj_r5_final_1",
+          "text": "END",
+          "nextId": "END"
+        },
+        {
+          "id": "a_obj_r5_final_2",
+          "text": "Интерес вернулся",
+          "nextId": "STEP_2_RESUME"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_6_close_specific",
+        "step": 6,
+        "sourceRow": 5
+      }
+    },
+    {
+      "id": "OBJ_R6_HANDLE",
+      "title": "STEP 4 — Уже купил недвижимость.",
+      "question": "STEP 3 — клиент сказал:\n«Уже купил недвижимость.»\n\nSTEP 4 — ваш ответ:\nХорошо, конечно. Давайте на секунду уточним, чтобы в будущем вы не получали лишние звонки: что именно привлекло ваше внимание? В какие объекты вы уже инвестировали?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 80,
+      "y": 2220,
+      "answers": [
+        {
+          "id": "a_obj_r6_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r6_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "OBJ_R6_PUSH"
+        },
+        {
+          "id": "a_obj_r6_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r6_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "OBJ_R6_FINAL"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 6
+      }
+    },
+    {
+      "id": "OBJ_R6_PUSH",
+      "title": "STEP 5 — дожим: Уже купил недвижимость.",
+      "question": "STEP 5 — если клиент всё ещё не идёт дальше:\n\nОкей, то есть вас не интересует сейчас и в будущем вы тоже не рассматриваете этот вариант?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 700,
+      "y": 2220,
+      "answers": [
+        {
+          "id": "a_obj_r6_push_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r6_push_2",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r6_push_3",
+          "text": "Не готов — STEP 6",
+          "nextId": "OBJ_R6_FINAL"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_5_push",
+        "step": 5,
+        "sourceRow": 6
+      }
+    },
+    {
+      "id": "OBJ_R6_FINAL",
+      "title": "STEP 6 — закрыть: Уже купил недвижимость.",
+      "question": "STEP 6 — если клиент не готов / не видит смысла:\n\nВремя на рынке важнее, чем попытки угадать рынок.\n\nСохраните, пожалуйста, мой номер. Я могу быть вашей точкой контакта по Дубаю на будущее.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1320,
+      "y": 2220,
+      "answers": [
+        {
+          "id": "a_obj_r6_final_1",
+          "text": "END",
+          "nextId": "END"
+        },
+        {
+          "id": "a_obj_r6_final_2",
+          "text": "Интерес вернулся",
+          "nextId": "STEP_2_RESUME"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_6_close_specific",
+        "step": 6,
+        "sourceRow": 6
+      }
+    },
+    {
+      "id": "OBJ_R7_HANDLE",
+      "title": "STEP 4 — Я не оставлял заявку.",
+      "question": "STEP 3 — клиент сказал:\n«Я не оставлял заявку.»\n\nSTEP 4 — ваш ответ:\nХорошо, конечно. Давайте на секунду уточним, чтобы в будущем вы не получали лишние звонки: проект называется [название проекта], вы оставляли заявку [число]. Возможно, вы что-то кликнули у нас на сайте или в рекламе?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1940,
+      "y": 2220,
+      "answers": [
+        {
+          "id": "a_obj_r7_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r7_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "OBJ_R7_PUSH"
+        },
+        {
+          "id": "a_obj_r7_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r7_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 7
+      }
+    },
+    {
+      "id": "OBJ_R7_PUSH",
+      "title": "STEP 5 — дожим: Я не оставлял заявку.",
+      "question": "STEP 5 — если клиент всё ещё не идёт дальше:\n\nПозвольте задать вам несколько быстрых вопросов — я всё выясню и вернусь с действительно интересным вариантом. В любом случае, решение мы найдём. Идёт? Вот что предлагаю: я буду отправлять только ту информацию, которая действительно экономит ваше время и даёт чёткое понимание рынка. А дальше вы сами решите, подходит ли вам предложение. Моя задача — показать вам то, что имеет реальную ценность прямо сейчас. Итак, начнём с ясности — что именно вы ищете?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 2560,
+      "y": 2220,
+      "answers": [
+        {
+          "id": "a_obj_r7_push_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r7_push_2",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r7_push_3",
+          "text": "Не готов — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_5_push",
+        "step": 5,
+        "sourceRow": 7
+      }
+    },
+    {
+      "id": "OBJ_R8_HANDLE",
+      "title": "STEP 4 — Отправьте всё в WhatsApp.",
+      "question": "STEP 3 — клиент сказал:\n«Отправьте всё в WhatsApp.»\n\nSTEP 4 — ваш ответ:\nПеред тем как отправить вам информацию и брошюры в WhatsApp: я знаю, что большинство агентов просто шлют десятки случайных брошюр, и всё перемешивается, теряет смысл. У вас такое бывало, верно? Поэтому я сначала уточню пару деталей, чтобы отправить вам только ценную информацию.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 80,
+      "y": 2480,
+      "answers": [
+        {
+          "id": "a_obj_r8_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r8_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "OBJ_R8_PUSH"
+        },
+        {
+          "id": "a_obj_r8_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r8_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 8
+      }
+    },
+    {
+      "id": "OBJ_R8_PUSH",
+      "title": "STEP 5 — дожим: Отправьте всё в WhatsApp.",
+      "question": "STEP 5 — если клиент всё ещё не идёт дальше:\n\nЧто именно заставляет вас думать так?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 700,
+      "y": 2480,
+      "answers": [
+        {
+          "id": "a_obj_r8_push_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r8_push_2",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r8_push_3",
+          "text": "Не готов — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_5_push",
+        "step": 5,
+        "sourceRow": 8
+      }
+    },
+    {
+      "id": "OBJ_R9_HANDLE",
+      "title": "STEP 4 — У меня мало времени.",
+      "question": "STEP 3 — клиент сказал:\n«У меня мало времени.»\n\nSTEP 4 — ваш ответ:\nПрежде чем я вас отпущу, у нас сейчас активная кампания, очень много заявок по email и WhatsApp. Именно поэтому я хочу убедиться, что каждый клиент получает нормальное внимание. Скажите, пожалуйста, что именно вы ищете — остальное я возьму на себя.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1320,
+      "y": 2480,
+      "answers": [
+        {
+          "id": "a_obj_r9_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r9_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "OBJ_R9_PUSH"
+        },
+        {
+          "id": "a_obj_r9_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r9_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 9
+      }
+    },
+    {
+      "id": "OBJ_R9_PUSH",
+      "title": "STEP 5 — дожим: У меня мало времени.",
+      "question": "STEP 5 — если клиент всё ещё не идёт дальше:\n\nС чем это ощущение больше связано?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1940,
+      "y": 2480,
+      "answers": [
+        {
+          "id": "a_obj_r9_push_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r9_push_2",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r9_push_3",
+          "text": "Не готов — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_5_push",
+        "step": 5,
+        "sourceRow": 9
+      }
+    },
+    {
+      "id": "OBJ_R10_HANDLE",
+      "title": "STEP 4 — Мне некогда.",
+      "question": "STEP 3 — клиент сказал:\n«Мне некогда.»\n\nSTEP 4 — ваш ответ:\nПонимаю, не будем спешить — когда вам удобно созвониться или провести короткий Zoom, чтобы пройтись по ключевым моментам? Всего 10 минут, и вы сразу увидите, какие варианты действительно стоят внимания.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 2560,
+      "y": 2480,
+      "answers": [
+        {
+          "id": "a_obj_r10_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r10_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r10_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r10_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 10
+      }
+    },
+    {
+      "id": "OBJ_R11_HANDLE",
+      "title": "STEP 4 — Я работаю напрямую с застройщиком.",
+      "question": "STEP 3 — клиент сказал:\n«Я работаю напрямую с застройщиком.»\n\nSTEP 4 — ваш ответ:\nПозвольте сначала рассказать немного о нашей компании — о гарантиях, которые мы предоставляем, и о команде специалистов, которые сопровождают клиента на каждом этапе. Потом я покажу реальные кейсы проданных проектов, чтобы вы увидели, как я работаю и почему клиенты мне доверяют. И, конечно, вы сможете задать любые вопросы. Кстати, я могу даже показать вам свою лицензию — уверен, вам такое никто не показывает, потому что, по правде говоря, у 80% агентов её вообще нет.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 80,
+      "y": 2740,
+      "answers": [
+        {
+          "id": "a_obj_r11_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r11_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r11_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r11_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 11
+      }
+    },
+    {
+      "id": "OBJ_R12_HANDLE",
+      "title": "STEP 4 — Мне сейчас неудобно финансово / нет ликвидности.",
+      "question": "STEP 3 — клиент сказал:\n«Мне сейчас неудобно финансово / нет ликвидности.»\n\nSTEP 4 — ваш ответ:\nПонимаю — частая ситуация, и это не проблема. Есть варианты, где первый платёж минимальный, а основной баланс — уже после сдачи. Не нужно иметь весь капитал сразу. Общая сумма первоначального взноса, чтобы стать владельцем, составляет всего ______. Кстати, мы все когда-то покупали то, чего «не могли себе позволить». Давайте посмотрим чуть глубже — это и есть концепция forced savings.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 700,
+      "y": 2740,
+      "answers": [
+        {
+          "id": "a_obj_r12_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r12_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r12_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r12_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 12
+      }
+    },
+    {
+      "id": "OBJ_R13_HANDLE",
+      "title": "STEP 4 — Общие сомнения.",
+      "question": "STEP 3 — клиент сказал:\n«Общие сомнения.»\n\nSTEP 4 — ваш ответ:\nИнтересно, а почему вы так считаете?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1320,
+      "y": 2740,
+      "answers": [
+        {
+          "id": "a_obj_r13_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r13_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r13_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r13_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 13
+      }
+    },
+    {
+      "id": "OBJ_R14_HANDLE",
+      "title": "STEP 4 — Общие сомнения.",
+      "question": "STEP 3 — клиент сказал:\n«Общие сомнения.»\n\nSTEP 4 — ваш ответ:\nА можете чуть подробнее — что именно вызывает сомнение?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1940,
+      "y": 2740,
+      "answers": [
+        {
+          "id": "a_obj_r14_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r14_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r14_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r14_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 14
+      }
+    },
+    {
+      "id": "OBJ_R15_HANDLE",
+      "title": "STEP 4 — Общие сомнения.",
+      "question": "STEP 3 — клиент сказал:\n«Общие сомнения.»\n\nSTEP 4 — ваш ответ:\nС одной стороны, мы официальные дистрибьюторы и платиновые партнёры государственных девелоперов — наша комиссия оплачивается ими. Вы нам ничего не платите. С другой стороны, вы можете спросить: зачем работать с нами, если можно обращаться напрямую к девелоперу? Дело в том, что девелопер не будет подбирать решения под ваши цели — он покажет только свои собственные проекты и будет продвигать то, что ему нужно продать сейчас, чтобы закрыть внутренние показатели. Для нас не имеет значения, у какого девелопера вы купите — мы всё равно получим комиссию. Поэтому наша цель — найти то, что лучше всего подходит именно вам. Кстати, два из трёх наших клиентов приходят по рекомендациям, поэтому нам крайне важно, чтобы вы были полностью довольны покупкой. Мы предоставляем реальную аналитику рынка, объясняем плюсы и минусы каждого проекта и, самое главное, ведём переговоры напрямую с девелопером, чтобы получить для вас максимально выгодные условия. Почему? Потому что когда вы довольны — вы рекомендуете нас. А это самый надёжный источник новых клиентов.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 2560,
+      "y": 2740,
+      "answers": [
+        {
+          "id": "a_obj_r15_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r15_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r15_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r15_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 15
+      }
+    },
+    {
+      "id": "OBJ_R16_HANDLE",
+      "title": "STEP 4 — Скажите, сколько стоит?",
+      "question": "STEP 3 — клиент сказал:\n«Скажите, сколько стоит?»\n\nSTEP 4 — ваш ответ:\nНаконец-то я говорю с человеком, который точно знает, чего хочет — сейчас подготовлю информацию. Кстати, когда вы ищете лучшую цену, что именно вы хотите получить за эту цену? Конечно, я скажу вам цены — и даже объясню платёжный план, структуру и частоту платежей. Это же важная информация, правильно? Вы хотите это знать, верно? Но мне также нужно объяснить ценность предложения. Отлично — переходим к вопросам.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 80,
+      "y": 3000,
+      "answers": [
+        {
+          "id": "a_obj_r16_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r16_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r16_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r16_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 16
+      }
+    },
+    {
+      "id": "OBJ_R17_HANDLE",
+      "title": "STEP 4 — Слишком дорого.",
+      "question": "STEP 3 — клиент сказал:\n«Слишком дорого.»\n\nSTEP 4 — ваш ответ:\nВы ориентируетесь только на цену при выборе? Спрашиваю, потому что иногда проект может казаться дороже, и его легко отбросить, но при этом вы можете не заметить другие факторы, которые реально для вас важны. Важно видеть всю картину, правда? Кстати, вам нужен результат или просто самая низкая цена? А если бы вы могли получить Emaar по той же цене, что и более дешёвый вариант, какой бы вы выбрали и почему? Вот поэтому они и стоят дороже. Как считаете?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 700,
+      "y": 3000,
+      "answers": [
+        {
+          "id": "a_obj_r17_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r17_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r17_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r17_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 17
+      }
+    },
+    {
+      "id": "OBJ_R18_HANDLE",
+      "title": "STEP 4 — Цены падают.",
+      "question": "STEP 3 — клиент сказал:\n«Цены падают.»\n\nSTEP 4 — ваш ответ:\nЯ понимаю, многие так говорят. Но на самом деле цены не падают — они просто стабилизируются в более слабых районах. Хорошие проекты от Emaar, Sobha или Meraas всё так же раскупаются за несколько дней. Это коррекция. И для инвесторов это как раз лучший момент для покупки — когда другие сомневаются.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1320,
+      "y": 3000,
+      "answers": [
+        {
+          "id": "a_obj_r18_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r18_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r18_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r18_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 18
+      }
+    },
+    {
+      "id": "OBJ_R19_HANDLE",
+      "title": "STEP 4 — Слишком дорого.",
+      "question": "STEP 3 — клиент сказал:\n«Слишком дорого.»\n\nSTEP 4 — ваш ответ:\nПонимаю, цифры важны. Но вопрос не только в цене, а в том, что вы получаете за эту цену: безопасность, ликвидность и лёгкий выход. Давайте сравним с похожими проектами, и вы сами увидите, где это «дорого», а где «дорого, но оправданно».",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1940,
+      "y": 3000,
+      "answers": [
+        {
+          "id": "a_obj_r19_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r19_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r19_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r19_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 19
+      }
+    },
+    {
+      "id": "OBJ_R20_HANDLE",
+      "title": "STEP 4 — Я не спешу с покупкой.",
+      "question": "STEP 3 — клиент сказал:\n«Я не спешу с покупкой.»\n\nSTEP 4 — ваш ответ:\nПонимаю — такие решения не принимаются в спешке. По опыту, лучшие возможности обычно достаются тем, кто действует спокойно, но вовремя. Я не предлагаю вам торопиться — давайте просто посмотрим на то, что действительно стоит внимания сейчас, чтобы в нужный момент вы были на шаг впереди.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 2560,
+      "y": 3000,
+      "answers": [
+        {
+          "id": "a_obj_r20_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r20_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r20_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r20_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 20
+      }
+    },
+    {
+      "id": "OBJ_R21_HANDLE",
+      "title": "STEP 4 — Я не уверен, стоит ли сейчас покупать — рынок на пике.",
+      "question": "STEP 3 — клиент сказал:\n«Я не уверен, стоит ли сейчас покупать — рынок на пике.»\n\nSTEP 4 — ваш ответ:\nЯ понимаю, логика понятная: когда всё растёт, кажется, что вот-вот должно упасть. Но в Дубае цикл работает немного по-другому: рост здесь движется демографией, притоком капитала и ограниченностью земли. Если хотите, я покажу 2–3 примера проектов, где ROI не зависит от краткосрочных колебаний. Сами увидите, есть ли там реальный потенциал.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 80,
+      "y": 3260,
+      "answers": [
+        {
+          "id": "a_obj_r21_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r21_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r21_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r21_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 21
+      }
+    },
+    {
+      "id": "OBJ_R22_HANDLE",
+      "title": "STEP 4 — Я не знаю, куда именно лучше инвестировать — слишком много вариантов.",
+      "question": "STEP 3 — клиент сказал:\n«Я не знаю, куда именно лучше инвестировать — слишком много вариантов.»\n\nSTEP 4 — ваш ответ:\nДа, в Дубае действительно много предложений, и без структуры легко потеряться. Давайте посмотрим логику выбора: как понять, какие районы растут, а какие уже перегреты. Когда это ясно, всё дальше становится намного проще.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 700,
+      "y": 3260,
+      "answers": [
+        {
+          "id": "a_obj_r22_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r22_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r22_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r22_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 22
+      }
+    },
+    {
+      "id": "OBJ_R23_HANDLE",
+      "title": "STEP 4 — Не доверяю застройщикам / боюсь, что не достроят.",
+      "question": "STEP 3 — клиент сказал:\n«Не доверяю застройщикам / боюсь, что не достроят.»\n\nSTEP 4 — ваш ответ:\nПравильно, это ключевой вопрос. Поэтому я работаю только с девелоперами, у которых есть эскроу-счета и государственные гарантии. Каждый платёж контролируется RERA — деньги не могут уйти, пока не завершён соответствующий этап строительства. Если хотите, я покажу реестр проекта и отчётность, чтобы вы видели всё своими глазами.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1320,
+      "y": 3260,
+      "answers": [
+        {
+          "id": "a_obj_r23_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r23_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r23_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r23_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 23
+      }
+    },
+    {
+      "id": "OBJ_R24_HANDLE",
+      "title": "STEP 4 — А если рынок упадёт?",
+      "question": "STEP 3 — клиент сказал:\n«А если рынок упадёт?»\n\nSTEP 4 — ваш ответ:\nХороший вопрос — любой рынок цикличен. Разница в том, что стоимость в Дубае держится не на спекуляциях, а на росте населения, налоговых преимуществах и международных потоках капитала. Вы не можете контролировать рынок, но можете выбрать актив, который останется сильным при любом сценарии. Этим я и занимаюсь.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1940,
+      "y": 3260,
+      "answers": [
+        {
+          "id": "a_obj_r24_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r24_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r24_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r24_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 24
+      }
+    },
+    {
+      "id": "OBJ_R25_HANDLE",
+      "title": "STEP 4 — Я боюсь покупать дистанционно / без визита в Дубай.",
+      "question": "STEP 3 — клиент сказал:\n«Я боюсь покупать дистанционно / без визита в Дубай.»\n\nSTEP 4 — ваш ответ:\nПонимаю — вы хотите видеть, что покупаете. Мы можем идти поэтапно: видеотуры, планы этажей, юридические документы, контракт через эскроу. Когда вы будете готовы, всё будет понятно и оформлено на ваше имя. Так вы не теряете время и возможность.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 2560,
+      "y": 3260,
+      "answers": [
+        {
+          "id": "a_obj_r25_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r25_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r25_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r25_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 25
+      }
+    },
+    {
+      "id": "OBJ_R26_HANDLE",
+      "title": "STEP 4 — Я обсужу с женой / семьёй / партнёром.",
+      "question": "STEP 3 — клиент сказал:\n«Я обсужу с женой / семьёй / партнёром.»\n\nSTEP 4 — ваш ответ:\nХорошо, предлагаю выделить немного времени и встретиться вместе с вашим партнёром / женой. Я снова проведу полную презентацию, чтобы у вас была единая, полная картина, потому что вряд ли вы передадите все детали так же ясно, как могу объяснить я. Плюс это сэкономит вам силы. Это абсолютно нормально — появятся новые вопросы, и вместе вы сможете принять правильное решение. Идёт?",
+      "hint": "",
+      "fontScale": 36,
+      "x": 80,
+      "y": 3520,
+      "answers": [
+        {
+          "id": "a_obj_r26_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r26_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r26_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r26_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 26
+      }
+    },
+    {
+      "id": "OBJ_R27_HANDLE",
+      "title": "STEP 4 — Я боюсь сложностей с документами / переводом денег / визой.",
+      "question": "STEP 3 — клиент сказал:\n«Я боюсь сложностей с документами / переводом денег / визой.»\n\nSTEP 4 — ваш ответ:\nПонимаю. Для многих это кажется сложным, пока они не проходят процесс сами. Мы ведём всё от начала до конца: счёт в банке, Golden Visa, сдача в аренду. Всё официально, через государственные структуры — никаких посредников. Если хотите, я покажу весь процесс по шагам, на одной странице.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 700,
+      "y": 3520,
+      "answers": [
+        {
+          "id": "a_obj_r27_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r27_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r27_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r27_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 27
+      }
+    },
+    {
+      "id": "OBJ_R28_HANDLE",
+      "title": "STEP 4 — Я не уверен, кому доверять — слишком много агентов.",
+      "question": "STEP 3 — клиент сказал:\n«Я не уверен, кому доверять — слишком много агентов.»\n\nSTEP 4 — ваш ответ:\nЭто абсолютно справедливо. В этой сфере доверие строится не обещаниями, а прозрачностью. Я покажу, с какими девелоперами мы работаем, какие кейсы у нас закрыты, и вы сами увидите уровень. А дальше уже решите, комфортно ли вам двигаться со мной.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1320,
+      "y": 3520,
+      "answers": [
+        {
+          "id": "a_obj_r28_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r28_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r28_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r28_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 28
+      }
+    },
+    {
+      "id": "OBJ_R29_HANDLE",
+      "title": "STEP 4 — Сейчас не время / подожду до следующего года.",
+      "question": "STEP 3 — клиент сказал:\n«Сейчас не время / подожду до следующего года.»\n\nSTEP 4 — ваш ответ:\nПонимаю — логично не торопиться. Но по опыту, «идеальный момент» никогда не чувствуется заранее, а лучшие проекты обычно уходят быстро. Я не предлагаю покупать сейчас — давайте просто посмотрим, что актуально сегодня, чтобы в нужный момент вы были на шаг впереди.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1940,
+      "y": 3520,
+      "answers": [
+        {
+          "id": "a_obj_r29_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r29_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r29_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r29_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 29
+      }
+    },
+    {
+      "id": "OBJ_R30_HANDLE",
+      "title": "STEP 4 — Сначала продам другую недвижимость / получу деньги.",
+      "question": "STEP 3 — клиент сказал:\n«Сначала продам другую недвижимость / получу деньги.»\n\nSTEP 4 — ваш ответ:\nЭто нормально — лучше двигаться в правильной последовательности. Позвольте показать несколько проектов, которые можно забронировать без финансового давления, с гибкими условиями. Так вы закрепите цену сегодня и сможете двигаться дальше после продажи, не теряя время и не закрывая двери.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 2560,
+      "y": 3520,
+      "answers": [
+        {
+          "id": "a_obj_r30_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r30_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r30_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r30_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 30
+      }
+    },
+    {
+      "id": "OBJ_R31_HANDLE",
+      "title": "STEP 4 — Подожду, может, цены снизятся.",
+      "question": "STEP 3 — клиент сказал:\n«Подожду, может, цены снизятся.»\n\nSTEP 4 — ваш ответ:\nПонимаю — все хотят купить по лучшей цене. Но рынок Дубая работает иначе: девелоперы редко снижают цены, они просто уменьшают квоты. Поэтому даже просто разобраться в текущих ценах уже значит «сэкономить», потому что позже условия почти всегда будут жёстче.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 80,
+      "y": 3780,
+      "answers": [
+        {
+          "id": "a_obj_r31_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r31_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r31_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r31_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 31
+      }
+    },
+    {
+      "id": "OBJ_R32_HANDLE",
+      "title": "STEP 4 — Не уверен в ROI.",
+      "question": "STEP 3 — клиент сказал:\n«Не уверен в ROI.»\n\nSTEP 4 — ваш ответ:\nЭто нормально — цифры должны быть прозрачными. Позвольте показать расчёт не «по среднему рынку», а конкретно под ваш бюджет и ваш срок. За пять минут вы увидите, где реальная доходность, а где просто маркетинг.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 700,
+      "y": 3780,
+      "answers": [
+        {
+          "id": "a_obj_r32_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r32_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r32_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r32_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 32
+      }
+    },
+    {
+      "id": "OBJ_R33_HANDLE",
+      "title": "STEP 4 — Я посмотрю сам на сайте / позже вернусь к этому.",
+      "question": "STEP 3 — клиент сказал:\n«Я посмотрю сам на сайте / позже вернусь к этому.»\n\nSTEP 4 — ваш ответ:\nКонечно, вы хотите изучить всё самостоятельно — это правильный подход. Но онлайн всё выглядит одинаково. А реальные условия бронирования, скидки и квоты всегда проходят не публично, а «за закрытыми дверями». Вот здесь я и могу показать то, что не выставляется в открытый доступ.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1320,
+      "y": 3780,
+      "answers": [
+        {
+          "id": "a_obj_r33_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r33_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r33_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r33_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 33
+      }
+    },
+    {
+      "id": "OBJ_R34_HANDLE",
+      "title": "STEP 4 — Я не доверяю агентам.",
+      "question": "STEP 3 — клиент сказал:\n«Я не доверяю агентам.»\n\nSTEP 4 — ваш ответ:\nТак и нужно — в этой сфере доверие нужно заслужить, а не требовать. Поэтому я не предлагаю ничего покупать. Моя задача — дать понимание, где реальные возможности и где маркетинг. А решение вы всё равно принимаете сами.",
+      "hint": "",
+      "fontScale": 36,
+      "x": 1940,
+      "y": 3780,
+      "answers": [
+        {
+          "id": "a_obj_r34_handle_1",
+          "text": "Снято — вернуться в квалификацию",
+          "nextId": "STEP_2_RESUME"
+        },
+        {
+          "id": "a_obj_r34_handle_2",
+          "text": "Клиент всё ещё сомневается",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r34_handle_3",
+          "text": "Другое возражение",
+          "nextId": "STEP_3_OBJECTIONS"
+        },
+        {
+          "id": "a_obj_r34_handle_4",
+          "text": "Не хочет продолжать — STEP 6",
+          "nextId": "STEP_6_CLOSE"
+        }
+      ],
+      "meta": {
+        "activeRoute": true,
+        "type": "step_4_handling",
+        "step": 4,
+        "sourceRow": 34
+      }
+    }
+  ],
+  "calls": [],
+  "qa_report": {
+    "scope": "strict_6step_excel_flow",
+    "node_count": 54,
+    "broken_links": [],
+    "max_answers": 31,
+    "source_file": "Untitled spreadsheet (1).xlsx"
+  },
+  "scope_note": "",
+  "source_meta": {
+    "name": "structured_sales_tunnel_dubai_real_estate_ru",
+    "source_file": "Untitled spreadsheet.xlsx",
+    "language": "ru",
+    "description": "Normalized sales tunnel from Russian real estate sales scripts."
+  },
+  "editor_ux_notes": [
+    "Resizable editor side panel",
+    "Edit this tree opens editor at current call node",
+    "Selected/current node highlight",
+    "Center selected/current/start controls",
+    "Node search in editor"
+  ],
+  "editor_pro_features": [
+    "Tree health check",
+    "Duplicate block",
+    "Simple add branch form",
+    "Preview answer target",
+    "Show only selected branch",
+    "Auto arrange tree",
+    "Color-coded node types"
+  ],
+  "v5_features": [
+    "Library / Knowledge Base mode",
+    "Training Mode beta",
+    "Language dropdown with disabled English/Arabic beta options",
+    "Removed first-call subtitle from header"
+  ],
+  "v5_1_fix": [
+    "Compact header",
+    "Visible Library and Training nav buttons",
+    "Small language selector",
+    "Fixed screen switching"
+  ],
+  "v5_2_fix": [
+    "Bigger black buttons in Call Mode",
+    "Library and Training start at the top without empty whitespace",
+    "Compact spacing for Library and Training screens"
+  ],
+  "v5_3_fix": [
+    "Hard fixed Library/Training top offset with fixed screen positioning",
+    "Call button always highlighted with premium orange-purple gradient",
+    "Library cards can be edited directly and sync with Call/Editor",
+    "Experimental Chrome DB file connect/save buttons"
+  ],
+  "v5_4_fix": [
+    "Restored scroll in Call Mode",
+    "Removed duplicate Edit button in Library",
+    "Fixed inline Library card edit",
+    "Library card edit syncs with Call Mode and Editor"
+  ],
+  "modeStartIds": {
+    "first_call": "STEP_1_OPENING",
+    "follow_up": "STEP_1_OPENING",
+    "warm_call": "STEP_1_OPENING"
+  },
+  "v7_cleaning": {
+    "source": "structured_sales_tunnel_database.json",
+    "cleaned_sections": {
+      "stages": 8,
+      "scripts": 48,
+      "objections": 27,
+      "follow_up_used": 4,
+      "small_talk": 10,
+      "motivation_from_operations": 5,
+      "decision_logic": 13
+    },
+    "excluded_from_call_module": [
+      "FU_005_NOTES_BIRTHDAYS",
+      "FU_006_STATS_MEMS",
+      "FU_007_CONGRATS"
+    ],
+    "notes": "Raw IDs/field names are not shown as main content. Translit and mixed English/Russian were cleaned where possible."
+  },
+  "v8_changes": {
+    "logic_hidden_in_library_by_default": true,
+    "editor_right_panel_context": true,
+    "node_titles_added": true,
+    "whatsapp_icon_script": "WHATSAPP_EXPLAIN_FIRST_CALL"
+  },
+  "v7_1_changes": {
+    "renamed_from_v8_to_7_1": true,
+    "whatsapp_icon_outside_answer_box": true,
+    "whatsapp_logic_rewritten": true,
+    "inline_whatsapp_icon_removed": true,
+    "market_analyst_tone_added": true,
+    "dfmrei_market_objection_added": true,
+    "full_voice_rewrite": true,
+    "full_voice_rewrite_note": "Active call, follow-up, warm-call, objections and closing library rewritten in Vadim market-analyst tone.",
+    "investor_wit_info_value_layer": true,
+    "genius_sales_scripts_logic_added": true
+  },
+  "v7_2_objection_routing": {
+    "added": true,
+    "description": "Unused objection blocks were promoted from Library into active Call Mode routing. Main router now branches by category, with concrete nodes for partner/wife, ROI, market timing, trust/process, remote purchase, documents, direct developer, waiting, liquidity and unclear investment direction.",
+    "active_objection_node_count": 27,
+    "additional_promoted": [
+      "OBJ_TACT_09_ITEM -> OBJ_QUICK_QUESTIONS",
+      "OBJ_TACT_10_ITEM -> OBJ_COMMISSION",
+      "OBJ_TACT_07_I_NE_HURRY_S_PURCHASE -> OBJ_NOT_HURRY"
+    ]
+  },
+  "v7_3_real_life_flow": {
+    "added": true,
+    "description": "Expanded first-call flow with live discovery: what the client already knows, what they analyze, other agents/offers, Dubai city investment logic, small talk that bridges to sales, off-plan/ready/EOI education and practical city/lifestyle reasoning.",
+    "active_nodes": [
+      "CALL_OPEN_CONTEXT",
+      "CLIENT_ALREADY_ANALYZING",
+      "COMPARE_AGENT_OFFERS",
+      "COMPARE_SPECIFIC_PROJECTS",
+      "CLIENT_ANALYZES_AREAS",
+      "CLIENT_ANALYZES_ROI",
+      "DUBAI_KNOWLEDGE_PROBE",
+      "DUBAI_INVESTMENT_LOGIC",
+      "DUBAI_FUTURE_LOGIC",
+      "DUBAI_GROWTH_LOGIC",
+      "DUBAI_LIFESTYLE_PROBE",
+      "DUBAI_PRACTICAL_LOGIC",
+      "DUBAI_FILTER_FRAME",
+      "SMALL_TALK_ROUTER",
+      "SMALL_TALK_LANDMARKS",
+      "SMALL_TALK_LIFESTYLE",
+      "EDU_OFFPLAN_READY",
+      "EDU_EOI_PAYMENT"
+    ]
+  },
+  "v7_4_call_ui_cleanup": {
+    "added": true,
+    "description": "Removed manager-facing router instructions from active call screens, converted ambiguous probe into direct client-answer buttons, cleared active hints, and prepared answer sentiment classification for green/red buttons."
+  },
+  "v7_5_logic_dedup": {
+    "added": true,
+    "description": "Active first-call route cleaned to reduce repeated qualification questions and circular routes between lifestyle, areas, ROI and analysis blocks.",
+    "main_spine": [
+      "START",
+      "CALL_OPEN_CONTEXT",
+      "QUALIFY_MOTIVATION",
+      "QUALIFY_GOAL",
+      "QUALIFY_BUDGET",
+      "QUALIFY_ANALYSIS",
+      "PROPOSE_ZOOM",
+      "FIRST_CALL_SUCCESS",
+      "END"
+    ],
+    "updated_nodes": [
+      "CALL_OPEN_CONTEXT",
+      "QUALIFY_INTRO",
+      "QUALIFY_MOTIVATION",
+      "QUALIFY_GOAL",
+      "QUALIFY_ANALYSIS",
+      "CLIENT_ALREADY_ANALYZING",
+      "CLIENT_ANALYZES_AREAS",
+      "CLIENT_ANALYZES_ROI",
+      "DUBAI_LIFESTYLE_PROBE",
+      "DUBAI_FAMILY_LIFESTYLE",
+      "DUBAI_FILTER_FRAME",
+      "SMALL_TALK_LANDMARKS",
+      "OBJ_QUICK_QUESTIONS",
+      "PROPOSE_ZOOM"
+    ]
+  },
+  "v7_6_unique_blocks": {
+    "added": true,
+    "description": "Active first-call logic refined so similar blocks have distinct jobs: entry context, city map, investment frame, future demand, daily-life scenario, area shortlist, ROI inputs, rapport bridge, and re-entry router.",
+    "deactivated_duplicate_nodes": [
+      "SMALL_TALK_LIFESTYLE"
+    ],
+    "updated_nodes": [
+      "QUALIFY_INTRO",
+      "CALL_OPEN_CONTEXT",
+      "QUALIFY_MOTIVATION",
+      "QUALIFY_GOAL",
+      "DUBAI_KNOWLEDGE_PROBE",
+      "DUBAI_INVESTMENT_LOGIC",
+      "DUBAI_FUTURE_LOGIC",
+      "DUBAI_LIFESTYLE_PROBE",
+      "CLIENT_ANALYZES_AREAS",
+      "CLIENT_ANALYZES_ROI",
+      "DUBAI_FILTER_FRAME",
+      "SMALL_TALK_ROUTER",
+      "SMALL_TALK_LANDMARKS",
+      "SMALL_TALK_LIFESTYLE"
+    ]
+  },
+  "v7_7_short_warm_voice": {
+    "added": true,
+    "description": "Active first-call copy shortened for live phone use: warmer, sharper, safer, less lecture-like, with lighter wit.",
+    "updated_node_count": 58,
+    "target": "Most active call cards now fit into quick spoken phrases instead of long analytical paragraphs."
+  },
+  "v7_8_books_recalibration": {
+    "added": true,
+    "description": "Call logic recalibrated from four sales/negotiation frameworks: tactical empathy/no-oriented permission, buyer-state routing, SPIN sequence, Challenger reframe, and summary before commitment.",
+    "sources": [
+      "Never Split the Difference",
+      "SPIN Selling",
+      "The Challenger Sale",
+      "The Sales Game"
+    ],
+    "main_spine": [
+      "START",
+      "CALL_SAFE_PERMISSION",
+      "BUYER_STATE_CHECK",
+      "QUALIFY_MOTIVATION",
+      "QUALIFY_GOAL",
+      "SPIN_IMPLICATION_COST",
+      "SPIN_NEED_PAYOFF",
+      "QUALIFY_BUDGET",
+      "CHALLENGER_REFRAME",
+      "QUALIFY_ANALYSIS",
+      "SUMMARY_THATS_RIGHT",
+      "PROPOSE_ZOOM",
+      "FIRST_CALL_SUCCESS"
+    ],
+    "new_nodes": [
+      "CALL_SAFE_PERMISSION",
+      "BUYER_STATE_CHECK",
+      "SPIN_IMPLICATION_COST",
+      "SPIN_NEED_PAYOFF",
+      "CHALLENGER_REFRAME",
+      "SUMMARY_THATS_RIGHT"
+    ]
+  },
+  "v14_blank_rebuild": {
+    "added": true,
+    "description": "All previous script blocks and answer buttons removed by user request. Kept one placeholder START node so the app remains usable for rebuilding step by step.",
+    "backup_files": [
+      "callscript-data.before_blank_rebuild_v14.json",
+      "CallScript.before_blank_rebuild_v14.html"
+    ]
+  },
+  "v15_yes_no_zoom_structure": {
+    "added": true,
+    "description": "Minimal rebuild skeleton requested by user. All script content replaced with editable placeholders following YES/NO handling structure until Zoom.",
+    "backup_files": [
+      "callscript-data.before_yes_no_structure_v15.json",
+      "CallScript.before_yes_no_structure_v15.html"
+    ]
+  },
+  "v16_step_by_step_card1": {
+    "added": true,
+    "description": "User-provided CARD 1 installed with 11 answer buttons. Each button leads to a placeholder branch for future step-by-step content.",
+    "backup_files": [
+      "callscript-data.before_card1_v16.json",
+      "CallScript.before_card1_v16.html"
+    ]
+  },
+  "v17_card1_responses": {
+    "added": true,
+    "description": "User-provided response text installed for all 11 CARD 1 buttons. Temporary branch buttons added for continued step-by-step building.",
+    "mapped_buttons": [
+      "DA",
+      "NOT INTERESTED",
+      "WORKING WITH SOMEONE",
+      "ALREADY BOUGHT",
+      "DID NOT LEAVE",
+      "SEND WHATSAPP",
+      "U MENYA MALO VREMENI",
+      "MNE NEKOGDA",
+      "RABOTAIU NAPRYAMUYU S ZASTROISHIKOM",
+      "Мне сейчас неудобно финансово / нет ликвидности.",
+      "GENERAL DOUBTS"
+    ]
+  },
+  "v18_card1_branch_texts": {
+    "added": true,
+    "description": "Updated text for DA and the ten NO/non-DA CARD 1 branches in the order provided by the user. Existing temporary branch buttons preserved.",
+    "mapping": [
+      "CARD_1_DA",
+      "CARD_1_NOT_INTERESTED",
+      "CARD_1_WORKING_WITH_SOMEONE",
+      "CARD_1_ALREADY_BOUGHT",
+      "CARD_1_DID_NOT_LEAVE",
+      "CARD_1_SEND_WHATSAPP",
+      "CARD_1_MALO_VREMENI",
+      "CARD_1_MNE_NEKOGDA",
+      "CARD_1_DIRECT_DEVELOPER",
+      "CARD_1_NO_LIQUIDITY",
+      "CARD_1_GENERAL_DOUBTS"
+    ]
+  },
+  "v19_exact_user_inputs_only": {
+    "added": true,
+    "description": "Removed all assistant-invented temporary buttons/placeholders. Kept only CARD 1 with 11 user-provided buttons and 11 leaf cards with user-provided text.",
+    "backup_files": [
+      "callscript-data.before_exact_user_only_v19.json",
+      "CallScript.before_exact_user_only_v19.html"
+    ]
+  },
+  "v20_step2_numbered_blocks": {
+    "added": true,
+    "description": "Renumbered CARD 1 flow into Block 001-012. Block 002 is incoming DA; Blocks 003-012 are incoming NO-style branches as provided by user.",
+    "backup_files": [
+      "callscript-data.before_step2_numbered_blocks_v20.json",
+      "CallScript.before_step2_numbered_blocks_v20.html"
+    ]
+  },
+  "v21_visible_block_numbers": {
+    "added": true,
+    "description": "Made Block 001-012 numbering visible inside call cards, not only internal IDs/titles."
+  },
+  "v22_excel_staged_sales_flow": {
+    "added": true,
+    "description": "Rebuilt script from the provided Excel into a staged call tree with qualification spine, objection routers, pushback handling, soft close, and resume controls.",
+    "source": "/Users/vadimnegru/Downloads/Untitled spreadsheet (1).xlsx"
+  },
+  "v23_strict_6step_excel_flow": {
+    "added": true,
+    "description": "Rebuilt around the exact six Excel columns: Step 1 opening, Step 2 qualification, Step 3 exact client objection, Step 4 handling, Step 5 push/clarifier, Step 6 close with save-number/point-of-reference ending.",
+    "source": "/Users/vadimnegru/Downloads/Untitled spreadsheet (1).xlsx"
+  }
+}

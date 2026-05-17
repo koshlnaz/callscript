@@ -1,0 +1,10 @@
+{
+  "version": "ru_7_1_whatsapp_logic_fix",
+  "total_nodes": 168,
+  "floating_wa_button": true,
+  "inline_wa_hidden": true,
+  "answerButton_normal": true,
+  "whatsapp_node_rewritten": true,
+  "storage": true,
+  "version_label": true
+}

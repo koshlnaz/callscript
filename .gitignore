@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# Backup snapshots — git history replaces these
+CallScript.before_*.html
+callscript-data.before_*.json
+
+# Inner subfolder is its own repo (nvpandpartners/call-script-vadim)
+CallScript_RU_7_1_WHATSAPP_LOGIC_FIX/

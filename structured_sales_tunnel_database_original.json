@@ -1,0 +1,1228 @@
+{
+  "meta": {
+    "name": "structured_sales_tunnel_dubai_real_estate_ru",
+    "source_file": "Untitled spreadsheet.xlsx",
+    "language": "ru",
+    "description": "Normalized sales tunnel from Russian real estate sales scripts."
+  },
+  "stages": [
+    {
+      "stage_id": "S01",
+      "stage_name": "New lead / 1st touch",
+      "app_section": "Первичный звонок после заявки",
+      "purpose": "Подтвердить источник заявки и получить первичное Yes/No",
+      "entry_condition": "Новая заявка по недвижимости в Дубае",
+      "success_exit": "Лид подтвердил интерес или дал понятное возражение",
+      "next_stage": "S02 / S04 / S05 / S08"
+    },
+    {
+      "stage_id": "S02",
+      "stage_name": "Qualification / Discovery",
+      "app_section": "YES-блок",
+      "purpose": "Понять мотивацию, цель, бюджет, горизонт и текущие варианты",
+      "entry_condition": "Лид ответил, что интересно",
+      "success_exit": "Назначен Zoom/звонок или выявлено возражение",
+      "next_stage": "S03 / S04"
+    },
+    {
+      "stage_id": "S03",
+      "stage_name": "Value framing / Education",
+      "app_section": "Объяснение ценности",
+      "purpose": "Пояснить off-plan, EOI, принудительные сбережения, работу с компанией",
+      "entry_condition": "Лид слушает и готов анализировать варианты",
+      "success_exit": "Лид понимает процесс и готов к следующему шагу",
+      "next_stage": "S06 / S07"
+    },
+    {
+      "stage_id": "S04",
+      "stage_name": "Objection handling",
+      "app_section": "Возражения",
+      "purpose": "Классифицировать возражение и ответить нужным скриптом",
+      "entry_condition": "Лид сказал нет/дорого/нет времени/не доверяет/работает с другим",
+      "success_exit": "Возражение снято или лид переведён в follow-up",
+      "next_stage": "S02 / S05 / S07 / S08"
+    },
+    {
+      "stage_id": "S05",
+      "stage_name": "Follow-up protocol",
+      "app_section": "Повторные касания",
+      "purpose": "Дожим без давления: WhatsApp/email/call, 2nd touch, 3rd touch",
+      "entry_condition": "Лид не ответил или попросил отправить информацию",
+      "success_exit": "Лид вернулся в диалог или помечен unsuccessful",
+      "next_stage": "S01 / S02 / S08"
+    },
+    {
+      "stage_id": "S06",
+      "stage_name": "Warm client nurturing",
+      "app_section": "Тёплые клиенты",
+      "purpose": "Поддерживать контакт через полезные поводы и small talk",
+      "entry_condition": "Есть контакт, но нет немедленного решения",
+      "success_exit": "Получен новый интерес/назначен звонок",
+      "next_stage": "S02 / S07"
+    },
+    {
+      "stage_id": "S07",
+      "stage_name": "Closing",
+      "app_section": "Закрытие",
+      "purpose": "Перевести обсуждение в Zoom/EOI/следующее конкретное действие",
+      "entry_condition": "Квалификация пройдена, ценность объяснена",
+      "success_exit": "Запущен процесс/назначена встреча",
+      "next_stage": "Deal next step"
+    },
+    {
+      "stage_id": "S08",
+      "stage_name": "Disqualification / Not now",
+      "app_section": "Не интересен / уже купил / не оставлял",
+      "purpose": "Корректно закрыть или поставить долгий follow-up",
+      "entry_condition": "Лид явно не подходит или отказывается",
+      "success_exit": "Контакт сохранён, статус обновлён",
+      "next_stage": "Long nurture / Stop"
+    }
+  ],
+  "decision_nodes": [
+    {
+      "node_id": "NODE_START",
+      "stage_id": "S01",
+      "node_type": "start",
+      "trigger": "new_lead_created",
+      "linked_record_ids": "SCR_001_FIRST_TOUCH_CALL",
+      "routing_rule": "lead_reply_yes",
+      "next_route": "NODE_YES_QUALIFY",
+      "developer_notes": "Ask if they left a request and are interested."
+    },
+    {
+      "node_id": "NODE_YES_QUALIFY",
+      "stage_id": "S02",
+      "node_type": "question_sequence",
+      "trigger": "YES",
+      "linked_record_ids": "SCR_Q01_CASUAL_OPEN;SCR_Q02_QUALIFICATION_INTR",
+      "routing_rule": "after_each_question",
+      "next_route": "NODE_OBJECTION_OR_ZOOM",
+      "developer_notes": "Run qualification questions in order."
+    },
+    {
+      "node_id": "NODE_OBJECTION_OR_ZOOM",
+      "stage_id": "S02",
+      "node_type": "router",
+      "trigger": "lead answers",
+      "linked_record_ids": "SCR_Q03-SCR_Q06",
+      "routing_rule": "if objection -> NODE_OBJECTION_ROUTER; if qualified -> NODE_ZOOM_PROPOSAL",
+      "next_route": "Route by intent.",
+      "developer_notes": ""
+    },
+    {
+      "node_id": "NODE_ZOOM_PROPOSAL",
+      "stage_id": "S03",
+      "node_type": "offer",
+      "trigger": "qualified lead",
+      "linked_record_ids": "SCR_Q07_ZOOM_PROPOSAL;SCR_Q08_FORCED_SAVINGS_EDUC;SCR_Q09_EOI_EDUCATION",
+      "routing_rule": "if agrees -> NODE_CLOSE; if doubts -> NODE_OBJECTION_ROUTER",
+      "next_route": "Explain value and propose Zoom/EOI step.",
+      "developer_notes": ""
+    },
+    {
+      "node_id": "NODE_OBJECTION_ROUTER",
+      "stage_id": "S04",
+      "node_type": "router",
+      "trigger": "objection_detected",
+      "linked_record_ids": "OBJ_*",
+      "routing_rule": "match objection category",
+      "next_route": "Select exact response from Objections table.",
+      "developer_notes": ""
+    },
+    {
+      "node_id": "NODE_NO",
+      "stage_id": "S01",
+      "node_type": "negative_reply",
+      "trigger": "NO",
+      "linked_record_ids": "SCR_STATUS_NO_01",
+      "routing_rule": "if soft no -> S05; hard no -> S08",
+      "next_route": "Use short principle then decide follow-up.",
+      "developer_notes": ""
+    },
+    {
+      "node_id": "NODE_NOT_INTERESTED",
+      "stage_id": "S08",
+      "node_type": "disqualify_or_nurture",
+      "trigger": "NOT INTERESTED",
+      "linked_record_ids": "SCR_STATUS_NOT_INTERESTED_*",
+      "routing_rule": "if future interest -> long nurture; else stop",
+      "next_route": "Clarify if not now or never.",
+      "developer_notes": ""
+    },
+    {
+      "node_id": "NODE_WORKING_WITH_SOMEONE",
+      "stage_id": "S04",
+      "node_type": "competitive_objection",
+      "trigger": "WORKING WITH SOMEONE",
+      "linked_record_ids": "SCR_STATUS_WORKING_WITH_SOMEONE_*",
+      "routing_rule": "if open -> compare value; else long nurture",
+      "next_route": "Do not attack competitor; show differentiator.",
+      "developer_notes": ""
+    },
+    {
+      "node_id": "NODE_ALREADY_BOUGHT",
+      "stage_id": "S08",
+      "node_type": "post_purchase",
+      "trigger": "ALREADY BOUGHT",
+      "linked_record_ids": "SCR_STATUS_ALREADY_BOUGHT_*",
+      "routing_rule": "if future plans -> S06; else stop",
+      "next_route": "Ask future plans/referrals softly.",
+      "developer_notes": ""
+    },
+    {
+      "node_id": "NODE_DID_NOT_LEAVE",
+      "stage_id": "S08",
+      "node_type": "wrong_lead",
+      "trigger": "DID NOT LEAVE",
+      "linked_record_ids": "SCR_STATUS_DID_NOT_LEAVE_*",
+      "routing_rule": "if mistake -> close; if curious -> S02",
+      "next_route": "Apologize/clarify and avoid pressure.",
+      "developer_notes": ""
+    },
+    {
+      "node_id": "NODE_FOLLOW_UP",
+      "stage_id": "S05",
+      "node_type": "follow_up",
+      "trigger": "no_answer/no_decision",
+      "linked_record_ids": "FU_001-FU_004",
+      "routing_rule": "if response -> NODE_YES_QUALIFY; if no response -> unsuccessful",
+      "next_route": "Respect follow-up cadence.",
+      "developer_notes": ""
+    },
+    {
+      "node_id": "NODE_CLOSE",
+      "stage_id": "S07",
+      "node_type": "closing",
+      "trigger": "qualified_and_interested",
+      "linked_record_ids": "SCR_CLOSE_*",
+      "routing_rule": "schedule_zoom/start_process/EOI",
+      "next_route": "Concrete next step.",
+      "developer_notes": ""
+    },
+    {
+      "node_id": "NODE_SMALL_TALK",
+      "stage_id": "S06",
+      "node_type": "nurture",
+      "trigger": "warm_client",
+      "linked_record_ids": "SMALL_*",
+      "routing_rule": "if interest returns -> NODE_YES_QUALIFY",
+      "next_route": "Use topics to keep relationship warm.",
+      "developer_notes": ""
+    }
+  ],
+  "scripts": [
+    {
+      "script_id": "SCR_001_FIRST_TOUCH_CALL",
+      "stage_id": "S01",
+      "category": "opening",
+      "trigger_label": "1ST TOUCH",
+      "channel": "call",
+      "touch": "1st touch",
+      "step_order": 1,
+      "script_text": "Здравствуйте! [Имя] Это Вадим из Дубая ZVONIT. Вы оставляли заявку по недвижимости в Дубае на нашей странице, верно?",
+      "suggested_next_action": "Ask: интересно ли обсуждать недвижимость в Дубае? If yes -> qualification.",
+      "source_cell": "A3"
+    },
+    {
+      "script_id": "SCR_002_SECOND_TOUCH_CALL",
+      "stage_id": "S05",
+      "category": "follow_up_touch",
+      "trigger_label": "2ND TOUCH",
+      "channel": "call/whatsapp",
+      "touch": "2nd touch",
+      "step_order": 2,
+      "script_text": "Здравствуйте, [Name], это Вадим из Дубая. Мы ранее общались по поводу вашего интереса к недвижимости — могу уточнить, это всё ещё актуально для вас? Я возвращаюсь к вам после загруженной недели. У меня есть пару идей, которые хотел обсудить с вами перед тем, как двигаться дальше. Подойдёт ли вам 14:00?",
+      "suggested_next_action": "If contact responds -> return to qualification; if no response -> 3rd touch.",
+      "source_cell": "C3"
+    },
+    {
+      "script_id": "SCR_003_THIRD_TOUCH_CALL",
+      "stage_id": "S05",
+      "category": "follow_up_touch",
+      "trigger_label": "3RD TOUCH",
+      "channel": "call/whatsapp",
+      "touch": "3rd touch",
+      "step_order": 3,
+      "script_text": "Здравствуйте, [Name], это Вадим, звоню из Дубая. Как у вас дела?\nЯ отправил вам информацию по объектам — Какое у вас общее впечатление, это то, что вы искали? Что в этом проекте больше всего соответствует вашим ожиданиям?",
+      "suggested_next_action": "If no response -> send final follow-up; if response -> qualification.",
+      "source_cell": "E3"
+    },
+    {
+      "script_id": "SCR_004_WARM_CLIENT_REOPEN",
+      "stage_id": "S06",
+      "category": "warm_client",
+      "trigger_label": "warm clients first",
+      "channel": "whatsapp/call",
+      "touch": "nurture",
+      "step_order": 1,
+      "script_text": "Я не успел снова с вами связаться. Какие у нас лучшие дальнейшие шаги? Если я не смогу вам помочь напрямую, я определённо смогу направить вас в правильном направлении.",
+      "suggested_next_action": "Re-open conversation and ask for best next step.",
+      "source_cell": "G3"
+    },
+    {
+      "script_id": "SCR_Q01_CASUAL_OPEN",
+      "stage_id": "S02",
+      "category": "qualification",
+      "trigger_label": "YES",
+      "channel": "call",
+      "touch": "qualification",
+      "step_order": 1,
+      "script_text": "Круто, давай поговорим, что нового, рассказывай.",
+      "suggested_next_action": "Continue to next qualification step or handle objection if it appears.",
+      "source_cell": "A5"
+    },
+    {
+      "script_id": "SCR_Q02_QUALIFICATION_INTRO",
+      "stage_id": "S02",
+      "category": "qualification",
+      "trigger_label": "YES",
+      "channel": "call",
+      "touch": "qualification",
+      "step_order": 2,
+      "script_text": "Отлично, давай быстро пообщаемся, чтобы понять ваш интерес. У меня есть несколько вопросов, чтобы лучше помочь вам с запросом. После этого предложу пару вариантов, исходя из того, что увижу. Если всё будет совпадать с вашими ожиданиями, подготовлю для вас презентацию. Подходит?",
+      "suggested_next_action": "Continue to next qualification step or handle objection if it appears.",
+      "source_cell": "B5"
+    },
+    {
+      "script_id": "SCR_Q03_MOTIVATION_QUESTION",
+      "stage_id": "S02",
+      "category": "qualification",
+      "trigger_label": "YES",
+      "channel": "call",
+      "touch": "qualification",
+      "step_order": 3,
+      "script_text": "Я хочу лучше понять вашу ситуацию. Как вы пришли к этой идее?\nЧто именно побудило вас оставить заявку на нашем сайте?\nНасколько хорошо вы знакомы с городом?",
+      "suggested_next_action": "Continue to next qualification step or handle objection if it appears.",
+      "source_cell": "C5"
+    },
+    {
+      "script_id": "SCR_Q04_GOAL_QUESTION",
+      "stage_id": "S02",
+      "category": "qualification",
+      "trigger_label": "YES",
+      "channel": "call",
+      "touch": "qualification",
+      "step_order": 4,
+      "script_text": "Каковы ваши ожидания от этой инвестиции? Какова главная цель?\nВы ориентируетесь на аренду, перепродажу или планируете использовать недвижимость для себя?\nВы предпочитаете что-то у моря, в центре города или у вас пока нет чётких предпочтений?",
+      "suggested_next_action": "Continue to next qualification step or handle objection if it appears.",
+      "source_cell": "D5"
+    },
+    {
+      "script_id": "SCR_Q05_BUDGET_QUESTION",
+      "stage_id": "S02",
+      "category": "qualification",
+      "trigger_label": "YES",
+      "channel": "call",
+      "touch": "qualification",
+      "step_order": 5,
+      "script_text": "Какой бюджет вы рассматриваете?\nСпрашиваю, потому что на рынке много проектов и локаций, и чтобы сэкономить ваше время — если вы поделитесь диапазоном, я подберу только то, что подходит под ваши цели.\nСкажите, указанный бюджет — это жёсткий предел?\nИли если я покажу вам вариант, который идеально подходит под ваши критерии, но немного выше бюджета — вы бы рассмотрели его?",
+      "suggested_next_action": "Continue to next qualification step or handle objection if it appears.",
+      "source_cell": "E5"
+    },
+    {
+      "script_id": "SCR_Q06_CURRENT_ANALYSIS_QUESTIO",
+      "stage_id": "S02",
+      "category": "qualification",
+      "trigger_label": "YES",
+      "channel": "call",
+      "touch": "qualification",
+      "step_order": 6,
+      "script_text": "Перед тем как я дам информацию, что вы сейчас анализируете, чтобы я понял, могу ли предложить что-то лучше?\nЯ ничего не упустил?\nМожет, есть что-то важное, что мне стоит знать, прежде чем мы пойдём дальше?",
+      "suggested_next_action": "Continue to next qualification step or handle objection if it appears.",
+      "source_cell": "F5"
+    },
+    {
+      "script_id": "SCR_Q07_ZOOM_PROPOSAL",
+      "stage_id": "S03",
+      "category": "education",
+      "trigger_label": "YES",
+      "channel": "call",
+      "touch": "qualification",
+      "step_order": 7,
+      "script_text": "Хорошо, предлагаю назначить короткий Zoom-звонок, где я покажу вам проекты, которые подходят под ваши требования, и проведу по всем деталям.\nКак вам звучит? Какой день и время вам удобно?\nКстати, что вы хотите увидеть там в первую очередь — окупаемость, цифры, факты или какие-то другие особенности?",
+      "suggested_next_action": "Continue to next qualification step or handle objection if it appears.",
+      "source_cell": "G5"
+    },
+    {
+      "script_id": "SCR_Q08_FORCED_SAVINGS_EDUCATION",
+      "stage_id": "S03",
+      "category": "education",
+      "trigger_label": "YES",
+      "channel": "call",
+      "touch": "qualification",
+      "step_order": 8,
+      "script_text": "Кстати, знаете такое понятие — принудительные сбережения?\nМы все когда-то покупали что-то, что вроде бы не могли себе позволить, но благодаря платежному плану справлялись.\nНедвижимость работает по тому же принципу — только лучше. Каждый платеж автоматически превращается в капитал. Вы не тратите — вы создаёте актив, даже не замечая этого.",
+      "suggested_next_action": "Continue to next qualification step or handle objection if it appears.",
+      "source_cell": "H5"
+    },
+    {
+      "script_id": "SCR_Q09_EOI_EDUCATION",
+      "stage_id": "S03",
+      "category": "education",
+      "trigger_label": "YES",
+      "channel": "call",
+      "touch": "qualification",
+      "step_order": 9,
+      "script_text": "Позвольте кратко объяснить, как работает стадия EOI — речь не о покупке, а о том, чтобы закрепить за собой место в очереди. Резервируя позицию сейчас, вы получаете приоритетный доступ к лучшим видам, лучшим этажам и самой выгодной стартовой цене до того, как произойдёт повышение — именно так работают запуски в Дубае.\n\nEOI полностью возвратный, поэтому финансового риска нет. Но ожидание означает потерю приоритета и переход на следующий ценовой уровень. В идеале нам нужно внести сумму EOI сейчас — либо как минимум предоставить копию паспорта для регистрации в системе.",
+      "suggested_next_action": "Continue to next qualification step or handle objection if it appears.",
+      "source_cell": "I5"
+    },
+    {
+      "script_id": "SCR_Q10_OFF_PLAN_DEFINITION",
+      "stage_id": "S03",
+      "category": "education",
+      "trigger_label": "YES",
+      "channel": "call",
+      "touch": "qualification",
+      "step_order": 10,
+      "script_text": "Off-plan — это недвижимость, которая находится в стадии строительства или только запускается, и продаётся напрямую от застройщика инвесторам или конечным пользователям.\nReady property — это готовый объект, который можно посмотреть вживую.\n\nПри покупке off-plan вы можете зайти в проект на старте или даже до старта через EOI — вы получаете информацию первыми и принимаете решение раньше других. Для готовой недвижимости обычно нужно быть в Дубае, чтобы посмотреть объект; с off-plan всё можно сделать дистанционно — видео, WhatsApp, звонки.\n\nЦены на готовые объекты чаще всего хуже поддаются переговору, включают премию от предыдущих инвесторов, а сами здания старее — больше расходов на обслуживание, устаревшие планировки и удобства, которые уже не соответствуют сегодняшним стандартам.\n\nДля готового объекта вы платите полную стоимость сразу (плюс комиссию агентства, transfer fees и налог DLD).\nВ off-plan действует рассрочка — форматы 90/10, 30/70 и другие — без процентов. Налог DLD и административные сборы всё равно есть, но структура намного мягче для денежного потока.\n\nЕдинственный реальный плюс готовой недвижимости — это доход “сразу”.\nНо если вы ориентируетесь на рост капитала и лучшую доходность от аренды, off-plan выигрывает — новые здания, более высокие ставки аренды и более низкий порог входа дают сильный долгосрочный ROI.\n\nЕсть и другой момент: готовые квартиры часто идут с износом, эмоциональными продавцами и непредсказуемыми просмотрами.\nOff-plan — это чистый профессиональный процесс: никаких эмоций, никаких пустых поездок.\n\nПример:\nОдин из моих клиентов купил 1-bedroom в JVC за 800,000 AED по плану 50/50.\nК моменту сдачи, через три года, квартира стоила уже 1.2M AED — и он мог продать её ещё раньше с ещё более высоким ROI.\nСейчас она сдаётся за 100,000 AED в год — отличная доходность.\nЕсли бы он купил её на вторичном рынке за 1.3M AED + сборы, доходность была бы совсем другой.\n\nНа рынке бывают хорошие варианты перепродажи.\nНо если вы хотите одновременно сильный рост капитала и высокий доход от аренды — выбирайте off-plan.\nНастоящие инвесторы не торопятся — они планируют наперёд и выбирают правильных застройщиков.",
+      "suggested_next_action": "Continue to next qualification step or handle objection if it appears.",
+      "source_cell": "R5"
+    },
+    {
+      "script_id": "SCR_PROBE_01",
+      "stage_id": "S02",
+      "category": "probe",
+      "trigger_label": "doubt / unclear answer",
+      "channel": "call",
+      "touch": "qualification",
+      "step_order": 1,
+      "script_text": "Интересно, а почему вы так считаете?",
+      "suggested_next_action": "Use when lead gives vague/sceptical response; then return to qualification flow.",
+      "source_cell": "B6"
+    },
+    {
+      "script_id": "SCR_PROBE_02",
+      "stage_id": "S02",
+      "category": "probe",
+      "trigger_label": "doubt / unclear answer",
+      "channel": "call",
+      "touch": "qualification",
+      "step_order": 2,
+      "script_text": "Что именно заставляет вас думать так?",
+      "suggested_next_action": "Use when lead gives vague/sceptical response; then return to qualification flow.",
+      "source_cell": "D6"
+    },
+    {
+      "script_id": "SCR_PROBE_03",
+      "stage_id": "S02",
+      "category": "probe",
+      "trigger_label": "doubt / unclear answer",
+      "channel": "call",
+      "touch": "qualification",
+      "step_order": 3,
+      "script_text": "А можете чуть подробнее — что именно вызывает сомнение?",
+      "suggested_next_action": "Use when lead gives vague/sceptical response; then return to qualification flow.",
+      "source_cell": "F6"
+    },
+    {
+      "script_id": "SCR_PROBE_04",
+      "stage_id": "S02",
+      "category": "probe",
+      "trigger_label": "doubt / unclear answer",
+      "channel": "call",
+      "touch": "qualification",
+      "step_order": 4,
+      "script_text": "С чем это ощущение больше связано?",
+      "suggested_next_action": "Use when lead gives vague/sceptical response; then return to qualification flow.",
+      "source_cell": "I6"
+    },
+    {
+      "script_id": "SCR_STATUS_NO_01",
+      "stage_id": "S01",
+      "category": "status_response",
+      "trigger_label": "NO",
+      "channel": "call/whatsapp",
+      "touch": "triage",
+      "step_order": 1,
+      "script_text": "Время на рынке важнее, чем попытки угадать рынок.",
+      "suggested_next_action": "Clarify status, save contact, then stop or move to long nurture.",
+      "source_cell": "B9"
+    },
+    {
+      "script_id": "SCR_STATUS_NOT_INTERESTED_01",
+      "stage_id": "S04",
+      "category": "status_response",
+      "trigger_label": "NOT INTERESTED",
+      "channel": "call/whatsapp",
+      "touch": "triage",
+      "step_order": 1,
+      "script_text": "Хорошо, конечно. Давайте на секунду уточним, чтобы в будущем вы не получали лишние звонки.***Можно узнать причину? ***Возможно, есть какие-то сомнения? ***Или вы уже что-то приобрели? Понимаю — решения по недвижимости даются непросто. Это нормально, важно всё обдумать и не торопиться.",
+      "suggested_next_action": "Clarify status, save contact, then stop or move to long nurture.",
+      "source_cell": "B10"
+    },
+    {
+      "script_id": "SCR_STATUS_NOT_INTERESTED_02",
+      "stage_id": "S04",
+      "category": "status_response",
+      "trigger_label": "NOT INTERESTED",
+      "channel": "call/whatsapp",
+      "touch": "triage",
+      "step_order": 2,
+      "script_text": "Понимаете, моя задача — быть поддержкой, вне зависимости от сроков принятия решения. ***Кстати, будет ли для вас актуально, если я буду делиться важными обновлениями и возможностями на будущее?",
+      "suggested_next_action": "Clarify status, save contact, then stop or move to long nurture.",
+      "source_cell": "E10"
+    },
+    {
+      "script_id": "SCR_STATUS_NOT_INTERESTED_03",
+      "stage_id": "S04",
+      "category": "status_response",
+      "trigger_label": "NOT INTERESTED",
+      "channel": "call/whatsapp",
+      "touch": "triage",
+      "step_order": 3,
+      "script_text": "Хорошо, спасибо вам в любом случае.\n\nЯ вышлю вам свои контакты — сохраните их на будущее, если запрос снова станет актуален.\n\nКстати, у нас есть бонусная программа за рекомендации.",
+      "suggested_next_action": "Clarify status, save contact, then stop or move to long nurture.",
+      "source_cell": "G10"
+    },
+    {
+      "script_id": "SCR_STATUS_WORKING_WITH_SOMEONE_01",
+      "stage_id": "S04",
+      "category": "status_response",
+      "trigger_label": "WORKING WITH SOMEONE",
+      "channel": "call/whatsapp",
+      "touch": "triage",
+      "step_order": 1,
+      "script_text": "Понимаю. Я не собираюсь перебивать другого специалиста, просто покажу, чем отличается мой подход. В Дубае каждый день появляются новые проекты, и, к сожалению, не все агенты имеют лицензию или предлагают то, что действительно подходит под ваши цели. Поэтому важно сравнить. Я предлагаю коротко созвониться — буквально пару минут вечером, когда вам удобно. А дальше сами решите, стоит ли двигаться дальше. Как вам такой вариант?",
+      "suggested_next_action": "Clarify status, save contact, then stop or move to long nurture.",
+      "source_cell": "B11"
+    },
+    {
+      "script_id": "SCR_STATUS_WORKING_WITH_SOMEONE_02",
+      "stage_id": "S04",
+      "category": "status_response",
+      "trigger_label": "WORKING WITH SOMEONE",
+      "channel": "call/whatsapp",
+      "touch": "triage",
+      "step_order": 2,
+      "script_text": "Позвольте сначала рассказать вам о нашей компании, о гарантиях, которые мы предоставляем, и о команде специалистов, которая будет сопровождать вас на каждом этапе. Затем я поделюсь реальными кейсами проданных проектов, чтобы вы понимали, как я работаю и почему мне можно доверять. И, конечно, вы можете задать любые вопросы. Кстати, вы можете посмотреть мою лицензию — уверен, вам такое никто не показывает, ведь у 80% её просто нет.",
+      "suggested_next_action": "Clarify status, save contact, then stop or move to long nurture.",
+      "source_cell": "E11"
+    },
+    {
+      "script_id": "SCR_STATUS_WORKING_WITH_SOMEONE_03",
+      "stage_id": "S04",
+      "category": "status_response",
+      "trigger_label": "WORKING WITH SOMEONE",
+      "channel": "call/whatsapp",
+      "touch": "triage",
+      "step_order": 3,
+      "script_text": "Преимущества работы с нами — это возможность консультироваться с маркетологами, юристами и аналитиками. Мы всегда представляем только ваши интересы, сторону нашего клиента. Наша цель — быстро, грамотно и с учётом всех ваших требований найти оптимальное решение.",
+      "suggested_next_action": "Clarify status, save contact, then stop or move to long nurture.",
+      "source_cell": "G11"
+    },
+    {
+      "script_id": "SCR_STATUS_WORKING_WITH_SOMEONE_04",
+      "stage_id": "S04",
+      "category": "status_response",
+      "trigger_label": "WORKING WITH SOMEONE",
+      "channel": "call/whatsapp",
+      "touch": "triage",
+      "step_order": 4,
+      "script_text": "Хорошо, спасибо вам в любом случае.\n\nЯ вышлю вам свои контакты — сохраните их на будущее, если запрос снова станет актуален.\n\nКстати, у нас есть бонусная программа за рекомендации.",
+      "suggested_next_action": "Clarify status, save contact, then stop or move to long nurture.",
+      "source_cell": "I11"
+    },
+    {
+      "script_id": "SCR_STATUS_ALREADY_BOUGHT_01",
+      "stage_id": "S04",
+      "category": "status_response",
+      "trigger_label": "ALREADY BOUGHT",
+      "channel": "call/whatsapp",
+      "touch": "triage",
+      "step_order": 1,
+      "script_text": "Хорошо, конечно. Давайте на секунду уточним, чтобы в будущем вы не получали лишние звонки. что именно привлекло ваше внимание? В какие объекты вы уже инвестировали?",
+      "suggested_next_action": "Clarify status, save contact, then stop or move to long nurture.",
+      "source_cell": "B12"
+    },
+    {
+      "script_id": "SCR_STATUS_ALREADY_BOUGHT_02",
+      "stage_id": "S04",
+      "category": "status_response",
+      "trigger_label": "ALREADY BOUGHT",
+      "channel": "call/whatsapp",
+      "touch": "triage",
+      "step_order": 2,
+      "script_text": "Хорошо, район отличный, есть ли у вас планы на будущее с этой недвижимостью? Вы слышали об AX CAPITAL раньше?",
+      "suggested_next_action": "Clarify status, save contact, then stop or move to long nurture.",
+      "source_cell": "C12"
+    },
+    {
+      "script_id": "SCR_STATUS_ALREADY_BOUGHT_03",
+      "stage_id": "S04",
+      "category": "status_response",
+      "trigger_label": "ALREADY BOUGHT",
+      "channel": "call/whatsapp",
+      "touch": "triage",
+      "step_order": 3,
+      "script_text": "Хорошо, спасибо вам в любом случае.\n\nЯ вышлю вам свои контакты — сохраните их на будущее, если запрос снова станет актуален.\n\nКстати, у нас есть бонусная программа за рекомендации.",
+      "suggested_next_action": "Clarify status, save contact, then stop or move to long nurture.",
+      "source_cell": "D12"
+    },
+    {
+      "script_id": "SCR_STATUS_DID_NOT_LEAVE_01",
+      "stage_id": "S04",
+      "category": "status_response",
+      "trigger_label": "DID NOT LEAVE",
+      "channel": "call/whatsapp",
+      "touch": "triage",
+      "step_order": 1,
+      "script_text": "Хорошо, конечно. Давайте на секунду уточним чтобы в будущем вы не получали лишние звонки.: проект называется [название проекта], вы оставляли заявку [число]. Возможно, вы что-то кликнули у нас на сайте или в рекламе?",
+      "suggested_next_action": "Clarify status, save contact, then stop or move to long nurture.",
+      "source_cell": "B13"
+    },
+    {
+      "script_id": "SCR_STATUS_DID_NOT_LEAVE_02",
+      "stage_id": "S04",
+      "category": "status_response",
+      "trigger_label": "DID NOT LEAVE",
+      "channel": "call/whatsapp",
+      "touch": "triage",
+      "step_order": 2,
+      "script_text": "Окей, то есть вас не интересует сейчас и в будущем тоже не рассматриваете этот вариант?",
+      "suggested_next_action": "Clarify status, save contact, then stop or move to long nurture.",
+      "source_cell": "C13"
+    },
+    {
+      "script_id": "SCR_STATUS_DID_NOT_LEAVE_03",
+      "stage_id": "S04",
+      "category": "status_response",
+      "trigger_label": "DID NOT LEAVE",
+      "channel": "call/whatsapp",
+      "touch": "triage",
+      "step_order": 3,
+      "script_text": "Хорошо, спасибо вам в любом случае.\n\nЯ вышлю вам свои контакты — сохраните их на будущее, если запрос станет актуален.\nКстати, у нас есть бонусная программа за рекомендации.",
+      "suggested_next_action": "Clarify status, save contact, then stop or move to long nurture.",
+      "source_cell": "D13"
+    },
+    {
+      "script_id": "SCR_CLOSE_GENERAL_01",
+      "stage_id": "S07",
+      "category": "closing",
+      "trigger_label": "CLOSING",
+      "channel": "call/zoom",
+      "touch": "closing",
+      "step_order": 1,
+      "script_text": "В общем, я постарался дать вам полную картину и рассказал всё, что вас интересовало.\nУ меня к вам один вопрос — это то, что вы искали?\nПо шкале от 1 до 10, насколько этот продукт вам подходит?\nЧто нужно, чтобы было на 10?\nПредлагаю двигаться дальше, как вам такое?\n\n\n\n\n\n\n\n",
+      "suggested_next_action": "Ask for concrete next action: Zoom, EOI, meeting with partner, process start.",
+      "source_cell": "B17"
+    },
+    {
+      "script_id": "SCR_CLOSE_GENERAL_02",
+      "stage_id": "S07",
+      "category": "closing",
+      "trigger_label": "CLOSING",
+      "channel": "call/zoom",
+      "touch": "closing",
+      "step_order": 2,
+      "script_text": "Хорошо, что вы спросили. Позвольте объяснить, в чём заключается вся ценность.",
+      "suggested_next_action": "Ask for concrete next action: Zoom, EOI, meeting with partner, process start.",
+      "source_cell": "C17"
+    },
+    {
+      "script_id": "SCR_CLOSE_GENERAL_03",
+      "stage_id": "S07",
+      "category": "closing",
+      "trigger_label": "CLOSING",
+      "channel": "call/zoom",
+      "touch": "closing",
+      "step_order": 3,
+      "script_text": "Ну что ж, предлагаю запустить процесс. Что вы скажете?",
+      "suggested_next_action": "Ask for concrete next action: Zoom, EOI, meeting with partner, process start.",
+      "source_cell": "D17"
+    },
+    {
+      "script_id": "SCR_CLOSE_GENERAL_04",
+      "stage_id": "S07",
+      "category": "closing",
+      "trigger_label": "CLOSING",
+      "channel": "call/zoom",
+      "touch": "closing",
+      "step_order": 4,
+      "script_text": "За один час мы с вами сможем окончательно разобраться в этом вопросе и понять, нужен ли вам этот продукт или нет — чтобы больше не тратить недели и месяцы на раздумья и освободить своё внимание для действительно важных вещей.",
+      "suggested_next_action": "Ask for concrete next action: Zoom, EOI, meeting with partner, process start.",
+      "source_cell": "E17"
+    },
+    {
+      "script_id": "SCR_CLOSE_GENERAL_05",
+      "stage_id": "S07",
+      "category": "closing",
+      "trigger_label": "CLOSING",
+      "channel": "call/zoom",
+      "touch": "closing",
+      "step_order": 5,
+      "script_text": "Хорошо, предлагаю дать этому немного времени и встретиться с вашим партнёром.Я снова проведу полную презентацию, чтобы у вас была чёткая картина и полное понимание.Скорее всего, вы не запомнили всю информацию с первого раза, а я сэкономлю ваши силы и время.Это абсолютно нормально — во время презентации у вас могут возникнуть дополнительные вопросы, и вместе вы сможете принять правильное решение.Как вам такой план?",
+      "suggested_next_action": "Ask for concrete next action: Zoom, EOI, meeting with partner, process start.",
+      "source_cell": "F17"
+    },
+    {
+      "script_id": "SCR_CLOSE_MNE_NADO_PODUMATI_01",
+      "stage_id": "S07",
+      "category": "closing_objection",
+      "trigger_label": "MNE NADO PODUMATI",
+      "channel": "call/zoom",
+      "touch": "closing",
+      "step_order": 1,
+      "script_text": "Понимаю вас. Знаете, я в продажах уже более 15 лет и хорошо знаю: когда клиент говорит, что нужно подумать — почти всегда значит, что что-то осталось не до конца ясным. Скажите честно, что именно смутило: сам проект, локация, график платежей или, возможно, просто интуитивно чувствуете, что это не ваш вариант?\n\n\n\n\n\n\n\n",
+      "suggested_next_action": "Reduce pressure, isolate real blocker, then ask for specific next step.",
+      "source_cell": "B18"
+    },
+    {
+      "script_id": "SCR_CLOSE_MNE_NADO_PODUMATI_02",
+      "stage_id": "S07",
+      "category": "closing_objection",
+      "trigger_label": "MNE NADO PODUMATI",
+      "channel": "call/zoom",
+      "touch": "closing",
+      "step_order": 2,
+      "script_text": "Хорошо, с вашим вопросом разберёмся, но скажите, это единственная вещь, которая вас беспокоит?Если мы решим этот момент, вы будете практически готовы двигаться дальше, верно?\n\n\n\n\n\n\n\n",
+      "suggested_next_action": "Reduce pressure, isolate real blocker, then ask for specific next step.",
+      "source_cell": "C18"
+    },
+    {
+      "script_id": "SCR_CLOSE_MNE_NADO_PODUMATI_03",
+      "stage_id": "S07",
+      "category": "closing_objection",
+      "trigger_label": "MNE NADO PODUMATI",
+      "channel": "call/zoom",
+      "touch": "closing",
+      "step_order": 3,
+      "script_text": "Полностью понимаю, давайте обсудим, что может вас сдерживать.Понимаю, но давайте решим все вопросы, потому что я искренне верю — это лучший продукт на данный момент.Да, я понимаю, что цена очень важна, но мне также нужно объяснить вам ценность предложения.\n\n\n\n\n\n\n\n",
+      "suggested_next_action": "Reduce pressure, isolate real blocker, then ask for specific next step.",
+      "source_cell": "D18"
+    },
+    {
+      "script_id": "SCR_CLOSE_MNE_NADO_PODUMATI_04",
+      "stage_id": "S07",
+      "category": "closing_objection",
+      "trigger_label": "MNE NADO PODUMATI",
+      "channel": "call/zoom",
+      "touch": "closing",
+      "step_order": 4,
+      "script_text": "В общем, я постарался дать вам полную картину и рассказал всё, что вас интересовало.\nУ меня к вам один вопрос — это то, что вы искали?\nПо шкале от 1 до 10, насколько этот продукт вам подходит?\nЧто нужно, чтобы было на 10?\nПредлагаю двигаться дальше, как вам такое?\n\n\n\n\n\n\n\n",
+      "suggested_next_action": "Reduce pressure, isolate real blocker, then ask for specific next step.",
+      "source_cell": "E18"
+    },
+    {
+      "script_id": "SCR_CLOSE_MNE_NADO_PODUMATI_05",
+      "stage_id": "S07",
+      "category": "closing_objection",
+      "trigger_label": "MNE NADO PODUMATI",
+      "channel": "call/zoom",
+      "touch": "closing",
+      "step_order": 5,
+      "script_text": "Ну что ж, предлагаю запустить процесс. Что вы скажете?",
+      "suggested_next_action": "Reduce pressure, isolate real blocker, then ask for specific next step.",
+      "source_cell": "F18"
+    },
+    {
+      "script_id": "SCR_CLOSE_MNE_NADO_POSAVETOVATSA_01",
+      "stage_id": "S07",
+      "category": "closing_objection",
+      "trigger_label": "MNE NADO POSAVETOVATSA",
+      "channel": "call/zoom",
+      "touch": "closing",
+      "step_order": 1,
+      "script_text": "Понимаю вас. Знаете, я в продажах уже более 15 лет и хорошо знаю — когда клиент говорит, что нужно обсудить с кем-то, это почти всегда означает, что что-то осталось неясным.Просто скажите честно, что именно вам не понравилось — проект, локация или, может быть, график платежей? Ili mojet instinktivno 4ustvuete shto proekt ne podhodit?\n\n\n\n\n\n\n\n",
+      "suggested_next_action": "Reduce pressure, isolate real blocker, then ask for specific next step.",
+      "source_cell": "B19"
+    },
+    {
+      "script_id": "SCR_CLOSE_MNE_NADO_POSAVETOVATSA_02",
+      "stage_id": "S07",
+      "category": "closing_objection",
+      "trigger_label": "MNE NADO POSAVETOVATSA",
+      "channel": "call/zoom",
+      "touch": "closing",
+      "step_order": 2,
+      "script_text": "Полностью понимаю, давайте обсудим, что может вас сдерживать.Понимаю, но давайте решим все вопросы, потому что я искренне верю — это лучший продукт на данный момент.Да, я понимаю, что цена очень важна, но мне также нужно объяснить вам ценность предложения.\n\n\n\n\n\n\n\n",
+      "suggested_next_action": "Reduce pressure, isolate real blocker, then ask for specific next step.",
+      "source_cell": "C19"
+    },
+    {
+      "script_id": "SCR_CLOSE_MNE_NADO_POSAVETOVATSA_03",
+      "stage_id": "S07",
+      "category": "closing_objection",
+      "trigger_label": "MNE NADO POSAVETOVATSA",
+      "channel": "call/zoom",
+      "touch": "closing",
+      "step_order": 3,
+      "script_text": "Хорошо, с вашим вопросом разберёмся, но скажите, это единственная вещь, которая вас беспокоит?Если мы решим этот момент, вы будете практически готовы двигаться дальше, верно?\n\n\n\n\n\n\n\n",
+      "suggested_next_action": "Reduce pressure, isolate real blocker, then ask for specific next step.",
+      "source_cell": "D19"
+    },
+    {
+      "script_id": "SCR_CLOSE_NE_PUSHITE_MENYA_01",
+      "stage_id": "S07",
+      "category": "closing_objection",
+      "trigger_label": "NE PUSHITE MENYA",
+      "channel": "call/zoom",
+      "touch": "closing",
+      "step_order": 1,
+      "script_text": "Послушайте, я вас понимаю, но, пожалуйста, не путайте мою искреннюю уверенность в проекте и его локации с тем, что я якобы настаиваю.Я просто настолько верю в положительный результат, что именно поэтому так с вами разговариваю.Давайте просто начнём работать — и вы ещё скажете мне спасибо. Такое уже происходило не раз.",
+      "suggested_next_action": "Reduce pressure, isolate real blocker, then ask for specific next step.",
+      "source_cell": "B20"
+    },
+    {
+      "script_id": "SCR_CLOSE_NE_PUSHITE_MENYA_02",
+      "stage_id": "S07",
+      "category": "closing_objection",
+      "trigger_label": "NE PUSHITE MENYA",
+      "channel": "call/zoom",
+      "touch": "closing",
+      "step_order": 2,
+      "script_text": "Я правильно понимаю, что вы уже вложили немало сил и времени в поиск, но подходящий вариант так и не нашли?",
+      "suggested_next_action": "Reduce pressure, isolate real blocker, then ask for specific next step.",
+      "source_cell": "C20"
+    },
+    {
+      "script_id": "SCR_CLOSE_NE_PUSHITE_MENYA_03",
+      "stage_id": "S07",
+      "category": "closing_objection",
+      "trigger_label": "NE PUSHITE MENYA",
+      "channel": "call/zoom",
+      "touch": "closing",
+      "step_order": 3,
+      "script_text": "Хорошо, послушайте, я очень ценю, что вы нашли время обсудить эту возможность.Поэтому прошу вас немного уделить внимания, чтобы мы спокойно всё разобрали без лишнего шума и отвлекающих факторов — чтобы у вас не осталось ни одного незакрытого вопроса. Это действительно важно.",
+      "suggested_next_action": "Reduce pressure, isolate real blocker, then ask for specific next step.",
+      "source_cell": "D20"
+    }
+  ],
+  "objections": [
+    {
+      "objection_id": "OBJ_TACT_01_PRICES_FALL",
+      "category": "tactical_objection",
+      "trigger_label": "TSENI PADAIUT:",
+      "lead_phrase": "",
+      "response_text": "TSENI PADAIUT: \nЯ понимаю, многие так говорят.\nНо на самом деле цены не падают — они просто стабилизируются в более слабых районах.\nХорошие проекты от Emaar, Sobha или Meraas всё так же раскупаются за несколько дней.\nЭто коррекция.\nИ для инвесторов это как раз лучший момент для покупки — когда другие сомневаются.",
+      "next_action": "Use as quick response; then ask one qualifying question and continue.",
+      "stage_id": "S04",
+      "source_cell": "A7"
+    },
+    {
+      "objection_id": "OBJ_TACT_02_I_NO_TIME_ZOOM",
+      "category": "tactical_objection",
+      "trigger_label": "MNE NEKOGDA Понимаю, не будем спешить — когда вам удобно созвониться или провести короткий Zoom, чтобы пройтись по ключевым моментам?",
+      "lead_phrase": "",
+      "response_text": "MNE NEKOGDA Понимаю, не будем спешить — когда вам удобно созвониться или провести короткий Zoom, чтобы пройтись по ключевым моментам?\nВсего 10 минут, и вы сразу увидите, какие варианты действительно стоят внимания.",
+      "next_action": "Use as quick response; then ask one qualifying question and continue.",
+      "stage_id": "S04",
+      "source_cell": "B7"
+    },
+    {
+      "objection_id": "OBJ_TACT_03_I_HAVE_I_HAVE_LITTLE_TIM",
+      "category": "tactical_objection",
+      "trigger_label": "U MENYA MALO VREMENI Прежде чем я вас отпущу, у нас сейчас активная кампания, очень много заявок по email и WhatsApp.",
+      "lead_phrase": "",
+      "response_text": "U MENYA MALO VREMENI Прежде чем я вас отпущу, у нас сейчас активная кампания, очень много заявок по email и WhatsApp.\nИменно поэтому я хочу убедиться, что каждый клиент получает нормальное внимание.\nСкажите, пожалуйста, что именно вы ищете — остальное я возьму на себя.",
+      "next_action": "Use as quick response; then ask one qualifying question and continue.",
+      "stage_id": "S04",
+      "source_cell": "C7"
+    },
+    {
+      "objection_id": "OBJ_TACT_04_SEND_WHATSAPP_WHATSAPP",
+      "category": "tactical_objection",
+      "trigger_label": "OTPRAVI WHATSAPP Перед тем как отправить вам информацию и брошюры в WhatsApp:",
+      "lead_phrase": "",
+      "response_text": "OTPRAVI WHATSAPP Перед тем как отправить вам информацию и брошюры в WhatsApp:\nЯ знаю, что большинство агентов просто шлют десятки случайных брошюр, и всё перемешивается, теряет смысл.\nУ вас такое бывало, верно?\nПоэтому я сначала уточню пару деталей, чтобы отправить вам только ценную информацию.",
+      "next_action": "Use as quick response; then ask one qualifying question and continue.",
+      "stage_id": "S04",
+      "source_cell": "D7"
+    },
+    {
+      "objection_id": "OBJ_TACT_05_TELL_HOW_MUCH_COST",
+      "category": "tactical_objection",
+      "trigger_label": "SKAJITE SKOLIKO STOIT Наконец-то я говорю с человеком, который точно знает, чего хочет — сейчас подготовлю информацию.",
+      "lead_phrase": "",
+      "response_text": "SKAJITE SKOLIKO STOIT Наконец-то я говорю с человеком, который точно знает, чего хочет — сейчас подготовлю информацию.\nКстати, когда вы ищете лучшую цену, что именно вы хотите получить за эту цену?\n\nКонечно, я скажу вам цены — и даже объясню платёжный план, структуру и частоту платежей. Это же важная информация, правильно? Вы хотите это знать, верно?\n\nНо мне также нужно объяснить ценность предложения.\nОтлично — переходим к вопросам.",
+      "next_action": "Use as quick response; then ask one qualifying question and continue.",
+      "stage_id": "S04",
+      "source_cell": "E7"
+    },
+    {
+      "objection_id": "OBJ_TACT_06_TOO_EXPENSIVE",
+      "category": "tactical_objection",
+      "trigger_label": "SLIJKOM DOROGO Вы ориентируетесь только на цену при выборе?",
+      "lead_phrase": "",
+      "response_text": "SLIJKOM DOROGO Вы ориентируетесь только на цену при выборе?\nСпрашиваю, потому что иногда проект может казаться дороже, и его легко отбросить — но при этом вы можете не заметить другие факторы, которые реально для вас важны.\nВажно видеть всю картину, правда?\n\nКстати, вам нужен результат или просто самая низкая цена?\nА если бы вы могли получить Emaar по той же цене, что и более дешёвый вариант — какой бы вы выбрали и почему?\nВот поэтому они и стоят дороже, как считаете?",
+      "next_action": "Use as quick response; then ask one qualifying question and continue.",
+      "stage_id": "S04",
+      "source_cell": "F7"
+    },
+    {
+      "objection_id": "OBJ_TACT_07_I_NE_HURRY_S_PURCHASE",
+      "category": "tactical_objection",
+      "trigger_label": "YA NE SPESHU S POKUPKOI",
+      "lead_phrase": "",
+      "response_text": "YA NE SPESHU S POKUPKOI\nПонимаю — такие решения не принимаются в спешке.\nПо опыту, лучшие возможности обычно достаются тем, кто действует спокойно, но вовремя.\nЯ не предлагаю вам торопиться — давайте просто посмотрим на то, что действительно стоит внимания сейчас, чтобы в нужный момент вы были на шаг впереди.",
+      "next_action": "Use as quick response; then ask one qualifying question and continue.",
+      "stage_id": "S04",
+      "source_cell": "G7"
+    },
+    {
+      "objection_id": "OBJ_TACT_08_WORKING_DIRECT_S_DEVELOP",
+      "category": "tactical_objection",
+      "trigger_label": "RABOTAIU NAPRYAMUYU S ZASTROISHIKOM Позвольте сначала рассказать немного о нашей компании — о гарантиях, которые мы предоставляем, и о команде специалистов, которые сопровождают клиента на каждом этапе.",
+      "lead_phrase": "",
+      "response_text": "RABOTAIU NAPRYAMUYU S ZASTROISHIKOM Позвольте сначала рассказать немного о нашей компании — о гарантиях, которые мы предоставляем, и о команде специалистов, которые сопровождают клиента на каждом этапе.\nПотом я покажу реальные кейсы проданных проектов, чтобы вы увидели, как я работаю и почему клиенты мне доверяют.\nИ, конечно, вы сможете задать любые вопросы.\n\nКстати, я могу даже показать вам свою лицензию — уверен, вам такое никто не показывает, потому что, по правде говоря, у 80% агентов её вообще нет.",
+      "next_action": "Use as quick response; then ask one qualifying question and continue.",
+      "stage_id": "S04",
+      "source_cell": "H7"
+    },
+    {
+      "objection_id": "OBJ_TACT_09_ITEM",
+      "category": "tactical_objection",
+      "trigger_label": "Позвольте задать вам несколько быстрых вопросов — я всё выясню и вернусь с действительно интересным вариантом. В любом случае, решение мы найдём. Идёт?",
+      "lead_phrase": "",
+      "response_text": "Позвольте задать вам несколько быстрых вопросов — я всё выясню и вернусь с действительно интересным вариантом. В любом случае, решение мы найдём. Идёт?\n\nВот что предлагаю: я буду отправлять только ту информацию, которая действительно экономит ваше время и даёт чёткое понимание рынка.\nА дальше вы сами решите, подходит ли вам предложение.\n\nМоя задача — показать вам то, что имеет реальную ценность прямо сейчас.\nИтак, начнём с ясности — что именно вы ищете?",
+      "next_action": "Use as quick response; then ask one qualifying question and continue.",
+      "stage_id": "S04",
+      "source_cell": "I7"
+    },
+    {
+      "objection_id": "OBJ_TACT_10_ITEM",
+      "category": "tactical_objection",
+      "trigger_label": "С одной стороны, мы официальные дистрибьюторы и платиновые партнёры государственных девелоперов — наша комиссия оплачивается ими. Вы нам ничего не платите.",
+      "lead_phrase": "",
+      "response_text": "С одной стороны, мы официальные дистрибьюторы и платиновые партнёры государственных девелоперов — наша комиссия оплачивается ими. Вы нам ничего не платите.\n\nС другой стороны, вы можете спросить — зачем работать с нами, если можно обращаться напрямую к девелоперу?\nДело в том, что девелопер не будет подбирать решения под ваши цели — он покажет только свои собственные проекты и будет продвигать то, что ему нужно продать сейчас, чтобы закрыть внутренние показатели.\n\nДля нас не имеет значения, у какого девелопера вы купите — мы всё равно получим комиссию. Поэтому наша цель — найти то, что лучше всего подходит именно вам.\n\nКстати, два из трёх наших клиентов приходят по рекомендациям — поэтому нам крайне важно, чтобы вы были полностью довольны покупкой.\n\nМы предоставляем реальную аналитику рынка, объясняем плюсы и минусы каждого проекта и, самое главное, ведём переговоры напрямую с девелопером, чтобы получить для вас максимально выгодные условия.\n\nПочему? Потому что когда вы довольны — вы рекомендуете нас. А это самый надёжный источник новых клиентов.",
+      "next_action": "Use as quick response; then ask one qualifying question and continue.",
+      "stage_id": "S04",
+      "source_cell": "J7"
+    },
+    {
+      "objection_id": "OBJ_DET_01_REPEAT_BACK_THE_OBJECTIO",
+      "category": "objection_framework",
+      "trigger_label": "REPEAT BACK THE OBJECTION :",
+      "lead_phrase": "repeat_back_framework",
+      "response_text": "REPEAT BACK THE OBJECTION :\nЭТО СЛИШКОМ ДОРОГО\nЭТО СЛИШКОМ ДАЛЕКО\nЭТО ПУЗЫРЬ\nАга, что ещё?",
+      "next_action": "Acknowledge, reframe, give proof/logic, then ask for next micro-commitment.",
+      "stage_id": "S04",
+      "source_cell": "A8"
+    },
+    {
+      "objection_id": "OBJ_DET_02_ITEM",
+      "category": "detailed_objection",
+      "trigger_label": "Я не уверен, стоит ли сейчас покупать — рынок на пике.",
+      "lead_phrase": "Я не уверен, стоит ли сейчас покупать — рынок на пике.",
+      "response_text": "Я не уверен, стоит ли сейчас покупать — рынок на пике.\nЯ понимаю, логика понятная — когда всё растёт, кажется, что вот-вот должно упасть.\nНо в Дубае цикл работает немного по-другому: рост здесь движется демографией, притоком капитала и ограниченностью земли.\nЕсли хотите, я покажу 2–3 примера проектов, где ROI не зависит от краткосрочных колебаний. Сами увидите, есть ли там реальный потенциал.",
+      "next_action": "Acknowledge, reframe, give proof/logic, then ask for next micro-commitment.",
+      "stage_id": "S04",
+      "source_cell": "B8"
+    },
+    {
+      "objection_id": "OBJ_DET_03_ITEM",
+      "category": "detailed_objection",
+      "trigger_label": "Слишком дорого.",
+      "lead_phrase": "Слишком дорого.",
+      "response_text": "Слишком дорого.\n\nПонимаю, цифры важны.\nНо вопрос не только в цене — а в том, что вы получаете за эту цену: безопасность, ликвидность и лёгкий выход.\nДавайте сравним с похожими проектами, и вы сами увидите, где это «дорого», а где «дорого, но оправданно».",
+      "next_action": "Acknowledge, reframe, give proof/logic, then ask for next micro-commitment.",
+      "stage_id": "S04",
+      "source_cell": "C8"
+    },
+    {
+      "objection_id": "OBJ_DET_04_ITEM",
+      "category": "detailed_objection",
+      "trigger_label": "Мне сейчас неудобно финансово / нет ликвидности.",
+      "lead_phrase": "Мне сейчас неудобно финансово / нет ликвидности.",
+      "response_text": "Мне сейчас неудобно финансово / нет ликвидности.\n\nПонимаю — частая ситуация, и это не проблема.\nЕсть варианты, где первый платеж минимальный, а основной баланс — уже после сдачи.\nНе нужно иметь весь капитал сразу. Общая сумма первоначального взноса, чтобы стать владельцем, составляет всего ______.\nКстати, мы все когда-то покупали то, чего «не могли себе позволить». Давайте посмотрим чуть глубже — это и есть концепция forced savings.",
+      "next_action": "Acknowledge, reframe, give proof/logic, then ask for next micro-commitment.",
+      "stage_id": "S04",
+      "source_cell": "D8"
+    },
+    {
+      "objection_id": "OBJ_DET_05_ITEM",
+      "category": "detailed_objection",
+      "trigger_label": "Я не знаю, куда именно лучше инвестировать — слишком много вариантов.",
+      "lead_phrase": "Я не знаю, куда именно лучше инвестировать — слишком много вариантов.",
+      "response_text": "Я не знаю, куда именно лучше инвестировать — слишком много вариантов.\n\nДа, в Дубае действительно много предложений, и без структуры легко потеряться.\nДавайте посмотрим логику выбора: как понять, какие районы растут, а какие уже перегреты.\nКогда это ясно — всё дальше становится намного проще.",
+      "next_action": "Acknowledge, reframe, give proof/logic, then ask for next micro-commitment.",
+      "stage_id": "S04",
+      "source_cell": "E8"
+    },
+    {
+      "objection_id": "OBJ_DET_06_ITEM",
+      "category": "detailed_objection",
+      "trigger_label": "Не доверяю застройщикам / боюсь, что не достроят.",
+      "lead_phrase": "Не доверяю застройщикам / боюсь, что не достроят.",
+      "response_text": "Не доверяю застройщикам / боюсь, что не достроят.\n\nправильно, это ключевой вопрос.\nПоэтому я работаю только с девелоперами, у которых эскроу-счета и государственные гарантии.\nКаждый платёж контролируется RERA — деньги не могут уйти, пока не завершён соответствующий этап строительства.\nЕсли хотите, я покажу реестр проекта и отчётность — чтобы вы видели всё своими глазами.",
+      "next_action": "Acknowledge, reframe, give proof/logic, then ask for next micro-commitment.",
+      "stage_id": "S04",
+      "source_cell": "F8"
+    },
+    {
+      "objection_id": "OBJ_DET_07_ITEM",
+      "category": "detailed_objection",
+      "trigger_label": "А если рынок упадёт?",
+      "lead_phrase": "А если рынок упадёт?",
+      "response_text": "А если рынок упадёт?\n\nХороший вопрос — любой рынок цикличен.\nРазница в том, что стоимость в Дубае держится не на спекуляциях, а на росте населения, налоговых преимуществах и международных потоках капитала.\nВы не можете контролировать рынок, но можете выбрать актив, который останется сильным при любом сценарии. Этим я и занимаюсь.",
+      "next_action": "Acknowledge, reframe, give proof/logic, then ask for next micro-commitment.",
+      "stage_id": "S04",
+      "source_cell": "G8"
+    },
+    {
+      "objection_id": "OBJ_DET_08_ITEM",
+      "category": "detailed_objection",
+      "trigger_label": "Я боюсь покупать дистанционно / без визита в Дубай.",
+      "lead_phrase": "Я боюсь покупать дистанционно / без визита в Дубай.",
+      "response_text": "Я боюсь покупать дистанционно / без визита в Дубай.\n\nПонимаю — вы хотите видеть, что покупаете.\nМы можем идти поэтапно: видеотуры, планы этажей, юридические документы, контракт через эскроу.\nКогда вы будете готовы — всё будет понятно и оформлено на ваше имя.\nТак вы не теряете время и возможность.",
+      "next_action": "Acknowledge, reframe, give proof/logic, then ask for next micro-commitment.",
+      "stage_id": "S04",
+      "source_cell": "H8"
+    },
+    {
+      "objection_id": "OBJ_DET_09_ITEM",
+      "category": "detailed_objection",
+      "trigger_label": "Я обсужу с женой / семьёй / партнёром.",
+      "lead_phrase": "Я обсужу с женой / семьёй / партнёром.",
+      "response_text": "Я обсужу с женой / семьёй / партнёром.\n\nХорошо, предлагаю выделить немного времени и встретиться вместе с вашим партнёром/женой.\nЯ снова проведу полную презентацию, чтобы у вас была единая, полная картина — потому что вряд ли вы передадите все детали так же ясно, как могу объяснить я.\nПлюс это сэкономит вам силы.\nЭто абсолютно нормально — появятся новые вопросы, и вместе вы сможете принять правильное решение. Идёт?",
+      "next_action": "Acknowledge, reframe, give proof/logic, then ask for next micro-commitment.",
+      "stage_id": "S04",
+      "source_cell": "I8"
+    },
+    {
+      "objection_id": "OBJ_DET_10_ITEM",
+      "category": "detailed_objection",
+      "trigger_label": "Я боюсь сложностей с документами / переводом денег / визой.",
+      "lead_phrase": "Я боюсь сложностей с документами / переводом денег / визой.",
+      "response_text": "Я боюсь сложностей с документами / переводом денег / визой.\n\nПонимаю. Для многих это кажется сложным — пока они не проходят процесс сами.\nМы ведём всё от начала до конца: счёт в банке, Golden Visa, сдача в аренду.\nВсё официально, через государственные структуры — никаких посредников.\nЕсли хотите, я покажу весь процесс по шагам, на одной странице.",
+      "next_action": "Acknowledge, reframe, give proof/logic, then ask for next micro-commitment.",
+      "stage_id": "S04",
+      "source_cell": "J8"
+    },
+    {
+      "objection_id": "OBJ_DET_11_ITEM",
+      "category": "detailed_objection",
+      "trigger_label": "Я не уверен, кому доверять — слишком много агентов.",
+      "lead_phrase": "Я не уверен, кому доверять — слишком много агентов.",
+      "response_text": "Я не уверен, кому доверять — слишком много агентов.\n\nэто абсолютно справедливо.\nВ этой сфере доверие строится не обещаниями, а прозрачностью.\nЯ покажу, с какими девелоперами мы работаем, какие кейсы у нас закрыты, и вы сами увидите уровень.\nА дальше уже решите, комфортно ли вам двигаться со мной.",
+      "next_action": "Acknowledge, reframe, give proof/logic, then ask for next micro-commitment.",
+      "stage_id": "S04",
+      "source_cell": "K8"
+    },
+    {
+      "objection_id": "OBJ_DET_12_ITEM",
+      "category": "detailed_objection",
+      "trigger_label": "Сейчас не время / подожду до следующего года.",
+      "lead_phrase": "Сейчас не время / подожду до следующего года.",
+      "response_text": "Сейчас не время / подожду до следующего года.\n\nПонимаю — логично не торопиться.\nНо по опыту, «идеальный момент» никогда не чувствуется заранее — а лучшие проекты обычно уходят быстро.\nЯ не предлагаю покупать сейчас — давайте просто посмотрим, что актуально сегодня, чтобы в нужный момент вы были на шаг впереди.",
+      "next_action": "Acknowledge, reframe, give proof/logic, then ask for next micro-commitment.",
+      "stage_id": "S04",
+      "source_cell": "L8"
+    },
+    {
+      "objection_id": "OBJ_DET_13_ITEM",
+      "category": "detailed_objection",
+      "trigger_label": "Сначала продам другую недвижимость / получу деньги.",
+      "lead_phrase": "Сначала продам другую недвижимость / получу деньги.",
+      "response_text": "Сначала продам другую недвижимость / получу деньги.\n\nЭто нормально — лучше двигаться в правильной последовательности.\nПозвольте показать несколько проектов, которые можно забронировать без финансового давления, с гибкими условиями.\nТак вы закрепите цену сегодня и сможете двигаться дальше после продажи — не теряя время и не закрывая двери.",
+      "next_action": "Acknowledge, reframe, give proof/logic, then ask for next micro-commitment.",
+      "stage_id": "S04",
+      "source_cell": "M8"
+    },
+    {
+      "objection_id": "OBJ_DET_14_ITEM",
+      "category": "detailed_objection",
+      "trigger_label": "Подожду, может, цены снизятся.",
+      "lead_phrase": "Подожду, может, цены снизятся.",
+      "response_text": "Подожду, может, цены снизятся.\n\nПонимаю — все хотят купить по лучшей цене.\nНо рынок Дубая работает иначе: девелоперы редко снижают цены, они просто уменьшают квоты.\nПоэтому даже просто разобраться в текущих ценах уже значит «сэкономить» — потому что позже условия почти всегда будут жёстче.",
+      "next_action": "Acknowledge, reframe, give proof/logic, then ask for next micro-commitment.",
+      "stage_id": "S04",
+      "source_cell": "N8"
+    },
+    {
+      "objection_id": "OBJ_DET_15_ROI",
+      "category": "detailed_objection",
+      "trigger_label": "Не уверен в ROI.",
+      "lead_phrase": "Не уверен в ROI.",
+      "response_text": "Не уверен в ROI.\n\nЭто нормально — цифры должны быть прозрачными.\nПозвольте показать расчёт не «по среднему рынку», а конкретно под ваш бюджет и ваш срок.\nЗа пять минут вы увидите, где реальная доходность, а где — просто маркетинг.",
+      "next_action": "Acknowledge, reframe, give proof/logic, then ask for next micro-commitment.",
+      "stage_id": "S04",
+      "source_cell": "O8"
+    },
+    {
+      "objection_id": "OBJ_DET_16_ITEM",
+      "category": "detailed_objection",
+      "trigger_label": "Я посмотрю сам на сайте / позже вернусь к этому.",
+      "lead_phrase": "Я посмотрю сам на сайте / позже вернусь к этому.",
+      "response_text": "Я посмотрю сам на сайте / позже вернусь к этому.\n\nКонечно, вы хотите изучить всё самостоятельно — это правильный подход.\nНо онлайн всё выглядит одинаково.\nА реальные условия бронирования, скидки и квоты — всегда проходят не публично, а «за закрытыми дверями».\nВот здесь я и могу показать то, что не выставляется в открытый доступ.",
+      "next_action": "Acknowledge, reframe, give proof/logic, then ask for next micro-commitment.",
+      "stage_id": "S04",
+      "source_cell": "P8"
+    },
+    {
+      "objection_id": "OBJ_DET_17_ITEM",
+      "category": "detailed_objection",
+      "trigger_label": "Я не доверяю агентам.",
+      "lead_phrase": "Я не доверяю агентам.",
+      "response_text": "Я не доверяю агентам.\n\nТак и нужно — в этой сфере доверие нужно заслужить, а не требовать.\n\nПоэтому я не предлагаю ничего покупать. Моя задача — дать понимание, где реальные возможности и где маркетинг. А решение вы всё равно принимаете сами.",
+      "next_action": "Acknowledge, reframe, give proof/logic, then ask for next micro-commitment.",
+      "stage_id": "S04",
+      "source_cell": "Q8"
+    }
+  ],
+  "follow_up": [
+    {
+      "follow_up_id": "FU_001_PROTOCOL",
+      "condition": "No answer after call",
+      "channel": "call + whatsapp + email + message",
+      "cadence_or_touch": "Call 3 times/day, break 4-5 days, call 2 times, then mark unsuccessful.",
+      "message_or_rule": "Follow - up PROTOCOL\nЕсли не берут трубку отправляем сообщение в WHATSAPP – EMAIL – MESSAGE – CALL 3 TIMES A DAY – BREAK 4-5 DAYS – CALL 2 TIMES – UNSUCCESFUL",
+      "next_action": "If response -> S02; if no response -> unsuccessful",
+      "source_cell": "A1"
+    },
+    {
+      "follow_up_id": "FU_002_SECOND_TOUCH",
+      "condition": "After prior conversation/no decision",
+      "channel": "call/whatsapp",
+      "cadence_or_touch": "2nd touch",
+      "message_or_rule": "Здравствуйте, [Name], это Вадим из Дубая. Мы ранее общались по поводу вашего интереса к недвижимости — могу уточнить, это всё ещё актуально для вас? Я возвращаюсь к вам после загруженной недели. У меня есть пару идей, которые хотел обсудить с вами перед тем, как двигаться дальше. Подойдёт ли вам 14:00?",
+      "next_action": "If response -> S02; if no -> FU_003",
+      "source_cell": "C3"
+    },
+    {
+      "follow_up_id": "FU_003_THIRD_TOUCH",
+      "condition": "After sent info / no clear next step",
+      "channel": "call/whatsapp",
+      "cadence_or_touch": "3rd touch",
+      "message_or_rule": "Здравствуйте, [Name], это Вадим, звоню из Дубая. Как у вас дела?\nЯ отправил вам информацию по объектам — Какое у вас общее впечатление, это то, что вы искали? Что в этом проекте больше всего соответствует вашим ожиданиям?",
+      "next_action": "If response -> S02/S07; if no -> final check-in",
+      "source_cell": "E3"
+    },
+    {
+      "follow_up_id": "FU_004_WARM_CLIENTS_FIRST",
+      "condition": "Warm client list",
+      "channel": "whatsapp/call",
+      "cadence_or_touch": "nurture",
+      "message_or_rule": "Я не успел снова с вами связаться. Какие у нас лучшие дальнейшие шаги? Если я не смогу вам помочь напрямую, я определённо смогу направить вас в правильном направлении.",
+      "next_action": "Ask best next step or permission to close loop",
+      "source_cell": "G3"
+    },
+    {
+      "follow_up_id": "FU_005_NOTES_BIRTHDAYS",
+      "condition": "Relationship management",
+      "channel": "CRM task",
+      "cadence_or_touch": "ongoing",
+      "message_or_rule": "note birthdays",
+      "next_action": "Store personal dates in CRM",
+      "source_cell": "H2"
+    },
+    {
+      "follow_up_id": "FU_006_STATS_MEMS",
+      "condition": "Team discipline",
+      "channel": "CRM/admin",
+      "cadence_or_touch": "daily",
+      "message_or_rule": "mems stats",
+      "next_action": "Track stats/mems",
+      "source_cell": "I2"
+    },
+    {
+      "follow_up_id": "FU_007_CONGRATS",
+      "condition": "Birthday/achievement/news",
+      "channel": "whatsapp",
+      "cadence_or_touch": "nurture",
+      "message_or_rule": "congrats",
+      "next_action": "Send congrats and reopen softly",
+      "source_cell": "J2"
+    }
+  ],
+  "small_talk": [
+    {
+      "topic_id": "SMALL_01_ITEM",
+      "topic": "Тенденции рынка недвижимости:",
+      "opener_text": "«Следите за последними тенденциями на рынке недвижимости Дубая? Такое ощущение, что здесь каждый день что-то новое происходит.»",
+      "usage": "Use for warm-client nurturing, rapport, reactivation, not for hard closing.",
+      "source_range": "A25:A26"
+    },
+    {
+      "topic_id": "SMALL_02_ITEM",
+      "topic": "Знаковые достопримечательности:",
+      "opener_text": "«В Дубае столько потрясающих мест — Бурдж-Халифа, Пальма Джумейра... Вам доводилось побывать в каких-то из них?»",
+      "usage": "Use for warm-client nurturing, rapport, reactivation, not for hard closing.",
+      "source_range": "A27:A28"
+    },
+    {
+      "topic_id": "SMALL_03_ITEM",
+      "topic": "Новые проекты:",
+      "opener_text": "«Удивительно, как быстро развивается Дубай. Слышали о каких-то интересных новых проектах в городе?»",
+      "usage": "Use for warm-client nurturing, rapport, reactivation, not for hard closing.",
+      "source_range": "A29:A30"
+    },
+    {
+      "topic_id": "SMALL_04_ITEM",
+      "topic": "Культурное разнообразие:",
+      "opener_text": "«Одна из вещей, которые мне особенно нравятся в Дубае, — это культурное разнообразие. У вас были интересные знакомства с людьми из разных стран?»",
+      "usage": "Use for warm-client nurturing, rapport, reactivation, not for hard closing.",
+      "source_range": "A31:A32"
+    },
+    {
+      "topic_id": "SMALL_05_ITEM",
+      "topic": "Любимые районы:",
+      "opener_text": "«Есть ли у вас любимый район в Дубае? Мне всегда интересно, что людям больше всего нравится в разных частях города.»",
+      "usage": "Use for warm-client nurturing, rapport, reactivation, not for hard closing.",
+      "source_range": "A33:A34"
+    },
+    {
+      "topic_id": "SMALL_06_ITEM",
+      "topic": "Семейный досуг:",
+      "opener_text": "«В Дубае столько мест и развлечений для семейного отдыха. Нашли какие-то особенные или малоизвестные места для детей?»",
+      "usage": "Use for warm-client nurturing, rapport, reactivation, not for hard closing.",
+      "source_range": "A35:A36"
+    },
+    {
+      "topic_id": "SMALL_07_ITEM",
+      "topic": "Кухня и рестораны:",
+      "opener_text": "«Кулинарная сцена в Дубае невероятно разнообразная. Пробовали недавно какие-то новые рестораны? Я всегда ищу хорошие места, где вкусно готовят.»",
+      "usage": "Use for warm-client nurturing, rapport, reactivation, not for hard closing.",
+      "source_range": "A37:A38"
+    },
+    {
+      "topic_id": "SMALL_08_ITEM",
+      "topic": "Отдых на свежем воздухе:",
+      "opener_text": "«С такой прекрасной погодой в Дубае прогулки и активный отдых всегда популярны. У вас есть любимые места для этого?»",
+      "usage": "Use for warm-client nurturing, rapport, reactivation, not for hard closing.",
+      "source_range": "A39:A40"
+    },
+    {
+      "topic_id": "SMALL_09_ITEM",
+      "topic": "Будущее города:",
+      "opener_text": "«Интересно подумать, как Дубай будет развиваться дальше. Слышали о каких-то грядущих проектах или планах по развитию города?»",
+      "usage": "Use for warm-client nurturing, rapport, reactivation, not for hard closing.",
+      "source_range": "A41:A42"
+    },
+    {
+      "topic_id": "SMALL_10_ITEM",
+      "topic": "Личный опыт:",
+      "opener_text": "«Каков ваш личный опыт с рынком недвижимости в Дубае? Было бы интересно услышать ваше мнение или наблюдения.»",
+      "usage": "Use for warm-client nurturing, rapport, reactivation, not for hard closing.",
+      "source_range": "A43:A44"
+    }
+  ],
+  "operations": [
+    {
+      "operation_id": "OP_001",
+      "type": "daily_capacity",
+      "note": "70 leads max / 50 calls a day / good mood"
+    },
+    {
+      "operation_id": "OP_002",
+      "type": "training_discipline",
+      "note": "training daily / order / work hard"
+    },
+    {
+      "operation_id": "OP_003",
+      "type": "work_ethic",
+      "note": "1st come last leave"
+    },
+    {
+      "operation_id": "OP_004",
+      "type": "abc_qualification",
+      "note": "abc qualification"
+    },
+    {
+      "operation_id": "OP_005",
+      "type": "service_principle",
+      "note": "the only thing that cannot be duplicated is service"
+    }
+  ]
+}

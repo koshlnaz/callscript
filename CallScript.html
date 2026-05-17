@@ -1,0 +1,2138 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>First Call Script RU 7.1</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#f4f5f7;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif}
+    button,input,textarea,select{font:inherit}
+    button{border:1px solid #d1d5db;background:#fff;color:#111827;border-radius:14px;padding:12px 15px;cursor:pointer;font-weight:850}
+    button:hover{background:#f3f4f6}
+    button.primary{background:#111827;color:#fff;border-color:#111827}
+    button.green{background:#065f46;color:#fff;border-color:#065f46}
+    button.danger{color:#b91c1c;border-color:#fecaca;background:#fff}
+    button.active{background:#111827;color:white}
+    button.small{padding:6px 9px;border-radius:9px;font-size:12px}
+    input,textarea,select{width:100%;border:1px solid #d1d5db;border-radius:14px;padding:12px 13px;background:#fff;color:#111827}
+    textarea{min-height:90px;resize:vertical}
+    label{display:block;margin:14px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:900;color:#6b7280}
+    header{background:#fff;border-bottom:1px solid #e5e7eb;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:14px;position:sticky;top:0;z-index:20}
+    h1{font-size:22px;letter-spacing:-.04em;margin:0}
+    .sub{color:#6b7280;font-size:13px;margin-top:2px}
+    .topBtns{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+    .app{min-height:100vh}
+    .screen{display:none}
+    .screen.active{display:block}
+    .presenter{max-width:1180px;margin:0 auto;padding:26px}
+    .presentGrid{display:grid;grid-template-columns:1.45fr .75fr;gap:20px}
+    .panel{background:#fff;border:1px solid #e5e7eb;border-radius:26px;padding:24px;box-shadow:0 18px 45px rgba(15,23,42,.08)}
+    .questionPanel{min-height:690px;display:flex;flex-direction:column;overflow:hidden}
+    .eyebrow{color:#6b7280;text-transform:uppercase;letter-spacing:.13em;font-size:12px;font-weight:820;margin-bottom:14px}
+    .bigQuestion{
+      font-size:var(--qFontSize, 42px);
+      line-height:1.12;
+      letter-spacing:-.035em;
+      font-weight:780;
+      margin:0 0 16px;
+      max-height:360px;
+      overflow:auto;
+      padding-right:8px;
+    }
+    .bigQuestion::-webkit-scrollbar{width:8px}
+    .bigQuestion::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:999px}
+    .hint{color:#6b7280;font-size:17px;line-height:1.55}
+    .answerList{display:grid;gap:14px;margin:30px 0 20px}
+    .bigAnswer{display:block;width:100%;text-align:left;font-size:20px;padding:18px 21px;border-radius:18px;background:#f9fafb;transition:.12s}
+    .bigAnswer:hover{background:white;border-color:#111827;transform:translateY(-1px);box-shadow:0 14px 25px rgba(15,23,42,.08)}
+    .presentActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}
+    .historyItem,.savedCall,.answerEdit,.card{background:#f9fafb;border:1px solid #e5e7eb;border-radius:16px;padding:13px;margin-bottom:10px}
+    .historyItem small{display:block;color:#6b7280;margin-bottom:6px}
+    .empty{border:1px dashed #d1d5db;color:#6b7280;background:#fafafa;border-radius:16px;padding:14px}
+    .saveBox{display:grid;gap:9px;margin-top:14px}
+    .editorWrap{height:calc(100vh - 56px);display:grid;grid-template-columns:1fr 8px var(--editorPanelWidth, 480px);min-height:0}
+    .canvasWrap{position:relative;overflow:auto;background:radial-gradient(circle at 1px 1px,#d7dce5 1px,transparent 0);background-size:22px 22px}
+    .canvas{position:relative;width:8200px;height:5600px}
+    svg.edges{position:absolute;left:0;top:0;width:8200px;height:5600px;pointer-events:none;overflow:visible}
+    .node{position:absolute;width:340px;min-height:150px;background:white;border:2px solid #d1d5db;border-radius:18px;box-shadow:0 14px 34px rgba(15,23,42,.12);padding:13px;cursor:grab}
+    .node:active{cursor:grabbing}
+    .node.start{border-color:#111827;border-width:3px}
+    .node.selected{outline:6px solid rgba(17,24,39,.22);border-color:#111827;box-shadow:0 22px 50px rgba(15,23,42,.22)}
+    .nodeHead{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:8px}
+    .nodeTitle{font-size:15px;line-height:1.25;font-weight:820;letter-spacing:-.015em}
+    .badge{font-size:11px;background:#111827;color:#fff;padding:4px 7px;border-radius:999px;white-space:nowrap}
+    .nodeHint{font-size:12px;color:#6b7280;line-height:1.35;margin:6px 0}
+    .answers{display:grid;gap:6px;margin-top:9px}
+    .miniAnswer{width:100%;text-align:left;background:#f9fafb;padding:8px 9px;font-size:12px;border-radius:10px}
+    .miniAnswer:hover{background:#fff;border-color:#111827}
+    .nodeActions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+    .edge{stroke:#6b7280;stroke-width:2;fill:none;marker-end:url(#arrow)}
+    .edgeLabelBg{fill:#f4f5f7;stroke:#e5e7eb}
+    .edgeLabel{font-size:13px;font-weight:800;fill:#374151}
+    .editorSide{background:#fff;border-left:1px solid #e5e7eb;overflow:auto;padding:16px;min-width:320px;max-width:75vw}
+    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .between{justify-content:space-between}
+    h2{margin:0 0 10px;font-size:23px;letter-spacing:-.035em}
+    h3{margin:0 0 10px;font-size:18px;letter-spacing:-.02em}
+    .answerEdit{display:grid;grid-template-columns:1fr 1fr auto;gap:7px;align-items:center}
+    .quickText{min-height:330px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:14px;line-height:1.5}
+    .fileInput{display:none}
+    .toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;padding:11px 15px;border-radius:999px;box-shadow:0 18px 40px rgba(0,0,0,.22);z-index:1000;display:none}
+    .modalBack{position:fixed;inset:0;background:rgba(17,24,39,.34);z-index:50;display:none;align-items:center;justify-content:center;padding:18px}
+    .modal{background:white;width:min(760px,96vw);max-height:92vh;overflow:auto;border-radius:24px;padding:20px;box-shadow:0 30px 70px rgba(0,0,0,.28)}
+    .fontControl{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    input[type="range"]{accent-color:#111827}
+    .fontValue{font-weight:900;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:999px;padding:7px 10px;min-width:62px;text-align:center}
+    .warning{font-size:12px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:10px;line-height:1.4}
+    .ok{font-size:12px;color:#065f46;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:12px;padding:10px;line-height:1.4}
+
+    .resizer{background:linear-gradient(90deg,#e5e7eb,#f9fafb,#e5e7eb);cursor:col-resize;position:relative}
+    .resizer:before{content:"";position:absolute;top:50%;left:50%;width:3px;height:48px;border-radius:999px;background:#9ca3af;transform:translate(-50%,-50%)}
+    .resizer:hover{background:#d1d5db}
+    .editorTopBar{position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);z-index:7;border-bottom:1px solid #e5e7eb;padding:10px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .editorSearch{max-width:360px}
+    .searchResults{position:absolute;top:58px;left:16px;background:white;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 18px 40px rgba(15,23,42,.16);padding:8px;z-index:30;max-height:320px;overflow:auto;width:min(420px, calc(100vw - 460px));display:none}
+    .searchResults button{display:block;width:100%;text-align:left;margin:4px 0;font-size:13px}
+    .node.flash{animation:flashNode 1.2s ease-in-out 0s 2}
+    @keyframes flashNode{0%{transform:scale(1)}50%{transform:scale(1.035);box-shadow:0 0 0 12px rgba(17,24,39,.12),0 22px 50px rgba(15,23,42,.24)}100%{transform:scale(1)}}
+    .node.currentInCall{border-color:#065f46}
+    .node.currentInCall:after{content:"ТЕКУЩИЙ";position:absolute;right:12px;bottom:10px;background:#065f46;color:white;border-radius:999px;font-size:10px;font-weight:900;padding:4px 7px}
+    .panelHint{font-size:12px;color:#6b7280;line-height:1.45;margin-top:8px}
+
+
+    .node.type-start{border-color:#111827;background:#f9fafb}
+    .node.type-qualification{border-color:#2563eb;background:#eff6ff}
+    .node.type-first_call_objection,.node.type-objection{border-color:#ea580c;background:#fff7ed}
+    .node.type-first_call_status,.node.type-status{border-color:#7c3aed;background:#f5f3ff}
+    .node.type-probe{border-color:#0891b2;background:#ecfeff}
+    .node.type-first_call_success{border-color:#059669;background:#ecfdf5}
+    .node.type-soft_close,.node.type-end{border-color:#6b7280;background:#f9fafb}
+    .node.type-router,.node.type-custom{border-color:#0f172a;background:#f8fafc}
+    .node.hiddenByBranch{display:none}
+    .edgeHidden{display:none}
+    .qaBox{border:1px solid #e5e7eb;border-radius:18px;padding:12px;background:#f9fafb;margin:12px 0}
+    .qaOk{color:#047857;font-weight:900}.qaWarn{color:#b45309;font-weight:900}.qaBad{color:#b91c1c;font-weight:900}
+    .miniActions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+    .miniActions button{font-size:12px;padding:7px 9px}
+    .branchForm{border:1px solid #e5e7eb;border-radius:18px;padding:12px;background:#fff;margin-top:12px}
+    .branchForm textarea{min-height:82px}
+    .editorModeNotice{font-size:12px;color:#374151;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:999px;padding:7px 10px}
+
+
+    .libWrap,.trainingWrap{height:calc(100vh - 56px);overflow:auto;background:#f3f4f6;padding:18px}
+    .libTop,.trainingTop{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
+    .libGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+    .libCard{background:#fff;border:1px solid #e5e7eb;border-radius:22px;padding:16px;box-shadow:0 10px 26px rgba(15,23,42,.07)}
+    .libCard h3{font-size:17px;line-height:1.25;margin-bottom:8px}
+    .libMeta{font-size:12px;color:#6b7280;margin-bottom:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em}
+    .libText{font-size:14px;line-height:1.55;color:#111827;white-space:pre-wrap;max-height:190px;overflow:auto}
+    .libActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .libActions button{font-size:12px;padding:8px 10px}
+    .filterPills{display:flex;gap:8px;flex-wrap:wrap}
+    .filterPills button.active{background:#111827;color:#fff;border-color:#111827}
+    .trainingCard{max-width:920px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:28px;padding:26px;box-shadow:0 18px 45px rgba(15,23,42,.10)}
+    .trainingPhrase{font-size:34px;line-height:1.12;font-weight:900;letter-spacing:-.035em;margin:14px 0 18px}
+    .trainingGoal{background:#f9fafb;border:1px solid #e5e7eb;border-radius:18px;padding:12px;color:#374151;font-size:14px;line-height:1.5}
+    .trainingOptions{display:grid;gap:10px;margin-top:18px}
+    .trainingOptions button{text-align:left;font-size:16px;padding:14px 16px;border-radius:18px}
+    .trainingReveal{margin-top:18px;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:20px;padding:16px;display:none}
+    .trainingReveal.active{display:block}
+    .langSelect{border:1px solid #d1d5db;background:#fff;border-radius:999px;padding:8px 12px;font-weight:800;color:#111827}
+    .langSelect option:disabled{color:#9ca3af}
+    .badgeBeta{font-size:11px;background:#fef3c7;border:1px solid #fde68a;color:#92400e;border-radius:999px;padding:4px 7px;font-weight:900}
+
+    @media(max-width:980px){
+      header{display:block}.topBtns{justify-content:flex-start;margin-top:10px}.presentGrid{grid-template-columns:1fr}.editorWrap{display:block;height:auto}.canvasWrap{height:70vh}.editorSide{border-left:0;border-top:1px solid #e5e7eb}.answerEdit{grid-template-columns:1fr}
+    }
+  
+    header.topbar{
+      height:56px;
+      min-height:56px;
+      max-height:56px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:8px 12px;
+      background:#ffffff;
+      border-bottom:1px solid #e5e7eb;
+      overflow:hidden;
+      position:relative;
+      z-index:50;
+    }
+    .brand{display:flex;align-items:baseline;gap:7px;min-width:118px;white-space:nowrap}
+    .brandTitle{font-size:16px;font-weight:950;letter-spacing:-.03em;color:#111827}
+    .brandVersion{font-size:11px;font-weight:900;color:#6b7280;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:999px;padding:3px 6px}
+    .mainNav{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+    .mainNav button{
+      font-size:13px;
+      font-weight:850;
+      line-height:1;
+      padding:9px 11px;
+      border-radius:999px;
+      border:1px solid #d1d5db;
+      background:#fff;
+      color:#111827;
+      min-width:auto;
+      width:auto;
+      height:34px;
+      white-space:nowrap;
+      margin:0;
+    }
+    .mainNav button.active{background:#111827;color:#fff;border-color:#111827}
+    .topActions{margin-left:auto;display:flex;align-items:center;gap:6px;min-width:0;white-space:nowrap}
+    .topActions .miniBtn{
+      font-size:12px;
+      font-weight:800;
+      line-height:1;
+      padding:8px 9px;
+      height:32px;
+      width:auto;
+      min-width:auto;
+      border-radius:999px;
+      margin:0;
+    }
+    .topActions .dangerSoft{background:#fff7ed;border-color:#fed7aa;color:#9a3412}
+    .langSelect{
+      height:32px;
+      max-width:92px;
+      font-size:12px;
+      font-weight:900;
+      border:1px solid #d1d5db;
+      background:#fff;
+      border-radius:999px;
+      padding:0 8px;
+      color:#111827;
+      margin:0;
+    }
+    .langSelect option:disabled{color:#9ca3af}
+    .saveState{font-size:11px;color:#6b7280;max-width:110px;overflow:hidden;text-overflow:ellipsis}
+    @media(max-width:760px){
+      header.topbar{height:auto;max-height:none;flex-wrap:wrap;overflow:visible}
+      .topActions{width:100%;margin-left:0;justify-content:flex-start;overflow:auto}
+      .mainNav{overflow:auto;max-width:100%}
+    }
+
+
+    /* v5.2 Call Mode button upgrade */
+    #screenCall .answers button,
+    #screenCall .answerBtn,
+    #screenCall .answer,
+    #answers button{
+      background:#000 !important;
+      color:#fff !important;
+      border-color:#000 !important;
+      font-size:24px !important;
+      font-weight:950 !important;
+      padding:22px 26px !important;
+      border-radius:22px !important;
+      min-height:76px !important;
+      text-align:left !important;
+      box-shadow:0 16px 34px rgba(0,0,0,.18) !important;
+    }
+    #screenCall .answers button:hover,
+    #screenCall .answerBtn:hover,
+    #screenCall .answer:hover,
+    #answers button:hover{
+      transform:translateY(-1px);
+      box-shadow:0 20px 42px rgba(0,0,0,.23) !important;
+    }
+    #screenCall .bigAnswer.answer-positive,
+    #screenCall .answers button.answer-positive,
+    #answers button.answer-positive{
+      background:#dff4e6 !important;
+      border-color:#9dd8ae !important;
+      color:#14532d !important;
+      box-shadow:0 12px 24px rgba(22,101,52,.10) !important;
+    }
+    #screenCall .bigAnswer.answer-negative,
+    #screenCall .answers button.answer-negative,
+    #answers button.answer-negative{
+      background:#fde2e2 !important;
+      border-color:#f3aaaa !important;
+      color:#7f1d1d !important;
+      box-shadow:0 12px 24px rgba(127,29,29,.10) !important;
+    }
+    #screenCall .bigAnswer.answer-neutral,
+    #screenCall .answers button.answer-neutral,
+    #answers button.answer-neutral{
+      background:#eef2f7 !important;
+      border-color:#cbd5e1 !important;
+      color:#111827 !important;
+    }
+    .blockNumber{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-bottom:14px;
+      padding:7px 10px;
+      border-radius:999px;
+      background:#f3f4f6;
+      color:#374151;
+      font-size:13px;
+      font-weight:950;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+    }
+    .answerLetter{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:30px;
+      height:30px;
+      margin-right:12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.62);
+      border:1px solid rgba(17,24,39,.12);
+      font-size:15px;
+      font-weight:950;
+      line-height:1;
+      flex:0 0 auto;
+    }
+    .nodeNumber{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:34px;
+      height:22px;
+      padding:0 7px;
+      border-radius:999px;
+      background:#eef2f7;
+      color:#374151;
+      font-size:11px;
+      font-weight:950;
+      margin-right:7px;
+    }
+
+    /* v5.2 Library / Training top spacing fix */
+    #screenLibrary,
+    #screenTraining{
+      padding:0 !important;
+      margin:0 !important;
+      height:calc(100vh - 56px) !important;
+      min-height:0 !important;
+      overflow:hidden !important;
+    }
+    #screenLibrary.screen.active,
+    #screenTraining.screen.active{
+      display:block !important;
+    }
+    #screenLibrary .libWrap,
+    #screenTraining .trainingWrap{
+      height:calc(100vh - 56px) !important;
+      padding:12px 18px 18px !important;
+      margin:0 !important;
+      overflow:auto !important;
+      box-sizing:border-box !important;
+      scroll-padding-top:0 !important;
+    }
+    #screenLibrary .libTop,
+    #screenTraining .trainingTop{
+      margin-top:0 !important;
+      margin-bottom:10px !important;
+    }
+    #screenLibrary h2,
+    #screenTraining h2{
+      margin:0 0 4px !important;
+      font-size:22px !important;
+      line-height:1.15 !important;
+    }
+    #libraryFilters{
+      margin-bottom:10px !important;
+    }
+    #libraryGrid{
+      padding-top:0 !important;
+    }
+    #screenTraining .trainingCard{
+      margin-top:8px !important;
+    }
+
+
+    /* v5.3 hard screen-position fix */
+    body{margin:0 !important;overflow:hidden !important;}
+    header.topbar{position:fixed !important;top:0 !important;left:0 !important;right:0 !important;z-index:1000 !important;}
+    .screen{position:fixed !important;top:56px !important;left:0 !important;right:0 !important;bottom:0 !important;margin:0 !important;padding:0 !important;overflow:hidden !important;display:none !important;}
+    .screen.active{display:block !important;}
+    #screenCall.active,#screenEditor.active,#screenLibrary.active,#screenTraining.active{display:block !important;}
+    #screenLibrary,#screenTraining{background:#f3f4f6 !important;}
+    #screenLibrary .libWrap,#screenTraining .trainingWrap{
+      position:absolute !important;
+      inset:0 !important;
+      height:auto !important;
+      min-height:0 !important;
+      max-height:none !important;
+      margin:0 !important;
+      padding:14px 18px 18px !important;
+      overflow:auto !important;
+      box-sizing:border-box !important;
+      transform:none !important;
+    }
+    #screenLibrary .libTop,#screenTraining .trainingTop{
+      margin:0 0 12px !important;
+      padding:0 !important;
+      transform:none !important;
+    }
+    #screenLibrary h2,#screenTraining h2{
+      margin:0 0 4px !important;
+      padding:0 !important;
+    }
+
+    /* v5.3 Call button always premium accent */
+    #btnCall{
+      background:linear-gradient(135deg,#ff7a18,#af00ff) !important;
+      color:#fff !important;
+      border-color:transparent !important;
+      box-shadow:0 10px 24px rgba(175,0,255,.22),0 8px 18px rgba(255,122,24,.18) !important;
+      font-weight:950 !important;
+    }
+    #btnCall.active{
+      background:linear-gradient(135deg,#ff5a00,#7c3aed) !important;
+      color:#fff !important;
+      transform:translateY(-1px);
+      box-shadow:0 13px 30px rgba(124,58,237,.30),0 8px 22px rgba(255,90,0,.22) !important;
+    }
+
+    /* v5.3 Library direct edit */
+    .libEditBox{display:grid;gap:8px;margin-top:12px;border:1px solid #e5e7eb;background:#f9fafb;border-radius:16px;padding:10px}
+    .libEditBox textarea{width:100%;min-height:150px;resize:vertical;border:1px solid #d1d5db;border-radius:14px;padding:10px;font-size:14px;line-height:1.45;box-sizing:border-box}
+    .libEditBox input{width:100%;border:1px solid #d1d5db;border-radius:14px;padding:10px;font-size:13px;box-sizing:border-box}
+    .dbStatus{font-size:11px;color:#6b7280;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+
+    /* v5.4: restore Call Mode scroll while keeping Library/Training fixed clean */
+    body{overflow:hidden !important;}
+    #screenCall{
+      position:fixed !important;
+      top:56px !important;
+      left:0 !important;
+      right:0 !important;
+      bottom:0 !important;
+      overflow:auto !important;
+      -webkit-overflow-scrolling:touch !important;
+      height:auto !important;
+      max-height:none !important;
+      padding-bottom:80px !important;
+      box-sizing:border-box !important;
+    }
+    #screenCall.active{display:block !important;}
+    #screenCall .presenter,
+    #screenCall .callWrap,
+    #screenCall .callScreen,
+    #screenCall .main,
+    #screenCall .content{
+      overflow:visible !important;
+      max-height:none !important;
+      height:auto !important;
+    }
+    #screenCall .answers,
+    #screenCall #answers{
+      overflow:visible !important;
+      max-height:none !important;
+      padding-bottom:80px !important;
+    }
+
+    /* v5.4: Library edit form */
+    .libEditBox{
+      display:grid !important;
+      gap:8px !important;
+      margin-top:12px !important;
+      border:1px solid #e5e7eb !important;
+      background:#f9fafb !important;
+      border-radius:16px !important;
+      padding:10px !important;
+    }
+    .libEditBox textarea{
+      width:100% !important;
+      min-height:160px !important;
+      resize:vertical !important;
+      border:1px solid #d1d5db !important;
+      border-radius:14px !important;
+      padding:10px !important;
+      font-size:14px !important;
+      line-height:1.45 !important;
+      box-sizing:border-box !important;
+      background:#fff !important;
+      color:#111827 !important;
+    }
+    .libEditBox input{
+      width:100% !important;
+      border:1px solid #d1d5db !important;
+      border-radius:14px !important;
+      padding:10px !important;
+      font-size:13px !important;
+      box-sizing:border-box !important;
+      background:#fff !important;
+      color:#111827 !important;
+    }
+    .libEditLabel{font-size:12px;font-weight:900;color:#6b7280;text-transform:uppercase;letter-spacing:.04em}
+
+
+    /* v7 clean full database */
+    .mainNav .followMini{
+      font-size:12px !important;
+      padding:8px 10px !important;
+      height:32px !important;
+      background:#fff7ed !important;
+      color:#9a3412 !important;
+      border-color:#fed7aa !important;
+      box-shadow:none !important;
+    }
+    .mainNav .warmMini{
+      font-size:12px !important;
+      padding:8px 10px !important;
+      height:32px !important;
+      background:#f0fdf4 !important;
+      color:#166534 !important;
+      border-color:#bbf7d0 !important;
+      box-shadow:none !important;
+    }
+    .mainNav .followMini:hover,.mainNav .warmMini:hover{transform:translateY(-1px);}
+    .node.type-follow_up_start,.node.type-follow_up{border-color:#ea580c;background:#fff7ed}
+    .node.type-follow_up_success{border-color:#16a34a;background:#f0fdf4}
+    .node.type-follow_up_objection{border-color:#f59e0b;background:#fffbeb}
+    .node.type-follow_up_end{border-color:#64748b;background:#f8fafc}
+    .node.type-warm_call_start,.node.type-warm_call{border-color:#16a34a;background:#f0fdf4}
+    .node.type-warm_call_success{border-color:#15803d;background:#dcfce7}
+    .node.type-warm_call_end{border-color:#64748b;background:#f8fafc}
+    .node.type-stage{border-color:#475569;background:#f8fafc}
+    .node.type-script{border-color:#7c3aed;background:#f5f3ff}
+    .node.type-small_talk{border-color:#0d9488;background:#f0fdfa}
+    .node.type-motivation{border-color:#db2777;background:#fdf2f8}
+    .node.type-logic{border-color:#334155;background:#f1f5f9}
+    .libMeta{text-transform:none !important;letter-spacing:0 !important;font-size:13px !important}
+    .libText{max-height:260px !important}
+
+
+    /* v8 editor + WhatsApp */
+    .answerRowCall{display:flex;align-items:stretch;gap:10px;width:100%}
+    .answerRowCall .bigAnswer{flex:1}
+    .waQuickBtn{
+      width:76px !important;
+      min-width:76px !important;
+      min-height:76px !important;
+      border-radius:22px !important;
+      border:1px solid #16a34a !important;
+      background:#22c55e !important;
+      color:#fff !important;
+      font-size:30px !important;
+      font-weight:950 !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      box-shadow:0 16px 34px rgba(34,197,94,.25) !important;
+      padding:0 !important;
+    }
+    .waQuickBtn:hover{transform:translateY(-1px);background:#16a34a !important}
+    .editorContextCard{
+      border:1px solid #e5e7eb;
+      background:#fff;
+      border-radius:16px;
+      padding:10px;
+      margin:8px 0;
+    }
+    .editorNodeLine{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:7px 0}
+    .editorNodeLine button{font-size:12px;padding:7px 9px}
+    .editorMiniText{font-size:12px;color:#6b7280;line-height:1.35}
+    .editorTitleInput{font-weight:900;font-size:15px}
+    .logicToggle{
+      background:#f8fafc !important;
+      border-color:#cbd5e1 !important;
+      color:#334155 !important;
+    }
+    .logicToggle.active{background:#334155 !important;color:#fff !important;border-color:#334155 !important}
+
+
+    /* RU 7.1: WhatsApp button outside the answer box */
+    .waQuickBtn{display:none !important;}
+    .answerRowCall{display:block !important;width:100% !important;}
+    .answerRowCall .bigAnswer{width:100% !important;}
+
+    .waFloatingBtn{
+      position:fixed !important;
+      left:18px !important;
+      top:50% !important;
+      transform:translateY(-50%) !important;
+      width:72px !important;
+      height:72px !important;
+      border-radius:24px !important;
+      border:2px solid #16a34a !important;
+      background:linear-gradient(135deg,#25D366,#128C7E) !important;
+      color:#fff !important;
+      z-index:1200 !important;
+      box-shadow:0 18px 45px rgba(18,140,126,.35) !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      cursor:pointer !important;
+      font-weight:1000 !important;
+      letter-spacing:-.05em !important;
+      padding:0 !important;
+    }
+    .waFloatingBtn span{
+      width:44px;height:44px;border-radius:14px;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,.18);
+      font-size:19px;font-weight:1000;color:white;
+      border:1px solid rgba(255,255,255,.30);
+    }
+    .waFloatingBtn:after{
+      content:"";
+      position:absolute;
+      right:10px;bottom:10px;
+      width:13px;height:13px;
+      border-radius:50%;
+      background:#fff;
+      box-shadow:inset 0 0 0 4px #25D366;
+    }
+    .waFloatingBtn:hover{
+      transform:translateY(-50%) scale(1.04) !important;
+      box-shadow:0 22px 55px rgba(18,140,126,.44) !important;
+    }
+    @media(max-width:900px){
+      .waFloatingBtn{left:10px;width:58px !important;height:58px !important;border-radius:18px !important}
+      .waFloatingBtn span{font-size:15px;width:36px;height:36px}
+    }
+    #screenCall .presenter,
+    #screenCall .callWrap,
+    #screenCall .content{
+      padding-left:84px !important;
+    }
+
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brandTitle">CallScript</div>
+      <div class="brandVersion">RU 7.1</div>
+    </div>
+
+    <nav class="mainNav">
+      <button id="btnCall" onclick="startFirstCall()">Звонок</button>
+      <button id="btnFollowUpCall" class="followMini" onclick="startFollowUpCall()">Follow-up</button>
+      <button id="btnWarmCall" class="warmMini" onclick="startWarmCall()">Warm</button>
+      <button id="btnEditor" onclick="setMode('editor')">Редактор</button>
+      <button id="btnLibrary" onclick="setMode('library')">Library</button>
+      <button id="btnTraining" onclick="setMode('training')">Training</button>
+    </nav>
+
+    <div class="topActions">
+      <select class="langSelect" id="languageSelect" onchange="handleLanguageChange(this.value)" title="Language">
+        <option value="ru">RU</option>
+        <option value="en" disabled>EN beta</option>
+        <option value="ar" disabled>AR beta</option>
+      </select>
+      <button class="miniBtn" onclick="saveToFile()">Save</button>
+      <button class="miniBtn" onclick="openFile()">Open</button>
+      <button class="miniBtn" onclick="connectDbFile()">DB</button>
+      <button class="miniBtn" onclick="saveToConnectedDb()">Save DB</button>
+      <button class="miniBtn dangerSoft" onclick="resetToBuiltInDatabase()">Load 7.1</button>
+      <span id="dbStatus" class="dbStatus"></span>
+      <span id="saveState" class="saveState"></span>
+    </div>
+  </header>
+
+  <section id="screenCall" class="screen active">
+    <button class="waFloatingBtn" onclick="openWhatsAppExplain(event)" title="WhatsApp Business script" aria-label="WhatsApp Business script"><span>WA</span></button>
+    <div class="presenter" id="presenterRoot"></div>
+  </section>
+
+  <section id="screenEditor" class="screen">
+    <div class="editorWrap" id="editorWrap">
+      <div class="canvasWrap" id="canvasWrap">
+        <div class="editorTopBar">
+          <button onclick="centerSelectedNode()">Показать выбранный</button>
+          <button onclick="selectAndCenter(app.currentId)">Показать текущий звонок</button>
+          <button onclick="selectAndCenter(app.data.startId)">Показать старт</button>
+          <button onclick="autoArrangeTree()">Auto arrange</button>
+          <button id="branchToggleBtn" onclick="toggleOnlyBranch()">Только ветка</button>
+          <span class="editorModeNotice" id="branchModeNotice"></span>
+          <input class="editorSearch" id="nodeSearch" placeholder="Поиск вопроса / ответа..." oninput="renderSearchResults(this.value)" onfocus="renderSearchResults(this.value)">
+          <button onclick="clearSearch()">×</button>
+          <div class="searchResults" id="searchResults"></div>
+        </div>
+        <div class="canvas" id="canvas">
+          <svg class="edges" id="edges"></svg>
+          <div id="nodes"></div>
+        </div>
+      </div>
+      <div class="resizer" id="editorResizer" title="Потяни, чтобы изменить ширину панели"></div>
+      <aside class="editorSide" id="editorSide"></aside>
+    </div>
+  </section>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<div class="modalBack" id="quickModal">
+  <div class="modal">
+    <div class="row between">
+      <h2>Быстро создать древо из текста</h2>
+      <button onclick="closeQuickModal()">Закрыть</button>
+    </div>
+    <p class="hint">Формат: вопрос, потом ответы вида <b>Ответ -> Следующий вопрос</b>. Пустая строка = новый вопрос.</p>
+    <textarea id="quickText" class="quickText"></textarea>
+    <div class="row" style="margin-top:12px">
+      <button class="primary" onclick="importQuickText()">Создать древо</button>
+      <button onclick="fillExample()">Пример</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const defaultData = {"version":"strict_6step_excel_flow_v23","startId":"STEP_1_OPENING","questions":[{"id":"STEP_1_OPENING","title":"STEP 1 — Приветствие","question":"STEP 1 — Приветствие\n\nЗдравствуйте! [Имя] Это Вадим из Дубая ZVONIT. Вы оставляли заявку по недвижимости в Дубае на нашей странице, верно?","hint":"","fontScale":40,"x":80,"y":80,"answers":[{"id":"a_step_1_opening_1","text":"Да, интересно","nextId":"STEP_2_PERMISSION"},{"id":"a_step_1_opening_2","text":"Клиент отвечает иначе / возражает","nextId":"STEP_3_OBJECTIONS"},{"id":"a_step_1_opening_3","text":"Не интересно","nextId":"OBJ_R4_HANDLE"},{"id":"a_step_1_opening_4","text":"Уже работаю с кем-то","nextId":"OBJ_R5_HANDLE"},{"id":"a_step_1_opening_5","text":"Уже купил недвижимость","nextId":"OBJ_R6_HANDLE"},{"id":"a_step_1_opening_6","text":"Я не оставлял заявку","nextId":"OBJ_R7_HANDLE"},{"id":"a_step_1_opening_7","text":"Отправьте всё в WhatsApp","nextId":"OBJ_R8_HANDLE"},{"id":"a_step_1_opening_8","text":"У меня мало времени","nextId":"OBJ_R9_HANDLE"}],"meta":{"activeRoute":true,"type":"step_1_opening","step":1}},{"id":"STEP_2_PERMISSION","title":"STEP 2.1 — Получить разрешение","question":"STEP 2.1 — Получить разрешение\n\nОтлично, давайте быстро пообщаемся, чтобы понять ваш интерес. У меня есть несколько вопросов, чтобы лучше помочь вам с запросом. После этого предложу пару вариантов, исходя из того, что увижу. Если всё будет совпадать с вашими ожиданиями, подготовлю для вас презентацию. Подходит?","hint":"","fontScale":36,"x":680,"y":80,"answers":[{"id":"a_step_2_permission_1","text":"Ответил / идём дальше","nextId":"STEP_2_CONTEXT"},{"id":"a_step_2_permission_2","text":"Клиент возражает / прыгает по теме","nextId":"STEP_3_OBJECTIONS"},{"id":"a_step_2_permission_3","text":"Вернуть разговор в структуру","nextId":"STEP_CONTROL"},{"id":"a_step_2_permission_4","text":"Не хочет продолжать","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_2_qualification","step":2}},{"id":"STEP_2_CONTEXT","title":"STEP 2.2 — Ситуация / город","question":"STEP 2.2 — Ситуация / город\n\nЯ хочу лучше понять вашу ситуацию. Как вы пришли к этой идее?\nЧто именно побудило вас оставить заявку на нашем сайте?\nНасколько хорошо вы знакомы с городом?","hint":"","fontScale":36,"x":1200,"y":80,"answers":[{"id":"a_step_2_context_1","text":"Ответил / идём дальше","nextId":"STEP_2_GOAL"},{"id":"a_step_2_context_2","text":"Клиент возражает / прыгает по теме","nextId":"STEP_3_OBJECTIONS"},{"id":"a_step_2_context_3","text":"Вернуть разговор в структуру","nextId":"STEP_CONTROL"},{"id":"a_step_2_context_4","text":"Не хочет продолжать","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_2_qualification","step":2}},{"id":"STEP_2_GOAL","title":"STEP 2.3 — Цель / ожидания","question":"STEP 2.3 — Цель / ожидания\n\nКаковы ваши ожидания от этой инвестиции? Какая главная цель?\nВы ориентируетесь на аренду, перепродажу или планируете использовать недвижимость для себя?\nВы предпочитаете что-то у моря, в центре города или у вас пока нет чётких предпочтений?","hint":"","fontScale":36,"x":1720,"y":80,"answers":[{"id":"a_step_2_goal_1","text":"Ответил / идём дальше","nextId":"STEP_2_BUDGET"},{"id":"a_step_2_goal_2","text":"Клиент возражает / прыгает по теме","nextId":"STEP_3_OBJECTIONS"},{"id":"a_step_2_goal_3","text":"Вернуть разговор в структуру","nextId":"STEP_CONTROL"},{"id":"a_step_2_goal_4","text":"Не хочет продолжать","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_2_qualification","step":2}},{"id":"STEP_2_BUDGET","title":"STEP 2.4 — Бюджет","question":"STEP 2.4 — Бюджет\n\nКакой бюджет вы рассматриваете?\nСпрашиваю, потому что на рынке много проектов и локаций, и чтобы сэкономить ваше время, если вы поделитесь диапазоном, я подберу только то, что подходит под ваши цели.\nСкажите, указанный бюджет — это жёсткий предел?\nИли если я покажу вам вариант, который идеально подходит под ваши критерии, но немного выше бюджета, вы бы рассмотрели его?","hint":"","fontScale":36,"x":2240,"y":80,"answers":[{"id":"a_step_2_budget_1","text":"Ответил / идём дальше","nextId":"STEP_2_ANALYSIS"},{"id":"a_step_2_budget_2","text":"Клиент возражает / прыгает по теме","nextId":"STEP_3_OBJECTIONS"},{"id":"a_step_2_budget_3","text":"Вернуть разговор в структуру","nextId":"STEP_CONTROL"},{"id":"a_step_2_budget_4","text":"Не хочет продолжать","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_2_qualification","step":2}},{"id":"STEP_2_ANALYSIS","title":"STEP 2.5 — Что уже анализирует","question":"STEP 2.5 — Что уже анализирует\n\nПеред тем как я дам информацию, что вы сейчас анализируете, чтобы я понял, могу ли предложить что-то лучше?\nЯ ничего не упустил?\nМожет, есть что-то важное, что мне стоит знать, прежде чем мы пойдём дальше?","hint":"","fontScale":36,"x":2760,"y":80,"answers":[{"id":"a_step_2_analysis_1","text":"Ответил / идём дальше","nextId":"STEP_2_ZOOM"},{"id":"a_step_2_analysis_2","text":"Клиент возражает / прыгает по теме","nextId":"STEP_3_OBJECTIONS"},{"id":"a_step_2_analysis_3","text":"Вернуть разговор в структуру","nextId":"STEP_CONTROL"},{"id":"a_step_2_analysis_4","text":"Не хочет продолжать","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_2_qualification","step":2}},{"id":"STEP_2_ZOOM","title":"STEP 2.6 — Назначить Zoom","question":"STEP 2.6 — Назначить Zoom\n\nХорошо, предлагаю назначить короткий Zoom-звонок, где я покажу вам проекты, которые подходят под ваши требования, и проведу по всем деталям.\nКак вам звучит? Какой день и время вам удобно?\nКстати, что вы хотите увидеть там в первую очередь — окупаемость, цифры, факты или какие-то другие особенности?","hint":"","fontScale":36,"x":3280,"y":80,"answers":[{"id":"a_step_2_zoom_1","text":"Zoom согласован","nextId":"ZOOM_BOOKED"},{"id":"a_step_2_zoom_2","text":"Клиент возражает / прыгает по теме","nextId":"STEP_3_OBJECTIONS"},{"id":"a_step_2_zoom_3","text":"Вернуть разговор в структуру","nextId":"STEP_CONTROL"},{"id":"a_step_2_zoom_4","text":"Не хочет продолжать","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_2_qualification","step":2}},{"id":"STEP_2_EOI","title":"STEP 2.7 — EOI / бронь","question":"STEP 2.7 — EOI / бронь\n\nПозвольте кратко объяснить, как работает стадия EOI. Речь не о покупке, а о том, чтобы закрепить за собой место в очереди. Резервируя позицию сейчас, вы получаете приоритетный доступ к лучшим видам, лучшим этажам и самой выгодной стартовой цене до того, как произойдёт повышение. Именно так работают запуски в Дубае.\n\nEOI полностью возвратный, поэтому финансового риска нет. Но ожидание означает потерю приоритета и переход на следующий ценовой уровень.\n\nВ идеале нам нужно внести сумму EOI сейчас — либо как минимум предоставить копию паспорта для регистрации в системе.","hint":"","fontScale":36,"x":3800,"y":80,"answers":[{"id":"a_step_2_eoi_1","text":"EOI понятно / дальше","nextId":"ZOOM_BOOKED"},{"id":"a_step_2_eoi_2","text":"Клиент возражает / прыгает по теме","nextId":"STEP_3_OBJECTIONS"},{"id":"a_step_2_eoi_3","text":"Вернуть разговор в структуру","nextId":"STEP_CONTROL"},{"id":"a_step_2_eoi_4","text":"Не хочет продолжать","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_2_qualification","step":2}},{"id":"STEP_CONTROL","title":"Контроль разговора — вернуть на рельсы","question":"Если клиент прыгает с темы на тему:\n\nПонял вас. Чтобы не запутаться, я верну разговор в структуру.\nСначала ситуация, потом цель, бюджет, что уже смотрели, и только после этого Zoom с нормальными вариантами.","hint":"","fontScale":36,"x":80,"y":420,"answers":[{"id":"a_step_control_1","text":"Ситуация / город","nextId":"STEP_2_CONTEXT"},{"id":"a_step_control_2","text":"Цель / ожидания","nextId":"STEP_2_GOAL"},{"id":"a_step_control_3","text":"Бюджет","nextId":"STEP_2_BUDGET"},{"id":"a_step_control_4","text":"Что уже анализирует","nextId":"STEP_2_ANALYSIS"},{"id":"a_step_control_5","text":"К Zoom","nextId":"STEP_2_ZOOM"},{"id":"a_step_control_6","text":"Возражение клиента","nextId":"STEP_3_OBJECTIONS"}],"meta":{"activeRoute":true,"type":"control","step":"control"}},{"id":"STEP_2_RESUME","title":"Вернуться в квалификацию","question":"Возражение обработали. Теперь возвращаем клиента в структуру.\n\nВыберите этап, на котором нужно продолжить.","hint":"","fontScale":36,"x":680,"y":420,"answers":[{"id":"a_step_2_resume_1","text":"STEP 2.2 — ситуация / город","nextId":"STEP_2_CONTEXT"},{"id":"a_step_2_resume_2","text":"STEP 2.3 — цель","nextId":"STEP_2_GOAL"},{"id":"a_step_2_resume_3","text":"STEP 2.4 — бюджет","nextId":"STEP_2_BUDGET"},{"id":"a_step_2_resume_4","text":"STEP 2.5 — что анализирует","nextId":"STEP_2_ANALYSIS"},{"id":"a_step_2_resume_5","text":"STEP 2.6 — Zoom","nextId":"STEP_2_ZOOM"},{"id":"a_step_2_resume_6","text":"Новое возражение","nextId":"STEP_3_OBJECTIONS"}],"meta":{"activeRoute":true,"type":"resume","step":2}},{"id":"STEP_3_OBJECTIONS","title":"STEP 3 — Что сказал клиент?","question":"STEP 3 — выберите точную фразу клиента из Excel.\n\nЭто нужно, чтобы не спорить со всем сразу, а обработать конкретное сомнение и вернуть разговор в квалификацию.","hint":"","fontScale":34,"x":80,"y":760,"answers":[{"id":"a_step_3_objections_1","text":"Не интересно.","nextId":"OBJ_R4_HANDLE"},{"id":"a_step_3_objections_2","text":"Уже работаю с кем-то.","nextId":"OBJ_R5_HANDLE"},{"id":"a_step_3_objections_3","text":"Уже купил недвижимость.","nextId":"OBJ_R6_HANDLE"},{"id":"a_step_3_objections_4","text":"Я не оставлял заявку.","nextId":"OBJ_R7_HANDLE"},{"id":"a_step_3_objections_5","text":"Отправьте всё в WhatsApp.","nextId":"OBJ_R8_HANDLE"},{"id":"a_step_3_objections_6","text":"У меня мало времени.","nextId":"OBJ_R9_HANDLE"},{"id":"a_step_3_objections_7","text":"Мне некогда.","nextId":"OBJ_R10_HANDLE"},{"id":"a_step_3_objections_8","text":"Я работаю напрямую с застройщиком.","nextId":"OBJ_R11_HANDLE"},{"id":"a_step_3_objections_9","text":"Мне сейчас неудобно финансово / нет ликвидности.","nextId":"OBJ_R12_HANDLE"},{"id":"a_step_3_objections_10","text":"Общие сомнения.","nextId":"OBJ_R13_HANDLE"},{"id":"a_step_3_objections_11","text":"Общие сомнения.","nextId":"OBJ_R14_HANDLE"},{"id":"a_step_3_objections_12","text":"Общие сомнения.","nextId":"OBJ_R15_HANDLE"},{"id":"a_step_3_objections_13","text":"Скажите, сколько стоит?","nextId":"OBJ_R16_HANDLE"},{"id":"a_step_3_objections_14","text":"Слишком дорого.","nextId":"OBJ_R17_HANDLE"},{"id":"a_step_3_objections_15","text":"Цены падают.","nextId":"OBJ_R18_HANDLE"},{"id":"a_step_3_objections_16","text":"Слишком дорого.","nextId":"OBJ_R19_HANDLE"},{"id":"a_step_3_objections_17","text":"Я не спешу с покупкой.","nextId":"OBJ_R20_HANDLE"},{"id":"a_step_3_objections_18","text":"Я не уверен, стоит ли сейчас покупать — рынок на пике.","nextId":"OBJ_R21_HANDLE"},{"id":"a_step_3_objections_19","text":"Я не знаю, куда именно лучше инвестировать — слишком много вариантов.","nextId":"OBJ_R22_HANDLE"},{"id":"a_step_3_objections_20","text":"Не доверяю застройщикам / боюсь, что не достроят.","nextId":"OBJ_R23_HANDLE"},{"id":"a_step_3_objections_21","text":"А если рынок упадёт?","nextId":"OBJ_R24_HANDLE"},{"id":"a_step_3_objections_22","text":"Я боюсь покупать дистанционно / без визита в Дубай.","nextId":"OBJ_R25_HANDLE"},{"id":"a_step_3_objections_23","text":"Я обсужу с женой / семьёй / партнёром.","nextId":"OBJ_R26_HANDLE"},{"id":"a_step_3_objections_24","text":"Я боюсь сложностей с документами / переводом денег / визой.","nextId":"OBJ_R27_HANDLE"},{"id":"a_step_3_objections_25","text":"Я не уверен, кому доверять — слишком много агентов.","nextId":"OBJ_R28_HANDLE"},{"id":"a_step_3_objections_26","text":"Сейчас не время / подожду до следующего года.","nextId":"OBJ_R29_HANDLE"},{"id":"a_step_3_objections_27","text":"Сначала продам другую недвижимость / получу деньги.","nextId":"OBJ_R30_HANDLE"},{"id":"a_step_3_objections_28","text":"Подожду, может, цены снизятся.","nextId":"OBJ_R31_HANDLE"},{"id":"a_step_3_objections_29","text":"Не уверен в ROI.","nextId":"OBJ_R32_HANDLE"},{"id":"a_step_3_objections_30","text":"Я посмотрю сам на сайте / позже вернусь к этому.","nextId":"OBJ_R33_HANDLE"},{"id":"a_step_3_objections_31","text":"Я не доверяю агентам.","nextId":"OBJ_R34_HANDLE"}],"meta":{"activeRoute":true,"type":"step_3_objection_menu","step":3}},{"id":"STEP_6_CLOSE","title":"STEP 6 — Мягкое закрытие","question":"STEP 6 — если клиент не готов продолжать\n\nХорошо, спасибо вам в любом случае. Я вышлю вам свои контакты — сохраните их на будущее, если запрос снова станет актуален. Кстати, у нас есть бонусная программа за рекомендации.\n\nСохраните, пожалуйста, мой номер. Даже если сейчас не время, я могу быть вашей точкой контакта по рынку Дубая: без давления, просто когда понадобится нормальная ориентация по проектам, ценам и рискам.","hint":"","fontScale":36,"x":680,"y":760,"answers":[{"id":"a_step_6_close_1","text":"Контакт сохранит / END","nextId":"END"},{"id":"a_step_6_close_2","text":"Интерес вернулся","nextId":"STEP_2_RESUME"},{"id":"a_step_6_close_3","text":"Новое возражение","nextId":"STEP_3_OBJECTIONS"}],"meta":{"activeRoute":true,"type":"step_6_close","step":6}},{"id":"ZOOM_BOOKED","title":"ZOOM — цель достигнута","question":"Zoom согласован.\n\nДальше: подготовить проекты под вводные клиента, показать цифры, факты, логику района, риски и следующий шаг.","hint":"","fontScale":36,"x":1280,"y":760,"answers":[{"id":"a_zoom_booked_1","text":"END","nextId":"END"},{"id":"a_zoom_booked_2","text":"EOI / бронь","nextId":"STEP_2_EOI"},{"id":"a_zoom_booked_3","text":"Ещё вопрос клиента","nextId":"STEP_3_OBJECTIONS"}],"meta":{"activeRoute":true,"type":"success","step":"zoom"}},{"id":"END","title":"END","question":"Звонок завершён.","hint":"","fontScale":36,"x":1880,"y":760,"answers":[],"meta":{"activeRoute":true,"type":"end"}},{"id":"OBJ_R4_HANDLE","title":"STEP 4 — Не интересно.","question":"STEP 3 — клиент сказал:\n«Не интересно.»\n\nSTEP 4 — ваш ответ:\nХорошо, конечно. Давайте на секунду уточним, чтобы в будущем вы не получали лишние звонки. Можно узнать причину? Возможно, есть какие-то сомнения? Или вы уже что-то приобрели? Понимаю — решения по недвижимости даются непросто. Это нормально, важно всё обдумать и не торопиться.","hint":"","fontScale":36,"x":2560,"y":1700,"answers":[{"id":"a_obj_r4_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r4_handle_2","text":"Клиент всё ещё сомневается","nextId":"OBJ_R4_PUSH"},{"id":"a_obj_r4_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r4_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"OBJ_R4_FINAL"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":4}},{"id":"OBJ_R4_PUSH","title":"STEP 5 — дожим: Не интересно.","question":"STEP 5 — если клиент всё ещё не идёт дальше:\n\nПозвольте сначала рассказать вам о нашей компании, о гарантиях, которые мы предоставляем, и о команде специалистов, которая будет сопровождать вас на каждом этапе. Затем я поделюсь реальными кейсами проданных проектов, чтобы вы понимали, как я работаю и почему мне можно доверять. И, конечно, вы можете задать любые вопросы. Кстати, вы можете посмотреть мою лицензию — уверен, вам такое никто не показывает, ведь у 80% её просто нет.","hint":"","fontScale":36,"x":80,"y":1960,"answers":[{"id":"a_obj_r4_push_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r4_push_2","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r4_push_3","text":"Не готов — STEP 6","nextId":"OBJ_R4_FINAL"}],"meta":{"activeRoute":true,"type":"step_5_push","step":5,"sourceRow":4}},{"id":"OBJ_R4_FINAL","title":"STEP 6 — закрыть: Не интересно.","question":"STEP 6 — если клиент не готов / не видит смысла:\n\nПреимущества работы с нами — это возможность консультироваться с маркетологами, юристами и аналитиками. Мы всегда представляем только ваши интересы — сторону нашего клиента. Наша цель — быстро, грамотно и с учётом всех ваших требований найти оптимальное решение.\n\nСохраните, пожалуйста, мой номер. Я могу быть вашей точкой контакта по Дубаю на будущее.","hint":"","fontScale":36,"x":700,"y":1960,"answers":[{"id":"a_obj_r4_final_1","text":"END","nextId":"END"},{"id":"a_obj_r4_final_2","text":"Интерес вернулся","nextId":"STEP_2_RESUME"}],"meta":{"activeRoute":true,"type":"step_6_close_specific","step":6,"sourceRow":4}},{"id":"OBJ_R5_HANDLE","title":"STEP 4 — Уже работаю с кем-то.","question":"STEP 3 — клиент сказал:\n«Уже работаю с кем-то.»\n\nSTEP 4 — ваш ответ:\nПонимаю. Я не собираюсь перебивать другого специалиста, просто покажу, чем отличается мой подход. В Дубае каждый день появляются новые проекты, и, к сожалению, не все агенты имеют лицензию или предлагают то, что действительно подходит под ваши цели. Поэтому важно сравнить. Я предлагаю коротко созвониться — буквально на пару минут вечером, когда вам удобно. А дальше сами решите, стоит ли двигаться дальше. Как вам такой вариант?","hint":"","fontScale":36,"x":1320,"y":1960,"answers":[{"id":"a_obj_r5_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r5_handle_2","text":"Клиент всё ещё сомневается","nextId":"OBJ_R5_PUSH"},{"id":"a_obj_r5_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r5_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"OBJ_R5_FINAL"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":5}},{"id":"OBJ_R5_PUSH","title":"STEP 5 — дожим: Уже работаю с кем-то.","question":"STEP 5 — если клиент всё ещё не идёт дальше:\n\nХорошо, район отличный. Есть ли у вас планы на будущее с этой недвижимостью? Вы слышали об AX CAPITAL раньше?","hint":"","fontScale":36,"x":1940,"y":1960,"answers":[{"id":"a_obj_r5_push_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r5_push_2","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r5_push_3","text":"Не готов — STEP 6","nextId":"OBJ_R5_FINAL"}],"meta":{"activeRoute":true,"type":"step_5_push","step":5,"sourceRow":5}},{"id":"OBJ_R5_FINAL","title":"STEP 6 — закрыть: Уже работаю с кем-то.","question":"STEP 6 — если клиент не готов / не видит смысла:\n\nКстати, знаете такое понятие — принудительные сбережения? Мы все когда-то покупали что-то, что вроде бы не могли себе позволить, но благодаря платёжному плану справлялись. Недвижимость работает по тому же принципу — только лучше. Каждый платёж автоматически превращается в капитал. Вы не тратите — вы создаёте актив, даже не замечая этого.\n\nСохраните, пожалуйста, мой номер. Я могу быть вашей точкой контакта по Дубаю на будущее.","hint":"","fontScale":36,"x":2560,"y":1960,"answers":[{"id":"a_obj_r5_final_1","text":"END","nextId":"END"},{"id":"a_obj_r5_final_2","text":"Интерес вернулся","nextId":"STEP_2_RESUME"}],"meta":{"activeRoute":true,"type":"step_6_close_specific","step":6,"sourceRow":5}},{"id":"OBJ_R6_HANDLE","title":"STEP 4 — Уже купил недвижимость.","question":"STEP 3 — клиент сказал:\n«Уже купил недвижимость.»\n\nSTEP 4 — ваш ответ:\nХорошо, конечно. Давайте на секунду уточним, чтобы в будущем вы не получали лишние звонки: что именно привлекло ваше внимание? В какие объекты вы уже инвестировали?","hint":"","fontScale":36,"x":80,"y":2220,"answers":[{"id":"a_obj_r6_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r6_handle_2","text":"Клиент всё ещё сомневается","nextId":"OBJ_R6_PUSH"},{"id":"a_obj_r6_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r6_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"OBJ_R6_FINAL"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":6}},{"id":"OBJ_R6_PUSH","title":"STEP 5 — дожим: Уже купил недвижимость.","question":"STEP 5 — если клиент всё ещё не идёт дальше:\n\nОкей, то есть вас не интересует сейчас и в будущем вы тоже не рассматриваете этот вариант?","hint":"","fontScale":36,"x":700,"y":2220,"answers":[{"id":"a_obj_r6_push_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r6_push_2","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r6_push_3","text":"Не готов — STEP 6","nextId":"OBJ_R6_FINAL"}],"meta":{"activeRoute":true,"type":"step_5_push","step":5,"sourceRow":6}},{"id":"OBJ_R6_FINAL","title":"STEP 6 — закрыть: Уже купил недвижимость.","question":"STEP 6 — если клиент не готов / не видит смысла:\n\nВремя на рынке важнее, чем попытки угадать рынок.\n\nСохраните, пожалуйста, мой номер. Я могу быть вашей точкой контакта по Дубаю на будущее.","hint":"","fontScale":36,"x":1320,"y":2220,"answers":[{"id":"a_obj_r6_final_1","text":"END","nextId":"END"},{"id":"a_obj_r6_final_2","text":"Интерес вернулся","nextId":"STEP_2_RESUME"}],"meta":{"activeRoute":true,"type":"step_6_close_specific","step":6,"sourceRow":6}},{"id":"OBJ_R7_HANDLE","title":"STEP 4 — Я не оставлял заявку.","question":"STEP 3 — клиент сказал:\n«Я не оставлял заявку.»\n\nSTEP 4 — ваш ответ:\nХорошо, конечно. Давайте на секунду уточним, чтобы в будущем вы не получали лишние звонки: проект называется [название проекта], вы оставляли заявку [число]. Возможно, вы что-то кликнули у нас на сайте или в рекламе?","hint":"","fontScale":36,"x":1940,"y":2220,"answers":[{"id":"a_obj_r7_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r7_handle_2","text":"Клиент всё ещё сомневается","nextId":"OBJ_R7_PUSH"},{"id":"a_obj_r7_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r7_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":7}},{"id":"OBJ_R7_PUSH","title":"STEP 5 — дожим: Я не оставлял заявку.","question":"STEP 5 — если клиент всё ещё не идёт дальше:\n\nПозвольте задать вам несколько быстрых вопросов — я всё выясню и вернусь с действительно интересным вариантом. В любом случае, решение мы найдём. Идёт? Вот что предлагаю: я буду отправлять только ту информацию, которая действительно экономит ваше время и даёт чёткое понимание рынка. А дальше вы сами решите, подходит ли вам предложение. Моя задача — показать вам то, что имеет реальную ценность прямо сейчас. Итак, начнём с ясности — что именно вы ищете?","hint":"","fontScale":36,"x":2560,"y":2220,"answers":[{"id":"a_obj_r7_push_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r7_push_2","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r7_push_3","text":"Не готов — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_5_push","step":5,"sourceRow":7}},{"id":"OBJ_R8_HANDLE","title":"STEP 4 — Отправьте всё в WhatsApp.","question":"STEP 3 — клиент сказал:\n«Отправьте всё в WhatsApp.»\n\nSTEP 4 — ваш ответ:\nПеред тем как отправить вам информацию и брошюры в WhatsApp: я знаю, что большинство агентов просто шлют десятки случайных брошюр, и всё перемешивается, теряет смысл. У вас такое бывало, верно? Поэтому я сначала уточню пару деталей, чтобы отправить вам только ценную информацию.","hint":"","fontScale":36,"x":80,"y":2480,"answers":[{"id":"a_obj_r8_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r8_handle_2","text":"Клиент всё ещё сомневается","nextId":"OBJ_R8_PUSH"},{"id":"a_obj_r8_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r8_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":8}},{"id":"OBJ_R8_PUSH","title":"STEP 5 — дожим: Отправьте всё в WhatsApp.","question":"STEP 5 — если клиент всё ещё не идёт дальше:\n\nЧто именно заставляет вас думать так?","hint":"","fontScale":36,"x":700,"y":2480,"answers":[{"id":"a_obj_r8_push_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r8_push_2","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r8_push_3","text":"Не готов — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_5_push","step":5,"sourceRow":8}},{"id":"OBJ_R9_HANDLE","title":"STEP 4 — У меня мало времени.","question":"STEP 3 — клиент сказал:\n«У меня мало времени.»\n\nSTEP 4 — ваш ответ:\nПрежде чем я вас отпущу, у нас сейчас активная кампания, очень много заявок по email и WhatsApp. Именно поэтому я хочу убедиться, что каждый клиент получает нормальное внимание. Скажите, пожалуйста, что именно вы ищете — остальное я возьму на себя.","hint":"","fontScale":36,"x":1320,"y":2480,"answers":[{"id":"a_obj_r9_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r9_handle_2","text":"Клиент всё ещё сомневается","nextId":"OBJ_R9_PUSH"},{"id":"a_obj_r9_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r9_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":9}},{"id":"OBJ_R9_PUSH","title":"STEP 5 — дожим: У меня мало времени.","question":"STEP 5 — если клиент всё ещё не идёт дальше:\n\nС чем это ощущение больше связано?","hint":"","fontScale":36,"x":1940,"y":2480,"answers":[{"id":"a_obj_r9_push_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r9_push_2","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r9_push_3","text":"Не готов — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_5_push","step":5,"sourceRow":9}},{"id":"OBJ_R10_HANDLE","title":"STEP 4 — Мне некогда.","question":"STEP 3 — клиент сказал:\n«Мне некогда.»\n\nSTEP 4 — ваш ответ:\nПонимаю, не будем спешить — когда вам удобно созвониться или провести короткий Zoom, чтобы пройтись по ключевым моментам? Всего 10 минут, и вы сразу увидите, какие варианты действительно стоят внимания.","hint":"","fontScale":36,"x":2560,"y":2480,"answers":[{"id":"a_obj_r10_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r10_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r10_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r10_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":10}},{"id":"OBJ_R11_HANDLE","title":"STEP 4 — Я работаю напрямую с застройщиком.","question":"STEP 3 — клиент сказал:\n«Я работаю напрямую с застройщиком.»\n\nSTEP 4 — ваш ответ:\nПозвольте сначала рассказать немного о нашей компании — о гарантиях, которые мы предоставляем, и о команде специалистов, которые сопровождают клиента на каждом этапе. Потом я покажу реальные кейсы проданных проектов, чтобы вы увидели, как я работаю и почему клиенты мне доверяют. И, конечно, вы сможете задать любые вопросы. Кстати, я могу даже показать вам свою лицензию — уверен, вам такое никто не показывает, потому что, по правде говоря, у 80% агентов её вообще нет.","hint":"","fontScale":36,"x":80,"y":2740,"answers":[{"id":"a_obj_r11_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r11_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r11_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r11_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":11}},{"id":"OBJ_R12_HANDLE","title":"STEP 4 — Мне сейчас неудобно финансово / нет ликвидности.","question":"STEP 3 — клиент сказал:\n«Мне сейчас неудобно финансово / нет ликвидности.»\n\nSTEP 4 — ваш ответ:\nПонимаю — частая ситуация, и это не проблема. Есть варианты, где первый платёж минимальный, а основной баланс — уже после сдачи. Не нужно иметь весь капитал сразу. Общая сумма первоначального взноса, чтобы стать владельцем, составляет всего ______. Кстати, мы все когда-то покупали то, чего «не могли себе позволить». Давайте посмотрим чуть глубже — это и есть концепция forced savings.","hint":"","fontScale":36,"x":700,"y":2740,"answers":[{"id":"a_obj_r12_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r12_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r12_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r12_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":12}},{"id":"OBJ_R13_HANDLE","title":"STEP 4 — Общие сомнения.","question":"STEP 3 — клиент сказал:\n«Общие сомнения.»\n\nSTEP 4 — ваш ответ:\nИнтересно, а почему вы так считаете?","hint":"","fontScale":36,"x":1320,"y":2740,"answers":[{"id":"a_obj_r13_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r13_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r13_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r13_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":13}},{"id":"OBJ_R14_HANDLE","title":"STEP 4 — Общие сомнения.","question":"STEP 3 — клиент сказал:\n«Общие сомнения.»\n\nSTEP 4 — ваш ответ:\nА можете чуть подробнее — что именно вызывает сомнение?","hint":"","fontScale":36,"x":1940,"y":2740,"answers":[{"id":"a_obj_r14_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r14_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r14_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r14_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":14}},{"id":"OBJ_R15_HANDLE","title":"STEP 4 — Общие сомнения.","question":"STEP 3 — клиент сказал:\n«Общие сомнения.»\n\nSTEP 4 — ваш ответ:\nС одной стороны, мы официальные дистрибьюторы и платиновые партнёры государственных девелоперов — наша комиссия оплачивается ими. Вы нам ничего не платите. С другой стороны, вы можете спросить: зачем работать с нами, если можно обращаться напрямую к девелоперу? Дело в том, что девелопер не будет подбирать решения под ваши цели — он покажет только свои собственные проекты и будет продвигать то, что ему нужно продать сейчас, чтобы закрыть внутренние показатели. Для нас не имеет значения, у какого девелопера вы купите — мы всё равно получим комиссию. Поэтому наша цель — найти то, что лучше всего подходит именно вам. Кстати, два из трёх наших клиентов приходят по рекомендациям, поэтому нам крайне важно, чтобы вы были полностью довольны покупкой. Мы предоставляем реальную аналитику рынка, объясняем плюсы и минусы каждого проекта и, самое главное, ведём переговоры напрямую с девелопером, чтобы получить для вас максимально выгодные условия. Почему? Потому что когда вы довольны — вы рекомендуете нас. А это самый надёжный источник новых клиентов.","hint":"","fontScale":36,"x":2560,"y":2740,"answers":[{"id":"a_obj_r15_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r15_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r15_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r15_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":15}},{"id":"OBJ_R16_HANDLE","title":"STEP 4 — Скажите, сколько стоит?","question":"STEP 3 — клиент сказал:\n«Скажите, сколько стоит?»\n\nSTEP 4 — ваш ответ:\nНаконец-то я говорю с человеком, который точно знает, чего хочет — сейчас подготовлю информацию. Кстати, когда вы ищете лучшую цену, что именно вы хотите получить за эту цену? Конечно, я скажу вам цены — и даже объясню платёжный план, структуру и частоту платежей. Это же важная информация, правильно? Вы хотите это знать, верно? Но мне также нужно объяснить ценность предложения. Отлично — переходим к вопросам.","hint":"","fontScale":36,"x":80,"y":3000,"answers":[{"id":"a_obj_r16_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r16_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r16_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r16_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":16}},{"id":"OBJ_R17_HANDLE","title":"STEP 4 — Слишком дорого.","question":"STEP 3 — клиент сказал:\n«Слишком дорого.»\n\nSTEP 4 — ваш ответ:\nВы ориентируетесь только на цену при выборе? Спрашиваю, потому что иногда проект может казаться дороже, и его легко отбросить, но при этом вы можете не заметить другие факторы, которые реально для вас важны. Важно видеть всю картину, правда? Кстати, вам нужен результат или просто самая низкая цена? А если бы вы могли получить Emaar по той же цене, что и более дешёвый вариант, какой бы вы выбрали и почему? Вот поэтому они и стоят дороже. Как считаете?","hint":"","fontScale":36,"x":700,"y":3000,"answers":[{"id":"a_obj_r17_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r17_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r17_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r17_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":17}},{"id":"OBJ_R18_HANDLE","title":"STEP 4 — Цены падают.","question":"STEP 3 — клиент сказал:\n«Цены падают.»\n\nSTEP 4 — ваш ответ:\nЯ понимаю, многие так говорят. Но на самом деле цены не падают — они просто стабилизируются в более слабых районах. Хорошие проекты от Emaar, Sobha или Meraas всё так же раскупаются за несколько дней. Это коррекция. И для инвесторов это как раз лучший момент для покупки — когда другие сомневаются.","hint":"","fontScale":36,"x":1320,"y":3000,"answers":[{"id":"a_obj_r18_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r18_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r18_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r18_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":18}},{"id":"OBJ_R19_HANDLE","title":"STEP 4 — Слишком дорого.","question":"STEP 3 — клиент сказал:\n«Слишком дорого.»\n\nSTEP 4 — ваш ответ:\nПонимаю, цифры важны. Но вопрос не только в цене, а в том, что вы получаете за эту цену: безопасность, ликвидность и лёгкий выход. Давайте сравним с похожими проектами, и вы сами увидите, где это «дорого», а где «дорого, но оправданно».","hint":"","fontScale":36,"x":1940,"y":3000,"answers":[{"id":"a_obj_r19_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r19_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r19_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r19_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":19}},{"id":"OBJ_R20_HANDLE","title":"STEP 4 — Я не спешу с покупкой.","question":"STEP 3 — клиент сказал:\n«Я не спешу с покупкой.»\n\nSTEP 4 — ваш ответ:\nПонимаю — такие решения не принимаются в спешке. По опыту, лучшие возможности обычно достаются тем, кто действует спокойно, но вовремя. Я не предлагаю вам торопиться — давайте просто посмотрим на то, что действительно стоит внимания сейчас, чтобы в нужный момент вы были на шаг впереди.","hint":"","fontScale":36,"x":2560,"y":3000,"answers":[{"id":"a_obj_r20_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r20_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r20_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r20_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":20}},{"id":"OBJ_R21_HANDLE","title":"STEP 4 — Я не уверен, стоит ли сейчас покупать — рынок на пике.","question":"STEP 3 — клиент сказал:\n«Я не уверен, стоит ли сейчас покупать — рынок на пике.»\n\nSTEP 4 — ваш ответ:\nЯ понимаю, логика понятная: когда всё растёт, кажется, что вот-вот должно упасть. Но в Дубае цикл работает немного по-другому: рост здесь движется демографией, притоком капитала и ограниченностью земли. Если хотите, я покажу 2–3 примера проектов, где ROI не зависит от краткосрочных колебаний. Сами увидите, есть ли там реальный потенциал.","hint":"","fontScale":36,"x":80,"y":3260,"answers":[{"id":"a_obj_r21_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r21_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r21_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r21_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":21}},{"id":"OBJ_R22_HANDLE","title":"STEP 4 — Я не знаю, куда именно лучше инвестировать — слишком много вариантов.","question":"STEP 3 — клиент сказал:\n«Я не знаю, куда именно лучше инвестировать — слишком много вариантов.»\n\nSTEP 4 — ваш ответ:\nДа, в Дубае действительно много предложений, и без структуры легко потеряться. Давайте посмотрим логику выбора: как понять, какие районы растут, а какие уже перегреты. Когда это ясно, всё дальше становится намного проще.","hint":"","fontScale":36,"x":700,"y":3260,"answers":[{"id":"a_obj_r22_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r22_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r22_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r22_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":22}},{"id":"OBJ_R23_HANDLE","title":"STEP 4 — Не доверяю застройщикам / боюсь, что не достроят.","question":"STEP 3 — клиент сказал:\n«Не доверяю застройщикам / боюсь, что не достроят.»\n\nSTEP 4 — ваш ответ:\nПравильно, это ключевой вопрос. Поэтому я работаю только с девелоперами, у которых есть эскроу-счета и государственные гарантии. Каждый платёж контролируется RERA — деньги не могут уйти, пока не завершён соответствующий этап строительства. Если хотите, я покажу реестр проекта и отчётность, чтобы вы видели всё своими глазами.","hint":"","fontScale":36,"x":1320,"y":3260,"answers":[{"id":"a_obj_r23_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r23_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r23_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r23_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":23}},{"id":"OBJ_R24_HANDLE","title":"STEP 4 — А если рынок упадёт?","question":"STEP 3 — клиент сказал:\n«А если рынок упадёт?»\n\nSTEP 4 — ваш ответ:\nХороший вопрос — любой рынок цикличен. Разница в том, что стоимость в Дубае держится не на спекуляциях, а на росте населения, налоговых преимуществах и международных потоках капитала. Вы не можете контролировать рынок, но можете выбрать актив, который останется сильным при любом сценарии. Этим я и занимаюсь.","hint":"","fontScale":36,"x":1940,"y":3260,"answers":[{"id":"a_obj_r24_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r24_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r24_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r24_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":24}},{"id":"OBJ_R25_HANDLE","title":"STEP 4 — Я боюсь покупать дистанционно / без визита в Дубай.","question":"STEP 3 — клиент сказал:\n«Я боюсь покупать дистанционно / без визита в Дубай.»\n\nSTEP 4 — ваш ответ:\nПонимаю — вы хотите видеть, что покупаете. Мы можем идти поэтапно: видеотуры, планы этажей, юридические документы, контракт через эскроу. Когда вы будете готовы, всё будет понятно и оформлено на ваше имя. Так вы не теряете время и возможность.","hint":"","fontScale":36,"x":2560,"y":3260,"answers":[{"id":"a_obj_r25_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r25_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r25_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r25_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":25}},{"id":"OBJ_R26_HANDLE","title":"STEP 4 — Я обсужу с женой / семьёй / партнёром.","question":"STEP 3 — клиент сказал:\n«Я обсужу с женой / семьёй / партнёром.»\n\nSTEP 4 — ваш ответ:\nХорошо, предлагаю выделить немного времени и встретиться вместе с вашим партнёром / женой. Я снова проведу полную презентацию, чтобы у вас была единая, полная картина, потому что вряд ли вы передадите все детали так же ясно, как могу объяснить я. Плюс это сэкономит вам силы. Это абсолютно нормально — появятся новые вопросы, и вместе вы сможете принять правильное решение. Идёт?","hint":"","fontScale":36,"x":80,"y":3520,"answers":[{"id":"a_obj_r26_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r26_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r26_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r26_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":26}},{"id":"OBJ_R27_HANDLE","title":"STEP 4 — Я боюсь сложностей с документами / переводом денег / визой.","question":"STEP 3 — клиент сказал:\n«Я боюсь сложностей с документами / переводом денег / визой.»\n\nSTEP 4 — ваш ответ:\nПонимаю. Для многих это кажется сложным, пока они не проходят процесс сами. Мы ведём всё от начала до конца: счёт в банке, Golden Visa, сдача в аренду. Всё официально, через государственные структуры — никаких посредников. Если хотите, я покажу весь процесс по шагам, на одной странице.","hint":"","fontScale":36,"x":700,"y":3520,"answers":[{"id":"a_obj_r27_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r27_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r27_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r27_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":27}},{"id":"OBJ_R28_HANDLE","title":"STEP 4 — Я не уверен, кому доверять — слишком много агентов.","question":"STEP 3 — клиент сказал:\n«Я не уверен, кому доверять — слишком много агентов.»\n\nSTEP 4 — ваш ответ:\nЭто абсолютно справедливо. В этой сфере доверие строится не обещаниями, а прозрачностью. Я покажу, с какими девелоперами мы работаем, какие кейсы у нас закрыты, и вы сами увидите уровень. А дальше уже решите, комфортно ли вам двигаться со мной.","hint":"","fontScale":36,"x":1320,"y":3520,"answers":[{"id":"a_obj_r28_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r28_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r28_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r28_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":28}},{"id":"OBJ_R29_HANDLE","title":"STEP 4 — Сейчас не время / подожду до следующего года.","question":"STEP 3 — клиент сказал:\n«Сейчас не время / подожду до следующего года.»\n\nSTEP 4 — ваш ответ:\nПонимаю — логично не торопиться. Но по опыту, «идеальный момент» никогда не чувствуется заранее, а лучшие проекты обычно уходят быстро. Я не предлагаю покупать сейчас — давайте просто посмотрим, что актуально сегодня, чтобы в нужный момент вы были на шаг впереди.","hint":"","fontScale":36,"x":1940,"y":3520,"answers":[{"id":"a_obj_r29_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r29_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r29_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r29_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":29}},{"id":"OBJ_R30_HANDLE","title":"STEP 4 — Сначала продам другую недвижимость / получу деньги.","question":"STEP 3 — клиент сказал:\n«Сначала продам другую недвижимость / получу деньги.»\n\nSTEP 4 — ваш ответ:\nЭто нормально — лучше двигаться в правильной последовательности. Позвольте показать несколько проектов, которые можно забронировать без финансового давления, с гибкими условиями. Так вы закрепите цену сегодня и сможете двигаться дальше после продажи, не теряя время и не закрывая двери.","hint":"","fontScale":36,"x":2560,"y":3520,"answers":[{"id":"a_obj_r30_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r30_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r30_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r30_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":30}},{"id":"OBJ_R31_HANDLE","title":"STEP 4 — Подожду, может, цены снизятся.","question":"STEP 3 — клиент сказал:\n«Подожду, может, цены снизятся.»\n\nSTEP 4 — ваш ответ:\nПонимаю — все хотят купить по лучшей цене. Но рынок Дубая работает иначе: девелоперы редко снижают цены, они просто уменьшают квоты. Поэтому даже просто разобраться в текущих ценах уже значит «сэкономить», потому что позже условия почти всегда будут жёстче.","hint":"","fontScale":36,"x":80,"y":3780,"answers":[{"id":"a_obj_r31_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r31_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r31_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r31_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":31}},{"id":"OBJ_R32_HANDLE","title":"STEP 4 — Не уверен в ROI.","question":"STEP 3 — клиент сказал:\n«Не уверен в ROI.»\n\nSTEP 4 — ваш ответ:\nЭто нормально — цифры должны быть прозрачными. Позвольте показать расчёт не «по среднему рынку», а конкретно под ваш бюджет и ваш срок. За пять минут вы увидите, где реальная доходность, а где просто маркетинг.","hint":"","fontScale":36,"x":700,"y":3780,"answers":[{"id":"a_obj_r32_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r32_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r32_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r32_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":32}},{"id":"OBJ_R33_HANDLE","title":"STEP 4 — Я посмотрю сам на сайте / позже вернусь к этому.","question":"STEP 3 — клиент сказал:\n«Я посмотрю сам на сайте / позже вернусь к этому.»\n\nSTEP 4 — ваш ответ:\nКонечно, вы хотите изучить всё самостоятельно — это правильный подход. Но онлайн всё выглядит одинаково. А реальные условия бронирования, скидки и квоты всегда проходят не публично, а «за закрытыми дверями». Вот здесь я и могу показать то, что не выставляется в открытый доступ.","hint":"","fontScale":36,"x":1320,"y":3780,"answers":[{"id":"a_obj_r33_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r33_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r33_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r33_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":33}},{"id":"OBJ_R34_HANDLE","title":"STEP 4 — Я не доверяю агентам.","question":"STEP 3 — клиент сказал:\n«Я не доверяю агентам.»\n\nSTEP 4 — ваш ответ:\nТак и нужно — в этой сфере доверие нужно заслужить, а не требовать. Поэтому я не предлагаю ничего покупать. Моя задача — дать понимание, где реальные возможности и где маркетинг. А решение вы всё равно принимаете сами.","hint":"","fontScale":36,"x":1940,"y":3780,"answers":[{"id":"a_obj_r34_handle_1","text":"Снято — вернуться в квалификацию","nextId":"STEP_2_RESUME"},{"id":"a_obj_r34_handle_2","text":"Клиент всё ещё сомневается","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r34_handle_3","text":"Другое возражение","nextId":"STEP_3_OBJECTIONS"},{"id":"a_obj_r34_handle_4","text":"Не хочет продолжать — STEP 6","nextId":"STEP_6_CLOSE"}],"meta":{"activeRoute":true,"type":"step_4_handling","step":4,"sourceRow":34}}],"calls":[],"qa_report":{"scope":"strict_6step_excel_flow","node_count":54,"broken_links":[],"max_answers":31,"source_file":"Untitled spreadsheet (1).xlsx"},"scope_note":"","source_meta":{"name":"structured_sales_tunnel_dubai_real_estate_ru","source_file":"Untitled spreadsheet.xlsx","language":"ru","description":"Normalized sales tunnel from Russian real estate sales scripts."},"editor_ux_notes":["Resizable editor side panel","Edit this tree opens editor at current call node","Selected/current node highlight","Center selected/current/start controls","Node search in editor"],"editor_pro_features":["Tree health check","Duplicate block","Simple add branch form","Preview answer target","Show only selected branch","Auto arrange tree","Color-coded node types"],"v5_features":["Library / Knowledge Base mode","Training Mode beta","Language dropdown with disabled English/Arabic beta options","Removed first-call subtitle from header"],"v5_1_fix":["Compact header","Visible Library and Training nav buttons","Small language selector","Fixed screen switching"],"v5_2_fix":["Bigger black buttons in Call Mode","Library and Training start at the top without empty whitespace","Compact spacing for Library and Training screens"],"v5_3_fix":["Hard fixed Library/Training top offset with fixed screen positioning","Call button always highlighted with premium orange-purple gradient","Library cards can be edited directly and sync with Call/Editor","Experimental Chrome DB file connect/save buttons"],"v5_4_fix":["Restored scroll in Call Mode","Removed duplicate Edit button in Library","Fixed inline Library card edit","Library card edit syncs with Call Mode and Editor"],"modeStartIds":{"first_call":"STEP_1_OPENING","follow_up":"STEP_1_OPENING","warm_call":"STEP_1_OPENING"},"v7_cleaning":{"source":"structured_sales_tunnel_database.json","cleaned_sections":{"stages":8,"scripts":48,"objections":27,"follow_up_used":4,"small_talk":10,"motivation_from_operations":5,"decision_logic":13},"excluded_from_call_module":["FU_005_NOTES_BIRTHDAYS","FU_006_STATS_MEMS","FU_007_CONGRATS"],"notes":"Raw IDs/field names are not shown as main content. Translit and mixed English/Russian were cleaned where possible."},"v8_changes":{"logic_hidden_in_library_by_default":true,"editor_right_panel_context":true,"node_titles_added":true,"whatsapp_icon_script":"WHATSAPP_EXPLAIN_FIRST_CALL"},"v7_1_changes":{"renamed_from_v8_to_7_1":true,"whatsapp_icon_outside_answer_box":true,"whatsapp_logic_rewritten":true,"inline_whatsapp_icon_removed":true,"market_analyst_tone_added":true,"dfmrei_market_objection_added":true,"full_voice_rewrite":true,"full_voice_rewrite_note":"Active call, follow-up, warm-call, objections and closing library rewritten in Vadim market-analyst tone.","investor_wit_info_value_layer":true,"genius_sales_scripts_logic_added":true},"v7_2_objection_routing":{"added":true,"description":"Unused objection blocks were promoted from Library into active Call Mode routing. Main router now branches by category, with concrete nodes for partner/wife, ROI, market timing, trust/process, remote purchase, documents, direct developer, waiting, liquidity and unclear investment direction.","active_objection_node_count":27,"additional_promoted":["OBJ_TACT_09_ITEM -> OBJ_QUICK_QUESTIONS","OBJ_TACT_10_ITEM -> OBJ_COMMISSION","OBJ_TACT_07_I_NE_HURRY_S_PURCHASE -> OBJ_NOT_HURRY"]},"v7_3_real_life_flow":{"added":true,"description":"Expanded first-call flow with live discovery: what the client already knows, what they analyze, other agents/offers, Dubai city investment logic, small talk that bridges to sales, off-plan/ready/EOI education and practical city/lifestyle reasoning.","active_nodes":["CALL_OPEN_CONTEXT","CLIENT_ALREADY_ANALYZING","COMPARE_AGENT_OFFERS","COMPARE_SPECIFIC_PROJECTS","CLIENT_ANALYZES_AREAS","CLIENT_ANALYZES_ROI","DUBAI_KNOWLEDGE_PROBE","DUBAI_INVESTMENT_LOGIC","DUBAI_FUTURE_LOGIC","DUBAI_GROWTH_LOGIC","DUBAI_LIFESTYLE_PROBE","DUBAI_PRACTICAL_LOGIC","DUBAI_FILTER_FRAME","SMALL_TALK_ROUTER","SMALL_TALK_LANDMARKS","SMALL_TALK_LIFESTYLE","EDU_OFFPLAN_READY","EDU_EOI_PAYMENT"]},"v7_4_call_ui_cleanup":{"added":true,"description":"Removed manager-facing router instructions from active call screens, converted ambiguous probe into direct client-answer buttons, cleared active hints, and prepared answer sentiment classification for green/red buttons."},"v7_5_logic_dedup":{"added":true,"description":"Active first-call route cleaned to reduce repeated qualification questions and circular routes between lifestyle, areas, ROI and analysis blocks.","main_spine":["START","CALL_OPEN_CONTEXT","QUALIFY_MOTIVATION","QUALIFY_GOAL","QUALIFY_BUDGET","QUALIFY_ANALYSIS","PROPOSE_ZOOM","FIRST_CALL_SUCCESS","END"],"updated_nodes":["CALL_OPEN_CONTEXT","QUALIFY_INTRO","QUALIFY_MOTIVATION","QUALIFY_GOAL","QUALIFY_ANALYSIS","CLIENT_ALREADY_ANALYZING","CLIENT_ANALYZES_AREAS","CLIENT_ANALYZES_ROI","DUBAI_LIFESTYLE_PROBE","DUBAI_FAMILY_LIFESTYLE","DUBAI_FILTER_FRAME","SMALL_TALK_LANDMARKS","OBJ_QUICK_QUESTIONS","PROPOSE_ZOOM"]},"v7_6_unique_blocks":{"added":true,"description":"Active first-call logic refined so similar blocks have distinct jobs: entry context, city map, investment frame, future demand, daily-life scenario, area shortlist, ROI inputs, rapport bridge, and re-entry router.","deactivated_duplicate_nodes":["SMALL_TALK_LIFESTYLE"],"updated_nodes":["QUALIFY_INTRO","CALL_OPEN_CONTEXT","QUALIFY_MOTIVATION","QUALIFY_GOAL","DUBAI_KNOWLEDGE_PROBE","DUBAI_INVESTMENT_LOGIC","DUBAI_FUTURE_LOGIC","DUBAI_LIFESTYLE_PROBE","CLIENT_ANALYZES_AREAS","CLIENT_ANALYZES_ROI","DUBAI_FILTER_FRAME","SMALL_TALK_ROUTER","SMALL_TALK_LANDMARKS","SMALL_TALK_LIFESTYLE"]},"v7_7_short_warm_voice":{"added":true,"description":"Active first-call copy shortened for live phone use: warmer, sharper, safer, less lecture-like, with lighter wit.","updated_node_count":58,"target":"Most active call cards now fit into quick spoken phrases instead of long analytical paragraphs."},"v7_8_books_recalibration":{"added":true,"description":"Call logic recalibrated from four sales/negotiation frameworks: tactical empathy/no-oriented permission, buyer-state routing, SPIN sequence, Challenger reframe, and summary before commitment.","sources":["Never Split the Difference","SPIN Selling","The Challenger Sale","The Sales Game"],"main_spine":["START","CALL_SAFE_PERMISSION","BUYER_STATE_CHECK","QUALIFY_MOTIVATION","QUALIFY_GOAL","SPIN_IMPLICATION_COST","SPIN_NEED_PAYOFF","QUALIFY_BUDGET","CHALLENGER_REFRAME","QUALIFY_ANALYSIS","SUMMARY_THATS_RIGHT","PROPOSE_ZOOM","FIRST_CALL_SUCCESS"],"new_nodes":["CALL_SAFE_PERMISSION","BUYER_STATE_CHECK","SPIN_IMPLICATION_COST","SPIN_NEED_PAYOFF","CHALLENGER_REFRAME","SUMMARY_THATS_RIGHT"]},"v14_blank_rebuild":{"added":true,"description":"All previous script blocks and answer buttons removed by user request. Kept one placeholder START node so the app remains usable for rebuilding step by step.","backup_files":["callscript-data.before_blank_rebuild_v14.json","CallScript.before_blank_rebuild_v14.html"]},"v15_yes_no_zoom_structure":{"added":true,"description":"Minimal rebuild skeleton requested by user. All script content replaced with editable placeholders following YES/NO handling structure until Zoom.","backup_files":["callscript-data.before_yes_no_structure_v15.json","CallScript.before_yes_no_structure_v15.html"]},"v16_step_by_step_card1":{"added":true,"description":"User-provided CARD 1 installed with 11 answer buttons. Each button leads to a placeholder branch for future step-by-step content.","backup_files":["callscript-data.before_card1_v16.json","CallScript.before_card1_v16.html"]},"v17_card1_responses":{"added":true,"description":"User-provided response text installed for all 11 CARD 1 buttons. Temporary branch buttons added for continued step-by-step building.","mapped_buttons":["DA","NOT INTERESTED","WORKING WITH SOMEONE","ALREADY BOUGHT","DID NOT LEAVE","SEND WHATSAPP","U MENYA MALO VREMENI","MNE NEKOGDA","RABOTAIU NAPRYAMUYU S ZASTROISHIKOM","Мне сейчас неудобно финансово / нет ликвидности.","GENERAL DOUBTS"]},"v18_card1_branch_texts":{"added":true,"description":"Updated text for DA and the ten NO/non-DA CARD 1 branches in the order provided by the user. Existing temporary branch buttons preserved.","mapping":["CARD_1_DA","CARD_1_NOT_INTERESTED","CARD_1_WORKING_WITH_SOMEONE","CARD_1_ALREADY_BOUGHT","CARD_1_DID_NOT_LEAVE","CARD_1_SEND_WHATSAPP","CARD_1_MALO_VREMENI","CARD_1_MNE_NEKOGDA","CARD_1_DIRECT_DEVELOPER","CARD_1_NO_LIQUIDITY","CARD_1_GENERAL_DOUBTS"]},"v19_exact_user_inputs_only":{"added":true,"description":"Removed all assistant-invented temporary buttons/placeholders. Kept only CARD 1 with 11 user-provided buttons and 11 leaf cards with user-provided text.","backup_files":["callscript-data.before_exact_user_only_v19.json","CallScript.before_exact_user_only_v19.html"]},"v20_step2_numbered_blocks":{"added":true,"description":"Renumbered CARD 1 flow into Block 001-012. Block 002 is incoming DA; Blocks 003-012 are incoming NO-style branches as provided by user.","backup_files":["callscript-data.before_step2_numbered_blocks_v20.json","CallScript.before_step2_numbered_blocks_v20.html"]},"v21_visible_block_numbers":{"added":true,"description":"Made Block 001-012 numbering visible inside call cards, not only internal IDs/titles."},"v22_excel_staged_sales_flow":{"added":true,"description":"Rebuilt script from the provided Excel into a staged call tree with qualification spine, objection routers, pushback handling, soft close, and resume controls.","source":"/Users/vadimnegru/Downloads/Untitled spreadsheet (1).xlsx"},"v23_strict_6step_excel_flow":{"added":true,"description":"Rebuilt around the exact six Excel columns: Step 1 opening, Step 2 qualification, Step 3 exact client objection, Step 4 handling, Step 5 push/clarifier, Step 6 close with save-number/point-of-reference ending.","source":"/Users/vadimnegru/Downloads/Untitled spreadsheet (1).xlsx"}};
+const STORAGE_KEY = "callscript_strict_6step_excel_flow_v23";
+
+let app = {
+  mode: "call",
+  data: null,
+  currentId: null,
+  selectedId: null,
+  history: [],
+  callNote: "",
+  fileHandle: null,
+  pendingCenterId: null,
+  branchFocusId: null,
+  showOnlyBranch: false,
+  libraryFilter: "all",
+  trainingIndex: 0,
+  libraryEditId: null,
+  dbFileHandle: null,
+  libraryFilter: "all",
+  trainingIndex: 0,
+  editorPanelWidth: Number(localStorage.getItem("editor_panel_width_px") || 480),
+  dragging: null,
+  dragOffset: {x:0,y:0}
+};
+
+function clone(x){ return JSON.parse(JSON.stringify(x)); }
+function uid(prefix){ return prefix + "_" + Math.random().toString(16).slice(2) + "_" + Date.now(); }
+function escapeHtml(s){ return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
+function mapQ(){ return Object.fromEntries(app.data.questions.map(q => [q.id, q])); }
+function q(id){ return mapQ()[id]; }
+function current(){ return q(app.currentId) || q(app.data.startId) || app.data.questions[0]; }
+function selected(){ return q(app.selectedId) || current(); }
+
+function presenterFontPx(qq){
+  const text = qq?.question || "";
+  let scale = typeof qq?.fontScale === "number" ? qq.fontScale : 55;
+  let px = Math.round(18 + (scale / 100) * 48);
+  if(text.length > 60) px = Math.min(px, 46);
+  if(text.length > 100) px = Math.min(px, 36);
+  if(text.length > 160) px = Math.min(px, 29);
+  return Math.max(20, px);
+}
+function toast(t){ const el=document.getElementById("toast"); el.textContent=t; el.style.display="block"; setTimeout(()=>el.style.display="none",1800); }
+function persistBrowser(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(app.data)); }
+
+function applyEditorPanelWidth(){
+  const wrap = document.getElementById("editorWrap");
+  if(wrap){
+    wrap.style.setProperty("--editorPanelWidth", app.editorPanelWidth + "px");
+  }
+}
+
+function initEditorResizer(){
+  const resizer = document.getElementById("editorResizer");
+  if(!resizer || resizer.dataset.ready === "1") return;
+  resizer.dataset.ready = "1";
+  let startX = 0;
+  let startWidth = 0;
+
+  const onMove = (ev) => {
+    const dx = startX - ev.clientX;
+    const next = Math.min(Math.max(startWidth + dx, 320), Math.floor(window.innerWidth * 0.75));
+    app.editorPanelWidth = next;
+    localStorage.setItem("editor_panel_width_px", String(next));
+    applyEditorPanelWidth();
+  };
+
+  const onUp = () => {
+    document.body.style.userSelect = "";
+    document.removeEventListener("mousemove", onMove);
+    document.removeEventListener("mouseup", onUp);
+  };
+
+  resizer.addEventListener("mousedown", (ev) => {
+    startX = ev.clientX;
+    startWidth = app.editorPanelWidth || 480;
+    document.body.style.userSelect = "none";
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onUp);
+  });
+}
+
+function centerNode(id, flash=false){
+  if(!id) return;
+  const node = q(id);
+  const wrap = document.getElementById("canvasWrap");
+  if(!node || !wrap) return;
+  const targetLeft = Math.max(0, (node.x || 0) - wrap.clientWidth / 2 + 170);
+  const targetTop = Math.max(0, (node.y || 0) - wrap.clientHeight / 2 + 100);
+  wrap.scrollTo({ left: targetLeft, top: targetTop, behavior: "smooth" });
+
+  if(flash){
+    setTimeout(() => {
+      const el = document.querySelector(`[data-node-id="${id}"]`);
+      if(el){
+        el.classList.remove("flash");
+        void el.offsetWidth;
+        el.classList.add("flash");
+      }
+    }, 180);
+  }
+}
+
+function centerSelectedNode(){
+  centerNode(app.selectedId || app.currentId || app.data.startId, true);
+}
+
+function selectAndCenter(id){
+  if(!id) return;
+  app.selectedId = id;
+  if(mode === "library"){
+    window.scrollTo(0,0);
+    setTimeout(() => {
+      window.scrollTo(0,0);
+      const el = document.querySelector("#screenLibrary .libWrap");
+      if(el) el.scrollTop = 0;
+    }, 20);
+  }
+  if(mode === "training"){
+    window.scrollTo(0,0);
+    setTimeout(() => {
+      window.scrollTo(0,0);
+      const el = document.querySelector("#screenTraining .trainingWrap");
+      if(el) el.scrollTop = 0;
+    }, 20);
+  }
+  renderAll();
+  setTimeout(() => centerNode(id, true), 70);
+}
+
+function openEditorAtCurrent(){
+  app.selectedId = app.currentId || app.selectedId || app.data.startId;
+  app.pendingCenterId = app.selectedId;
+  setMode("editor");
+}
+
+function renderSearchResults(query){
+  const box = document.getElementById("searchResults");
+  if(!box) return;
+  query = String(query || "").trim().toLowerCase();
+  if(!query){
+    box.style.display = "none";
+    box.innerHTML = "";
+    return;
+  }
+  const results = app.data.questions
+    .filter(node => {
+      const answers = (node.answers || []).map(a => a.text).join(" ");
+      return (node.question + " " + node.hint + " " + answers).toLowerCase().includes(query);
+    })
+    .slice(0, 12);
+
+  box.innerHTML = results.length ? results.map(node => `
+    <button onclick="selectSearchResult('${node.id}')">
+      <b>${escapeHtml(node.question.slice(0, 70))}${node.question.length > 70 ? "…" : ""}</b>
+      <div class="panelHint">${escapeHtml((node.hint || "").slice(0, 90))}</div>
+    </button>
+  `).join("") : `<div class="empty">Ничего не найдено</div>`;
+  box.style.display = "block";
+}
+
+function selectSearchResult(id){
+  const input = document.getElementById("nodeSearch");
+  const box = document.getElementById("searchResults");
+  if(input) input.value = "";
+  if(box){ box.style.display = "none"; box.innerHTML = ""; }
+  selectAndCenter(id);
+}
+
+function clearSearch(){
+  const input = document.getElementById("nodeSearch");
+  const box = document.getElementById("searchResults");
+  if(input) input.value = "";
+  if(box){ box.style.display = "none"; box.innerHTML = ""; }
+}
+
+function nodeType(node){
+  const t = node?.meta?.type || "";
+  if(t) return t;
+  const id = node?.id || "";
+  if(id === app.data.startId) return "start";
+  if(id.includes("QUALIFY")) return "qualification";
+  if(id.includes("OBJ")) return "first_call_objection";
+  if(id.includes("STATUS") || id.includes("WORKING") || id.includes("BOUGHT") || id.includes("DID_NOT")) return "first_call_status";
+  if(id.includes("PROBE")) return "probe";
+  if(id.includes("SUCCESS")) return "first_call_success";
+  if(id.includes("CLOSE") || id.includes("END")) return "soft_close";
+  return "router";
+}
+
+function collectBranch(rootId){
+  const allowed = new Set();
+  const stack = [rootId];
+  while(stack.length){
+    const id = stack.pop();
+    if(!id || allowed.has(id)) continue;
+    allowed.add(id);
+    const node = q(id);
+    if(!node) continue;
+    (node.answers || []).forEach(a => { if(a.nextId) stack.push(a.nextId); });
+  }
+  return allowed;
+}
+
+function isNodeVisibleInBranch(id){
+  if(!app.showOnlyBranch || !app.branchFocusId) return true;
+  return collectBranch(app.branchFocusId).has(id);
+}
+
+function toggleOnlyBranch(){
+  app.showOnlyBranch = !app.showOnlyBranch;
+  app.branchFocusId = app.showOnlyBranch ? (app.selectedId || app.currentId || app.data.startId) : null;
+  renderAll();
+  if(app.branchFocusId) setTimeout(() => centerNode(app.branchFocusId, true), 80);
+}
+
+function updateBranchUi(){
+  const btn = document.getElementById("branchToggleBtn");
+  const notice = document.getElementById("branchModeNotice");
+  if(btn) btn.textContent = app.showOnlyBranch ? "Показать всё" : "Только ветка";
+  if(notice) notice.textContent = app.showOnlyBranch ? "Показана только выбранная ветка" : "";
+}
+
+function duplicateSelectedNode(){
+  const s = selected(); if(!s) return;
+  const id = uid("q");
+  const copy = clone(s);
+  copy.id = id;
+  copy.question = copy.question + " — копия";
+  copy.x = (s.x || 0) + 420;
+  copy.y = (s.y || 0) + 80;
+  copy.answers = (copy.answers || []).map(a => ({...a, id: uid("a")}));
+  copy.meta = copy.meta || {type:"custom"};
+  app.data.questions.push(copy);
+  app.selectedId = id;
+  persistBrowser();
+  renderAll();
+  setTimeout(() => centerNode(id, true), 80);
+  toast("Блок продублирован");
+}
+
+function previewAnswerTarget(targetId){
+  if(!targetId) return;
+  app.selectedId = targetId;
+  renderAll();
+  setTimeout(() => centerNode(targetId, true), 80);
+}
+
+function addSimpleBranchFromSelected(){
+  const s = selected(); if(!s) return;
+  const answerText = (document.getElementById("quickAnswerText")?.value || "").trim();
+  const nextQuestion = (document.getElementById("quickNextQuestion")?.value || "").trim();
+  if(!answerText || !nextQuestion){ toast("Заполни ответ клиента и следующий текст"); return; }
+  const id = uid("q");
+  const newNode = {id, question:nextQuestion, hint:"Новая ветка", fontScale:50, x:(s.x||0)+520, y:(s.y||0)+((s.answers||[]).length*120), answers:[], meta:{type:"custom"}};
+  s.answers = s.answers || [];
+  s.answers.push({id:uid("a"), text:answerText, nextId:id});
+  app.data.questions.push(newNode);
+  app.selectedId = id;
+  persistBrowser();
+  const qa = document.getElementById("quickAnswerText"); if(qa) qa.value = "";
+  const qq = document.getElementById("quickNextQuestion"); if(qq) qq.value = "";
+  renderAll();
+  setTimeout(() => centerNode(id, true), 80);
+  toast("Ветка создана");
+}
+
+function validateTree(){
+  const report = {brokenLinks:[], emptyQuestions:[], noAnswers:[], unreachable:[], duplicateAnswerLabels:[]};
+  const ids = new Set(app.data.questions.map(n => n.id));
+  app.data.questions.forEach(node => {
+    if(!String(node.question || "").trim()) report.emptyQuestions.push(node.id);
+    const labels = new Set();
+    (node.answers || []).forEach(a => {
+      if(!ids.has(a.nextId)) report.brokenLinks.push({from:node.id,label:a.text,to:a.nextId});
+      const key = String(a.text || "").trim().toLowerCase();
+      if(key && labels.has(key)) report.duplicateAnswerLabels.push(node.id);
+      labels.add(key);
+    });
+    if((node.answers || []).length === 0 && node.id !== "END") report.noAnswers.push(node.id);
+  });
+  const seen = new Set();
+  const stack = [app.data.startId];
+  while(stack.length){
+    const id = stack.pop();
+    if(!id || seen.has(id) || !ids.has(id)) continue;
+    seen.add(id);
+    (q(id)?.answers || []).forEach(a => stack.push(a.nextId));
+  }
+  app.data.questions.forEach(node => { if(!seen.has(node.id)) report.unreachable.push(node.id); });
+  return report;
+}
+
+function renderTreeHealth(){
+  const r = validateTree();
+  const problems = r.brokenLinks.length + r.emptyQuestions.length + r.unreachable.length;
+  const warnings = r.noAnswers.length + r.duplicateAnswerLabels.length;
+  const status = problems === 0 && warnings === 0 ? `<span class="qaOk">✅ Всё ок</span>` : problems > 0 ? `<span class="qaBad">⛔ Есть ошибки</span>` : `<span class="qaWarn">⚠️ Есть предупреждения</span>`;
+  const item = (label, val, cls) => `<div><b class="${cls}">${val}</b> — ${label}</div>`;
+  return `<div class="qaBox">
+    <div style="font-weight:950;margin-bottom:8px">Проверка дерева: ${status}</div>
+    ${item("битые ссылки", r.brokenLinks.length, r.brokenLinks.length ? "qaBad" : "qaOk")}
+    ${item("пустые вопросы", r.emptyQuestions.length, r.emptyQuestions.length ? "qaBad" : "qaOk")}
+    ${item("недостижимые блоки", r.unreachable.length, r.unreachable.length ? "qaBad" : "qaOk")}
+    ${item("блоки без ответов", r.noAnswers.length, r.noAnswers.length ? "qaWarn" : "qaOk")}
+    ${item("повторяющиеся кнопки", r.duplicateAnswerLabels.length, r.duplicateAnswerLabels.length ? "qaWarn" : "qaOk")}
+  </div>`;
+}
+
+
+function handleLanguageChange(value){
+  const select = document.getElementById("languageSelect");
+  if(select) select.value = "ru";
+  toast("English / Arabic пока Beta. Перевод добавим позже.");
+}
+
+function libraryItems(){
+  return app.data.questions.map(node => ({
+    id: node.id,
+    type: nodeType(node),
+    title: (node.question || "").split("\\n")[0].slice(0, 90),
+    question: node.question || "",
+    hint: node.hint || "",
+    answers: node.answers || []
+  }));
+}
+
+function niceType(t){
+  const map = {
+    start:"Старт",
+    qualification:"Квалификация",
+    first_call_objection:"Возражение",
+    objection:"Возражение",
+    first_call_status:"Статус клиента",
+    status:"Статус клиента",
+    probe:"Уточнение",
+    first_call_success:"Успех",
+    soft_close:"Мягкое закрытие",
+    end:"Финал",
+    router:"Маршрут",
+    custom:"Другое",
+    follow_up_start:"Follow-up старт",
+    follow_up:"Follow-up",
+    follow_up_success:"Follow-up успех",
+    follow_up_objection:"Follow-up возражение",
+    follow_up_end:"Follow-up финал",
+    warm_call_start:"Warm старт",
+    warm_call:"Warm Call",
+    warm_call_success:"Warm успех",
+    warm_call_end:"Warm финал",
+    stage:"Этапы",
+    script:"Скрипты",
+    small_talk:"Лёгкий разговор",
+    motivation:"Мотивация",
+    logic:"Логика"
+  };
+  return map[t] || t || "Другое";
+}
+
+function setLibraryFilter(type){
+  app.libraryFilter = type;
+  renderLibrary();
+}
+
+
+
+async function connectDbFile(){
+  const status = document.getElementById("dbStatus");
+  try{
+    if(!window.showOpenFilePicker){
+      toast("Chrome DB Save не поддерживается в этом браузере.");
+      if(status) status.textContent = "DB: not supported";
+      return;
+    }
+    const [handle] = await window.showOpenFilePicker({
+      types:[{description:"CallScript JSON", accept:{"application/json":[".json"]}}],
+      multiple:false
+    });
+    app.dbFileHandle = handle;
+    const file = await handle.getFile();
+    const text = await file.text();
+    const imported = JSON.parse(text);
+    if(imported.questions && imported.startId){
+      app.data = imported;
+      app.currentId = app.data.startId;
+      app.selectedId = app.data.startId;
+      persistBrowser();
+      renderAll();
+      toast("DB подключена и загружена");
+      if(status) status.textContent = "DB: " + handle.name;
+    }else{
+      toast("Это не похоже на CallScript database JSON");
+    }
+  }catch(e){
+    console.warn(e);
+    toast("DB не подключена");
+  }
+}
+
+async function saveToConnectedDb(){
+  const status = document.getElementById("dbStatus");
+  try{
+    if(!app.dbFileHandle){
+      toast("Сначала нажми DB и выбери database JSON");
+      return;
+    }
+    const permission = await app.dbFileHandle.requestPermission({mode:"readwrite"});
+    if(permission !== "granted"){
+      toast("Нет доступа на запись в DB файл");
+      return;
+    }
+    const writable = await app.dbFileHandle.createWritable();
+    await writable.write(JSON.stringify(app.data, null, 2));
+    await writable.close();
+    persistBrowser();
+    toast("Сохранено в подключенный DB файл");
+    if(status) status.textContent = "DB saved: " + app.dbFileHandle.name;
+  }catch(e){
+    console.warn(e);
+    toast("Не удалось сохранить в DB файл");
+  }
+}
+
+
+function libraryEditBoxHtml(id){
+  if(app.libraryEditId !== id) return "";
+  const node = q(id);
+  if(!node) return "";
+  return `
+    <div class="libEditBox">
+      <div style="font-weight:950">Редактирование карточки</div>
+      <div class="libEditLabel">Текст карточки / скрипт</div>
+      <textarea id="libEditQuestion">${escapeHtml(node.question || "")}</textarea>
+      <div class="libEditLabel">Подсказка / цель</div>
+      <input id="libEditHint" value="${escapeHtml(node.hint || "")}" placeholder="Hint / goal">
+      <div class="libActions">
+        <button onclick="saveLibraryEdit('${id}')">Сохранить карточку</button>
+        <button onclick="cancelLibraryEdit()">Отмена</button>
+      </div>
+    </div>
+  `;
+}
+
+function startLibraryEdit(id){
+  app.libraryEditId = id;
+  renderLibrary();
+  setTimeout(() => {
+    const el = document.getElementById("libEditQuestion");
+    if(el){ el.focus(); el.selectionStart = el.selectionEnd = el.value.length; }
+  }, 50);
+}
+
+function saveLibraryEdit(id){
+  const node = q(id);
+  if(!node) return;
+  const text = document.getElementById("libEditQuestion")?.value ?? node.question ?? "";
+  const hint = document.getElementById("libEditHint")?.value ?? "";
+  node.question = text;
+  node.hint = hint;
+  app.libraryEditId = null;
+  persistBrowser();
+  renderAll();
+  toast("Карточка сохранена. Call и Editor обновлены.");
+}
+
+function cancelLibraryEdit(){
+  app.libraryEditId = null;
+  renderLibrary();
+}
+
+
+function renderLibrary(){
+  const grid = document.getElementById("libraryGrid");
+  const filters = document.getElementById("libraryFilters");
+  if(!grid || !filters) return;
+
+  app.libraryFilter = app.libraryFilter || "all";
+  app.showLogic = !!app.showLogic;
+
+  let items = libraryItems();
+  if(!app.showLogic){
+    items = items.filter(item => item.type !== "logic");
+  }
+
+  const types = ["all", ...Array.from(new Set(items.map(i => i.type)))];
+
+  filters.innerHTML = types.map(t => `
+    <button class="${app.libraryFilter === t ? "active" : ""}" onclick="setLibraryFilter('${t}')">
+      ${t === "all" ? "All" : niceType(t)}
+    </button>
+  `).join("") + `
+    <button class="logicToggle ${app.showLogic ? "active" : ""}" onclick="toggleLogicLibrary()">
+      ${app.showLogic ? "Скрыть тех. логику" : "Показать тех. логику"}
+    </button>
+  `;
+
+  const qText = (document.getElementById("librarySearch")?.value || "").trim().toLowerCase();
+  const filtered = items.filter(item => {
+    const passType = app.libraryFilter === "all" || item.type === app.libraryFilter;
+    const hay = (item.question + " " + item.hint + " " + item.answers.map(a=>a.text).join(" ")).toLowerCase();
+    const passSearch = !qText || hay.includes(qText);
+    return passType && passSearch;
+  });
+
+  grid.innerHTML = filtered.map(item => `
+    <div class="libCard">
+      <div class="libMeta">${escapeHtml(niceType(item.type))}</div>
+      <h3>${escapeHtml(nodeTitle(q(item.id)) || item.title || "Без названия")}</h3>
+      <div class="libText">${escapeHtml(item.question)}</div>
+      ${item.hint ? `<div class="panelHint">${escapeHtml(item.hint)}</div>` : ""}
+      <div class="libActions">
+        <button onclick="copyLibraryText('${item.id}')">Копировать</button>
+        <button onclick="openLibraryItemInCall('${item.id}')">Звонок</button>
+        <button onclick="openLibraryItemInEditor('${item.id}')">Редактор</button>
+        <button onclick="startLibraryEdit('${item.id}')">Изменить</button>
+      </div>
+      ${libraryEditBoxHtml(item.id)}
+    </div>
+  `).join("") || `<div class="empty">Ничего не найдено</div>`;
+}
+
+function toggleLogicLibrary(){
+  app.showLogic = !app.showLogic;
+  if(!app.showLogic && app.libraryFilter === "logic") app.libraryFilter = "all";
+  renderLibrary();
+}
+
+function copyLibraryText(id){
+  const node = q(id);
+  if(!node) return;
+  const text = node.question || "";
+  navigator.clipboard?.writeText(text);
+  toast("Текст скопирован");
+}
+
+function openLibraryItemInCall(id){
+  if(!q(id)) return;
+  app.currentId = id;
+  pushHistory(id);
+  persistBrowser();
+  setMode("call");
+}
+
+function openLibraryItemInEditor(id){
+  if(!q(id)) return;
+  app.selectedId = id;
+  app.pendingCenterId = id;
+  setMode("editor");
+}
+
+function trainingCards(){
+  const cards = [];
+  app.data.questions.forEach(node => {
+    (node.answers || []).forEach(ans => {
+      const target = q(ans.nextId);
+      if(!target) return;
+      const type = nodeType(target);
+      if(["first_call_objection","first_call_status","probe","qualification","objection","follow_up","follow_up_objection","warm_call"].includes(type)){
+        cards.push({
+          fromId: node.id,
+          answerText: ans.text,
+          targetId: target.id,
+          targetText: target.question,
+          goal: target.hint || node.hint || "Выбери лучшую реакцию и затем проверь готовый скрипт."
+        });
+      }
+    });
+  });
+  return cards;
+}
+
+function renderTraining(){
+  const phrase = document.getElementById("trainingPhrase");
+  const goal = document.getElementById("trainingGoal");
+  const options = document.getElementById("trainingOptions");
+  const reveal = document.getElementById("trainingReveal");
+  if(!phrase || !goal || !options || !reveal) return;
+
+  const cards = trainingCards();
+  if(!cards.length){
+    phrase.textContent = "Нет тренировочных карточек";
+    goal.textContent = "";
+    options.innerHTML = "";
+    reveal.classList.remove("active");
+    reveal.innerHTML = "";
+    return;
+  }
+
+  app.trainingIndex = Math.max(0, Math.min(app.trainingIndex, cards.length - 1));
+  const card = cards[app.trainingIndex];
+  phrase.textContent = "“" + card.answerText + "”";
+  goal.textContent = card.goal;
+
+  const distractors = cards
+    .filter(c => c.targetId !== card.targetId)
+    .slice()
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 2);
+  const opts = [card, ...distractors].sort(() => Math.random() - 0.5);
+
+  options.innerHTML = opts.map(opt => `
+    <button onclick="chooseTrainingAnswer('${card.targetId}','${opt.targetId}')">
+      ${escapeHtml((opt.targetText || "").slice(0, 180))}${(opt.targetText || "").length > 180 ? "…" : ""}
+    </button>
+  `).join("");
+
+  reveal.classList.remove("active");
+  reveal.innerHTML = "";
+}
+
+function chooseTrainingAnswer(correctId, chosenId){
+  const reveal = document.getElementById("trainingReveal");
+  const correct = q(correctId);
+  if(!reveal || !correct) return;
+  const ok = correctId === chosenId;
+  reveal.classList.add("active");
+  reveal.innerHTML = `
+    <div style="font-weight:950;margin-bottom:8px">${ok ? "✅ Правильно" : "⚠️ Не лучший вариант"}</div>
+    <div class="muted" style="margin-bottom:8px">Лучший ответ:</div>
+    <div style="white-space:pre-wrap;line-height:1.55">${escapeHtml(correct.question || "")}</div>
+    <div class="libActions">
+      <button onclick="openLibraryItemInCall('${correctId}')">Open in Call</button>
+      <button onclick="openLibraryItemInEditor('${correctId}')">Open in Editor</button>
+      <button onclick="nextTrainingCard()">Следующая ситуация</button>
+    </div>
+  `;
+}
+
+function nextTrainingCard(){
+  const cards = trainingCards();
+  if(!cards.length) return;
+  app.trainingIndex = (app.trainingIndex + 1) % cards.length;
+  renderTraining();
+}
+
+function autoArrangeTree(){
+  const levels = new Map();
+  const queue = [{id:app.data.startId, level:0}];
+  const seen = new Set();
+  while(queue.length){
+    const {id, level} = queue.shift();
+    if(!id || seen.has(id) || !q(id)) continue;
+    seen.add(id);
+    levels.set(id, level);
+    (q(id).answers || []).forEach(a => queue.push({id:a.nextId, level:level+1}));
+  }
+  app.data.questions.forEach(n => { if(!levels.has(n.id)) levels.set(n.id, 0); });
+  const groups = {};
+  app.data.questions.forEach(n => {
+    const l = levels.get(n.id) || 0;
+    groups[l] = groups[l] || [];
+    groups[l].push(n);
+  });
+  Object.keys(groups).map(Number).sort((a,b)=>a-b).forEach(level => {
+    groups[level].forEach((node, idx) => {
+      node.x = 80 + level * 560;
+      node.y = 90 + idx * 260;
+    });
+  });
+  persistBrowser();
+  renderAll();
+  setTimeout(() => centerNode(app.selectedId || app.data.startId, true), 80);
+  toast("Дерево разложено");
+}
+
+
+
+function resetToBuiltInDatabase(){
+  if(!confirm("Загрузить встроенную RU 7.1 базу? Текущее локальное древо в этом браузере будет заменено.")) return;
+  app.data = clone(defaultData);
+  migrateData();
+  app.currentId = app.data.startId;
+  app.selectedId = app.data.startId;
+  app.history = [];
+  app.callNote = "";
+  persistBrowser();
+  setMode("editor");
+  toast("RU 7.1 база загружена");
+}
+
+
+function migrateData(){
+  if(!app.data || !Array.isArray(app.data.questions)) return;
+  app.data.questions.forEach(qq => {
+    if(typeof qq.fontScale !== "number") qq.fontScale = 55;
+  });
+  if(!Array.isArray(app.data.calls)) app.data.calls = [];
+}
+
+function init(){
+  try { app.data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || clone(defaultData); }
+  catch { app.data = clone(defaultData); }
+  migrateData();
+  app.currentId = app.data.startId;
+  app.selectedId = app.data.startId;
+  renderAll();
+}
+
+
+function startFirstCall(){
+  const id = app.data.modeStartIds?.first_call || app.data.startId || "START";
+  if(!q(id)) return;
+  app.currentId = id;
+  app.history = [id];
+  app.selectedId = id;
+  persistBrowser();
+  setMode("call");
+  setTimeout(() => {
+    const el = document.getElementById("screenCall");
+    if(el) el.scrollTop = 0;
+    window.scrollTo(0,0);
+  }, 30);
+}
+
+function startFollowUpCall(){
+  const id = app.data.modeStartIds?.follow_up;
+  if(!id || !q(id)){
+    toast("Follow-up сценарий не найден");
+    return;
+  }
+  app.currentId = id;
+  app.history = [id];
+  app.selectedId = id;
+  persistBrowser();
+  setMode("call");
+  setTimeout(() => {
+    const el = document.getElementById("screenCall");
+    if(el) el.scrollTop = 0;
+    window.scrollTo(0,0);
+  }, 30);
+  toast("Follow-up Call открыт");
+}
+
+function startWarmCall(){
+  const id = app.data.modeStartIds?.warm_call;
+  if(!id || !q(id)){
+    toast("Warm Call сценарий не найден");
+    return;
+  }
+  app.currentId = id;
+  app.history = [id];
+  app.selectedId = id;
+  persistBrowser();
+  setMode("call");
+  setTimeout(() => {
+    const el = document.getElementById("screenCall");
+    if(el) el.scrollTop = 0;
+    window.scrollTo(0,0);
+  }, 30);
+  toast("Warm Call открыт");
+}
+
+function setMode(mode){
+  app.mode = mode;
+  const ids = ["Call","Editor","Library","Training"];
+  document.getElementById("screenCall")?.classList.toggle("active", mode==="call");
+  document.getElementById("screenEditor")?.classList.toggle("active", mode==="editor");
+  document.getElementById("screenLibrary")?.classList.toggle("active", mode==="library");
+  document.getElementById("screenTraining")?.classList.toggle("active", mode==="training");
+
+  document.getElementById("btnCall")?.classList.toggle("active", mode==="call");
+  document.getElementById("btnEditor")?.classList.toggle("active", mode==="editor");
+  document.getElementById("btnLibrary")?.classList.toggle("active", mode==="library");
+  document.getElementById("btnTraining")?.classList.toggle("active", mode==="training");
+
+  if(mode === "editor"){
+    app.selectedId = app.currentId || app.selectedId || app.data.startId;
+    app.pendingCenterId = app.selectedId;
+  }
+  renderAll();
+  if(mode === "editor"){
+    setTimeout(() => centerNode(app.pendingCenterId, true), 80);
+  }
+}
+
+function chooseAnswer(aid){
+  const cq = current();
+  const ans = cq.answers.find(a=>a.id===aid);
+  if(!ans) return;
+  app.history.push({questionId:cq.id, question:cq.question, answer:ans.text, previousId:cq.id});
+  app.currentId = ans.nextId;
+  app.selectedId = ans.nextId;
+  renderAll();
+}
+
+function goToQuestion(id){
+  app.currentId = id;
+  app.selectedId = id;
+  renderAll();
+}
+
+function back(){
+  const last = app.history.pop();
+  if(last){ app.currentId = last.previousId; app.selectedId = last.previousId; }
+  renderAll();
+}
+
+function resetCall(){
+  app.history = [];
+  app.callNote = "";
+  app.currentId = app.data.startId;
+  app.selectedId = app.data.startId;
+  renderAll();
+}
+
+function copySummary(){
+  const txt = app.history.map((h,i)=>`${i+1}. ${h.question}\nОтвет: ${h.answer}`).join("\n\n") || "История пустая";
+  navigator.clipboard?.writeText(txt);
+  toast("Summary скопирован");
+}
+
+function updateCallNote(value){
+  app.callNote = value;
+}
+
+function saveCall(){
+  const note = app.callNote || "";
+  app.data.calls.unshift({id:uid("call"), createdAt:new Date().toLocaleString(), note, history:clone(app.history)});
+  persistBrowser();
+  toast("Заметка и история сохранены. Нажми Save to folder для файла.");
+  app.callNote = "";
+  renderAll();
+}
+
+async function saveToFile(){
+  persistBrowser();
+  const text = JSON.stringify(app.data, null, 2);
+
+  if ("showSaveFilePicker" in window) {
+    try {
+      if (!app.fileHandle) {
+        app.fileHandle = await window.showSaveFilePicker({
+          suggestedName: "callscript-data.json",
+          types: [{ description: "JSON file", accept: { "application/json": [".json"] } }]
+        });
+      }
+      const writable = await app.fileHandle.createWritable();
+      await writable.write(text);
+      await writable.close();
+      toast("Сохранено в выбранный JSON-файл");
+      return;
+    } catch(e) {
+      if (e.name === "AbortError") return;
+      console.error(e);
+    }
+  }
+
+  const blob = new Blob([text], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "callscript-data.json";
+  a.click();
+  URL.revokeObjectURL(url);
+  toast("Скачал callscript-data.json");
+}
+
+function loadJsonFile(){ document.getElementById("jsonInput").click(); }
+function handleJsonImport(ev){
+  const file = ev.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const data = JSON.parse(reader.result);
+      if(!data.startId || !Array.isArray(data.questions)) throw new Error("bad");
+      if(!Array.isArray(data.calls)) data.calls = [];
+      app.data = data;
+      migrateData();
+      app.currentId = data.startId;
+      app.selectedId = data.startId;
+      app.history = [];
+      persistBrowser();
+      renderAll();
+      toast("JSON загружен");
+    }catch(e){ alert("Не смог открыть JSON. Проверь файл."); }
+  };
+  reader.readAsText(file);
+  ev.target.value="";
+}
+
+
+function nodeTitle(n){
+  if(!n) return "";
+  return n.title || (n.question || "").split(/\n+/).map(x=>x.trim()).filter(Boolean)[0]?.slice(0,90) || n.id;
+}
+
+function nodeNumber(id){
+  const idx = app.data.questions.findIndex(n => n.id === id);
+  return idx >= 0 ? String(idx + 1).padStart(3, "0") : "000";
+}
+
+function answerLetter(index){
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  if(index < letters.length) return letters[index];
+  return String(index + 1);
+}
+
+function previousLinks(id){
+  const out = [];
+  app.data.questions.forEach(from => {
+    (from.answers || []).forEach(a => {
+      if(a.nextId === id) out.push({from, answer:a});
+    });
+  });
+  return out;
+}
+
+function nextLinks(node){
+  return (node?.answers || []).map(a => ({answer:a, to:q(a.nextId)}));
+}
+
+function selectNodeFromPanel(id){
+  if(!q(id)) return;
+  app.selectedId = id;
+  app.pendingCenterId = id;
+  renderAll();
+  setTimeout(() => centerNode(id, true), 80);
+}
+
+function removeIncomingLink(fromId, answerId){
+  const from = q(fromId);
+  if(!from) return;
+  if(!confirm("Удалить связь к этому node?")) return;
+  from.answers = (from.answers || []).filter(a => a.id !== answerId);
+  persistBrowser();
+  renderAll();
+}
+
+function createNextNodeFromPanel(){
+  const s = selected();
+  if(!s) return;
+  const answerText = prompt("Текст кнопки клиента:", "Следующий шаг");
+  if(!answerText) return;
+  const title = prompt("Название нового node:", "Новый node");
+  if(!title) return;
+  const id = uid("q");
+  const nq = {
+    id,
+    title,
+    question: title + "\n\nНапишите здесь текст скрипта.",
+    hint: "",
+    fontScale: 55,
+    x: (s.x || 80) + 430,
+    y: (s.y || 80) + Math.max(80, (s.answers || []).length * 95),
+    answers: [],
+    meta: {type:"custom"}
+  };
+  app.data.questions.push(nq);
+  s.answers.push({id:uid("a"), text:answerText, nextId:id});
+  app.selectedId = id;
+  persistBrowser();
+  renderAll();
+  setTimeout(() => centerNode(id, true), 80);
+}
+
+function createPrevNodeToPanel(){
+  const s = selected();
+  if(!s) return;
+  const title = prompt("Название предыдущего node:", "Предыдущий node");
+  if(!title) return;
+  const answerText = prompt("Кнопка из предыдущего node в текущий:", "Перейти дальше");
+  if(!answerText) return;
+  const id = uid("q");
+  const nq = {
+    id,
+    title,
+    question: title + "\n\nНапишите здесь текст скрипта.",
+    hint: "",
+    fontScale: 55,
+    x: Math.max(0, (s.x || 450) - 430),
+    y: (s.y || 80),
+    answers: [{id:uid("a"), text:answerText, nextId:s.id}],
+    meta: {type:"custom"}
+  };
+  app.data.questions.push(nq);
+  app.selectedId = id;
+  persistBrowser();
+  renderAll();
+  setTimeout(() => centerNode(id, true), 80);
+}
+
+
+function answerToneClass(a){
+  const text = (a?.text || "").toLowerCase();
+  const nextId = (a?.nextId || "").toUpperCase();
+  const negativeWords = [
+    "возраж", "сомнен", "не интерес", "нет интерес", "заверш", "нет /",
+    "дорого", "падает", "упад", "подожд", "не довер", "страшно", "нет времени",
+    "занят", "не сейчас", "не спеш", "жена", "муж", "сем", "партн", "дума",
+    "whatsapp", "не оставлял", "работаю с другим", "уже купил"
+  ];
+  const positiveWords = [
+    "да,", "интерес", "готов", "соглас", "дальше", "zoom", "цель", "бюджет",
+    "анализ", "сравн", "район", "roi", "доход", "рост", "ответил", "можно идти",
+    "прислал", "проект", "разобрать", "объяснить", "подключить"
+  ];
+  if(
+    nextId.includes("SUCCESS") ||
+    nextId.includes("PROPOSE_ZOOM") ||
+    nextId.includes("QUALIFY") ||
+    nextId.includes("CALL_OPEN") ||
+    nextId.includes("CLIENT_") ||
+    nextId.includes("COMPARE_") ||
+    nextId.includes("DUBAI_") ||
+    nextId.includes("SMALL_TALK") ||
+    nextId.includes("EDU_")
+  ) return "answer-positive";
+  if(
+    nextId.startsWith("OBJ") ||
+    nextId.includes("NOT_INTERESTED") ||
+    nextId.includes("DID_NOT_LEAVE") ||
+    nextId.includes("FIRST_CALL_CLOSE") ||
+    nextId === "END" ||
+    negativeWords.some(w => text.includes(w))
+  ) return "answer-negative";
+  if(positiveWords.some(w => text.includes(w))) return "answer-positive";
+  return "answer-neutral";
+}
+
+function answerButtonHtml(a, index=0){
+  return `<button class="bigAnswer ${answerToneClass(a)}" onclick="chooseAnswer('${a.id}')"><span class="answerLetter">${answerLetter(index)}</span>${escapeHtml(a.text)}</button>`;
+}
+
+function openWhatsAppExplain(ev){
+  if(ev) ev.stopPropagation();
+  const cq = current();
+  if(!q("WHATSAPP_EXPLAIN_FIRST_CALL")){
+    toast("WhatsApp script не найден");
+    return;
+  }
+  if(cq){
+    app.history.push({question:cq.question || nodeTitle(cq), answer:"WhatsApp"});
+  }
+  app.currentId = "WHATSAPP_EXPLAIN_FIRST_CALL";
+  persistBrowser();
+  renderAll();
+  const el = document.getElementById("screenCall");
+  if(el) el.scrollTop = 0;
+}
+
+
+function renderPresenter(){
+  const cq = current();
+  const calls = app.data.calls || [];
+  document.getElementById("presenterRoot").innerHTML = `
+    <div class="presentGrid">
+      <section class="panel questionPanel">
+        <div class="eyebrow">Call Mode · текущий вопрос</div>
+        <div class="blockNumber">Block ${nodeNumber(cq?.id)} · Step ${String(app.history.length + 1).padStart(2, "0")}</div>
+        <div class="bigQuestion" style="--qFontSize:${presenterFontPx(cq)}px">${escapeHtml(cq?.question || "Нет вопросов")}</div>
+        ${cq?.hint ? `<p class="hint">${escapeHtml(cq.hint)}</p>` : ""}
+        <div class="answerList">
+          ${(cq?.answers || []).length ? cq.answers.map((a,i)=>answerButtonHtml(a,i)).join("") : `<div class="empty">Финал ветки. Сохрани звонок или нажми Reset.</div>`}
+        </div>
+        <div class="presentActions">
+          <button onclick="back()">← Back</button>
+          <button onclick="resetCall()">Reset</button>
+          <button onclick="copySummary()">Copy summary</button>
+          <button onclick="openEditorAtCurrent()">Edit this tree</button>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <div class="eyebrow">История звонка</div>
+        ${app.history.length ? app.history.map((h,i)=>`
+          <div class="historyItem">
+            <small>${i+1}. ${escapeHtml(h.question)}</small>
+            <b>→ ${escapeHtml(h.answer)}</b>
+          </div>
+        `).join("") : `<div class="empty">Пока пусто.</div>`}
+
+        <div class="saveBox">
+          <textarea id="clientNote" placeholder="Заметка по звонку: что клиент сказал, детали, бюджет, локация, objection..." oninput="updateCallNote(this.value)">${escapeHtml(app.callNote || "")}</textarea>
+          <button class="primary" onclick="saveCall()">Save Note / Call</button>
+        </div>
+
+        <div style="height:16px"></div>
+        <div class="eyebrow">Последние звонки</div>
+        ${calls.slice(0,3).map(c=>`
+          <div class="savedCall">
+            <b>${escapeHtml(c.note || "Заметка без текста")}</b>
+            <div class="hint">${escapeHtml(c.createdAt)}</div>
+          </div>
+        `).join("") || `<div class="empty">Сохранённых звонков пока нет.</div>`}
+      </aside>
+    </div>
+  `;
+}
+
+function addQuestionNear(baseId){
+  const base = q(baseId) || selected() || current();
+  const id = uid("q");
+  const nq = {id, title:"Новый node", question:"Новый вопрос", hint:"", fontScale:55, x:(base.x||80)+430, y:(base.y||80)+90, answers:[], meta:{type:"custom"}};
+  app.data.questions.push(nq);
+  app.selectedId = id;
+  persistBrowser();
+  renderAll();
+  return nq;
+}
+
+function newBranchFromNode(nodeId){
+  const from = q(nodeId);
+  if(!from) return;
+  const answerText = prompt("Текст кнопки / ответа клиента:", "Новый ответ");
+  if(!answerText) return;
+  const questionText = prompt("Следующий вопрос:", "Новый вопрос");
+  if(!questionText) return;
+  const nq = {id:uid("q"), title:questionText.split(/\n+/)[0].slice(0,90), question:questionText, hint:"", fontScale:55, x:(from.x||0)+430, y:(from.y||0)+(from.answers.length*95)-45, answers:[], meta:{type:"custom"}};
+  app.data.questions.push(nq);
+  from.answers.push({id:uid("a"), text:answerText, nextId:nq.id});
+  app.selectedId = nq.id;
+  persistBrowser();
+  renderAll();
+}
+
+function deleteQuestion(){
+  const s = selected();
+  if(!s) return;
+  if(s.id===app.data.startId){ alert("Стартовый вопрос нельзя удалить. Сначала назначь другой стартовый."); return; }
+  if(!confirm("Удалить этот вопрос и все стрелки к нему?")) return;
+  app.data.questions = app.data.questions.filter(x=>x.id!==s.id);
+  app.data.questions.forEach(qq => qq.answers = qq.answers.filter(a=>a.nextId!==s.id));
+  app.selectedId = app.data.startId;
+  if(app.currentId===s.id) app.currentId = app.data.startId;
+  persistBrowser();
+  renderAll();
+}
+
+function updateSelectedField(field,val){
+  const s = selected(); if(!s) return;
+  s[field] = val;
+  persistBrowser();
+}
+
+function finishEdit(){
+  persistBrowser();
+  renderAll();
+}
+
+function setStart(){
+  app.data.startId = app.selectedId;
+  app.currentId = app.selectedId;
+  persistBrowser();
+  renderAll();
+  toast("Стартовый вопрос изменён");
+}
+
+function addAnswer(){
+  const s = selected(); if(!s) return;
+  s.answers.push({id:uid("a"), text:"Новый ответ", nextId:app.data.startId});
+  persistBrowser();
+  renderAll();
+}
+
+function updateAnswer(aid,field,val){
+  const s=selected(); if(!s) return;
+  const a=s.answers.find(x=>x.id===aid);
+  if(a){ a[field]=val; persistBrowser(); }
+}
+
+function deleteAnswer(aid){
+  const s=selected(); if(!s) return;
+  s.answers = s.answers.filter(a=>a.id!==aid);
+  persistBrowser();
+  renderAll();
+}
+
+function selectNode(id){
+  app.selectedId = id;
+  renderAll();
+}
+
+function makeNodeHtml(node){
+  return `
+    <div class="node type-${nodeType(node)} ${node.id===app.data.startId?'start':''} ${node.id===app.selectedId?'selected':''} ${node.id===app.currentId?'currentInCall':''} ${isNodeVisibleInBranch(node.id)?'':'hiddenByBranch'}"
+      data-node-id="${node.id}" style="left:${node.x||0}px;top:${node.y||0}px"
+      onmousedown="startDrag(event,'${node.id}')"
+      onclick="event.stopPropagation();selectNode('${node.id}')">
+      <div class="nodeHead">
+        <div class="nodeTitle"><span class="nodeNumber">#${nodeNumber(node.id)}</span>${escapeHtml(nodeTitle(node))}</div>
+        ${node.id===app.data.startId?'<div class="badge">START</div>':''}
+      </div>
+      ${node.hint?`<div class="nodeHint">${escapeHtml(node.hint)}</div>`:""}
+      <div class="answers">
+        ${node.answers.map((a,i)=>`<button class="miniAnswer" onclick="event.stopPropagation();app.currentId='${node.id}';chooseAnswer('${a.id}')">${answerLetter(i)}. ${escapeHtml(a.text)}</button>`).join("")}
+      </div>
+      <div class="nodeActions">
+        <button class="small" onclick="event.stopPropagation();newBranchFromNode('${node.id}')">+ ветка</button>
+        <button class="small" onclick="event.stopPropagation();app.currentId='${node.id}';setMode('call')">test</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderEdges(){
+  const qs = app.data.questions;
+  const m = mapQ();
+  let out = `<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#6b7280"></path></marker></defs>`;
+  qs.forEach(from=>{
+    from.answers.forEach((a,idx)=>{
+      const to = m[a.nextId]; if(!to) return;
+      const x1=(from.x||0)+340, y1=(from.y||0)+80+idx*18;
+      const x2=(to.x||0), y2=(to.y||0)+75;
+      const mx=(x1+x2)/2;
+      const d=`M${x1} ${y1} C${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`;
+      const lx=mx-50, ly=(y1+y2)/2-10;
+      out += `<path class="edge" d="${d}"></path>
+        <rect class="edgeLabelBg" x="${lx-4}" y="${ly-16}" width="${Math.min(180, a.text.length*8+14)}" height="22" rx="9"></rect>
+        <text class="edgeLabel" x="${lx}" y="${ly}">${escapeHtml(a.text).slice(0,24)}</text>`;
+    });
+  });
+  return out;
+}
+
+function renderEditor(){
+  document.getElementById("edges").innerHTML = renderEdges();
+  document.getElementById("nodes").innerHTML = app.data.questions.map(makeNodeHtml).join("");
+  renderEditorSide();
+}
+
+
+function renderEditorSide(){
+  const s = selected();
+  const prev = s ? previousLinks(s.id) : [];
+  const next = s ? nextLinks(s) : [];
+
+  document.getElementById("editorSide").innerHTML = `
+    <div class="panel">
+      <div class="eyebrow">Editor Mode</div>
+      <h2>${escapeHtml(s ? nodeTitle(s) : "Выбери node")}</h2>
+      <div class="editorMiniText">${s ? "ID: " + escapeHtml(s.id) : "Кликни на любой блок в дереве."}</div>
+      <div class="row" style="margin-top:12px">
+        <button class="primary" onclick="newBranchFromNode('${s?.id || app.data.startId}')">+ Новая ветка</button>
+        <button onclick="addQuestionNear('${s?.id || app.data.startId}')">+ Пустой node</button>
+      </div>
+    </div>
+
+    ${s ? `
+      <div class="panel">
+        <h3>Название и текст</h3>
+        <label>Название node</label>
+        <input class="editorTitleInput" value="${escapeHtml(s.title || nodeTitle(s))}" oninput="updateSelectedField('title',this.value)" onblur="finishEdit()">
+
+        <label>Текст / скрипт</label>
+        <textarea oninput="updateSelectedField('question',this.value)" onblur="finishEdit()">${escapeHtml(s.question || "")}</textarea>
+
+        <label>Подсказка / цель</label>
+        <textarea oninput="updateSelectedField('hint',this.value)" onblur="finishEdit()">${escapeHtml(s.hint || "")}</textarea>
+
+        <div class="row" style="margin-top:12px">
+          <button onclick="setStart()">Сделать START</button>
+          <button class="danger" onclick="deleteQuestion()">Удалить node</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="row between">
+          <h3>Предыдущие node</h3>
+          <button onclick="createPrevNodeToPanel()">+ предыдущий</button>
+        </div>
+        ${prev.length ? prev.map(link => `
+          <div class="editorContextCard">
+            <div class="editorNodeLine">
+              <b>${escapeHtml(nodeTitle(link.from))}</b>
+              <button onclick="selectNodeFromPanel('${link.from.id}')">Открыть</button>
+            </div>
+            <div class="editorMiniText">Кнопка: ${escapeHtml(link.answer.text)}</div>
+            <div class="row" style="margin-top:8px">
+              <button class="danger" onclick="removeIncomingLink('${link.from.id}','${link.answer.id}')">Удалить связь</button>
+            </div>
+          </div>
+        `).join("") : `<div class="empty">Нет входящих связей.</div>`}
+      </div>
+
+      <div class="panel">
+        <div class="row between">
+          <h3>Следующие node</h3>
+          <button onclick="createNextNodeFromPanel()">+ следующий</button>
+        </div>
+        ${next.length ? next.map(link => `
+          <div class="editorContextCard">
+            <div class="editorNodeLine">
+              <b>${escapeHtml(link.to ? nodeTitle(link.to) : "Сломанная ссылка")}</b>
+              ${link.to ? `<button onclick="selectNodeFromPanel('${link.to.id}')">Открыть</button>` : ""}
+            </div>
+            <div class="editorMiniText">Кнопка: ${escapeHtml(link.answer.text)} → ${escapeHtml(link.answer.nextId)}</div>
+          </div>
+        `).join("") : `<div class="empty">Нет следующих node.</div>`}
+      </div>
+
+      <div class="panel">
+        <div class="row between">
+          <h3>Кнопки / ответы</h3>
+          <button onclick="addAnswer()">+ ответ</button>
+        </div>
+        ${(s.answers || []).map(a=>`
+          <div class="answerEdit">
+            <input value="${escapeHtml(a.text)}" oninput="updateAnswer('${a.id}','text',this.value)" onblur="finishEdit()">
+            <select onchange="updateAnswer('${a.id}','nextId',this.value);finishEdit()">
+              ${app.data.questions.map(qq=>`<option value="${qq.id}" ${a.nextId===qq.id?'selected':''}>${escapeHtml(nodeTitle(qq))}</option>`).join("")}
+            </select>
+            <button onclick="previewAnswerTarget('${a.nextId}')">Проверить</button>
+            <button class="danger" onclick="deleteAnswer('${a.id}')">×</button>
+          </div>
+        `).join("") || `<div class="empty">Ответов нет. Нажми + ответ или + ветка.</div>`}
+      </div>
+    ` : ""}
+
+    <div class="panel">
+      <h3>Сохранение</h3>
+      <div class="ok">Изменения сохраняются в браузере автоматически. Для файла используй Save или DB → Save DB.</div>
+      <div class="row" style="margin-top:12px">
+        <button class="green" onclick="saveToFile()">Save JSON</button>
+        <button onclick="loadJsonFile()">Load JSON</button>
+      </div>
+    </div>
+  `;
+}
+
+function startDrag(ev,id){
+  if(ev.target.tagName==="BUTTON" || ev.target.tagName==="INPUT" || ev.target.tagName==="TEXTAREA" || ev.target.tagName==="SELECT") return;
+  const node = q(id); if(!node) return;
+  app.dragging = id;
+  const wrap = document.getElementById("canvasWrap");
+  app.dragOffset.x = ev.clientX + wrap.scrollLeft - node.x;
+  app.dragOffset.y = ev.clientY + wrap.scrollTop - node.y;
+  document.addEventListener("mousemove", dragMove);
+  document.addEventListener("mouseup", stopDrag);
+}
+function dragMove(ev){
+  if(!app.dragging) return;
+  const wrap = document.getElementById("canvasWrap");
+  const node = q(app.dragging);
+  node.x = Math.max(0, ev.clientX + wrap.scrollLeft - app.dragOffset.x);
+  node.y = Math.max(0, ev.clientY + wrap.scrollTop - app.dragOffset.y);
+  renderEditor();
+}
+function stopDrag(){
+  if(app.dragging) persistBrowser();
+  app.dragging = null;
+  document.removeEventListener("mousemove", dragMove);
+  document.removeEventListener("mouseup", stopDrag);
+}
+
+function openQuickModal(){ document.getElementById("quickModal").style.display="flex"; if(!document.getElementById("quickText").value) fillExample(); }
+function closeQuickModal(){ document.getElementById("quickModal").style.display="none"; }
+function fillExample(){
+  document.getElementById("quickText").value = `Вам интересно рассмотреть покупку?
+- Да, интересно -> Для какой цели рассматриваете покупку?
+- Возможно позже -> Что останавливает сейчас?
+- Нет -> Что именно сейчас не актуально?
+
+Для какой цели рассматриваете покупку?
+- Инвестиция -> Какой бюджет?
+- Для себя -> Когда планируете покупку?
+- Перепродажа -> Какой бюджет?
+
+Какой бюджет?
+- До 1M AED -> Финал
+- 1–2M AED -> Финал
+- 2M+ AED -> Финал`;
+}
+function slug(text, existing){
+  let s=String(text).toLowerCase().replace(/[^а-яёa-z0-9]+/gi,"_").replace(/^_+|_+$/g,"").slice(0,24)||"q";
+  let out=s,i=2; while(existing.has(out)) out=s+"_"+i++; existing.add(out); return out;
+}
+function parseQuick(text){
+  const blocks=text.split(/\n\s*\n/g).map(b=>b.trim()).filter(Boolean);
+  const titles=[], parsed=[];
+  blocks.forEach(block=>{
+    const lines=block.split("\n").map(l=>l.trim()).filter(Boolean);
+    if(!lines.length)return;
+    const question=lines[0].replace(/^Q:\s*/i,"").trim();
+    const answers=[];
+    lines.slice(1).forEach(line=>{
+      const cleaned=line.replace(/^[-*]\s*/,"").replace(/^A:\s*/i,"").trim();
+      const parts=cleaned.split(/\s*->\s*/);
+      if(parts.length>=2) answers.push({text:parts[0].trim(), next:parts.slice(1).join(" -> ").trim()});
+    });
+    if(question){
+      titles.push(question);
+      answers.forEach(a=>{ if(a.next && !titles.includes(a.next)) titles.push(a.next); });
+      parsed.push({question,answers});
+    }
+  });
+  if(!parsed.length) throw new Error("bad");
+  const existing=new Set(), idByTitle=new Map();
+  titles.forEach(t=>{ if(!idByTitle.has(t)) idByTitle.set(t,slug(t,existing)); });
+  const questions=titles.map((t,i)=>({id:idByTitle.get(t),question:t,hint:"",fontScale:55,x:80+(i%4)*430,y:80+Math.floor(i/4)*260,answers:[]}));
+  const byTitle=new Map(questions.map(qq=>[qq.question,qq]));
+  parsed.forEach(block=>{
+    byTitle.get(block.question).answers=block.answers.map(a=>({id:uid("a"),text:a.text,nextId:idByTitle.get(a.next)||idByTitle.get(block.question)}));
+  });
+  return {startId:questions[0].id,questions,calls:[]};
+}
+function importQuickText(){
+  try{
+    app.data=parseQuick(document.getElementById("quickText").value);
+    app.currentId=app.data.startId; app.selectedId=app.data.startId; app.history=[];
+    persistBrowser(); closeQuickModal(); setMode("editor"); toast("Древо создано");
+  }catch(e){ alert("Не понял текст. Используй формат: Вопрос, потом '- Ответ -> Следующий вопрос'."); }
+}
+
+function renderAll(){
+  renderPresenter();
+  renderEditor();
+  renderLibrary();
+  renderTraining();
+  applyEditorPanelWidth();
+  initEditorResizer();
+  updateBranchUi();
+  if(app.mode === "editor" && app.pendingCenterId){
+    const id = app.pendingCenterId;
+    app.pendingCenterId = null;
+    setTimeout(() => centerNode(id, true), 90);
+  }
+}
+
+init();
+</script>
+</body>
+</html>
+  <section id="screenLibrary" class="screen">
+    <div class="libWrap">
+      <div class="libTop">
+        <div>
+          <h2>База скриптов / Knowledge Base</h2>
+          <div class="muted">Быстро читать, искать, редактировать и копировать готовые блоки.</div>
+        </div>
+        <input id="librarySearch" placeholder="Поиск по базе..." oninput="renderLibrary()" style="max-width:360px">
+      </div>
+      <div class="filterPills" id="libraryFilters"></div>
+      <div class="libGrid" id="libraryGrid"></div>
+    </div>
+  </section>
+
+  <section id="screenTraining" class="screen">
+    <div class="trainingWrap">
+      <div class="trainingTop">
+        <div>
+          <h2>Training Mode <span class="badgeBeta">Beta</span></h2>
+          <div class="muted">Тренировка реакций на ответы клиента. Пока без AI, только по базе.</div>
+        </div>
+        <button onclick="nextTrainingCard()">Следующая ситуация</button>
+      </div>
+      <div class="trainingCard">
+        <div class="muted">Клиент говорит:</div>
+        <div class="trainingPhrase" id="trainingPhrase">...</div>
+        <div class="trainingGoal" id="trainingGoal">...</div>
+        <div class="trainingOptions" id="trainingOptions"></div>
+        <div class="trainingReveal" id="trainingReveal"></div>
+      </div>
+    </div>
+  </section>
