@@ -701,7 +701,7 @@
 
 <script>
 const defaultData = {
-  "version": "strict_client_facing_flow_v48",
+  "version": "strict_client_facing_flow_v48_obj_r26_fix",
   "startId": "STEP_1_OPENING",
   "questions": [
     {
@@ -2529,6 +2529,11 @@ const defaultData = {
       "x": 80,
       "y": 3520,
       "answers": [
+        {
+          "id": "a_r26_yes_meeting",
+          "text": "Да, согласен на встречу с партнёром",
+          "nextId": "FU_PARTNER_MEETING"
+        },
         {
           "id": "a_obj_r26_handle_1",
           "text": "Понятно — дальше",
@@ -4759,7 +4764,7 @@ const defaultData = {
     }
   }
 };
-const STORAGE_KEY = "callscript_strict_client_facing_flow_v48";
+const STORAGE_KEY = "callscript_strict_client_facing_flow_v48_obj_r26_fix";
 
 let app = {
   mode: "call",
