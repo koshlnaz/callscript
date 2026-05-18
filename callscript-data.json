@@ -1,5 +1,5 @@
 {
-  "version": "strict_client_facing_flow_v52_orig_text_keep_structure",
+  "version": "strict_client_facing_flow_v53_flat_menus",
   "startId": "STEP_1_OPENING",
   "questions": [
     {
@@ -463,34 +463,164 @@
       "y": 760,
       "answers": [
         {
-          "id": "a_step3_cat_price",
-          "text": "Цена и деньги",
-          "nextId": "STEP_3_CAT_PRICE"
+          "id": "a_step_3_objections_1",
+          "text": "Не интересно сейчас.",
+          "nextId": "OBJ_R4_HANDLE"
         },
         {
-          "id": "a_step3_cat_time",
-          "text": "Время и сроки",
-          "nextId": "STEP_3_CAT_TIME"
+          "id": "a_step_3_objections_2",
+          "text": "Уже работаю с кем-то.",
+          "nextId": "OBJ_R5_HANDLE"
         },
         {
-          "id": "a_step3_cat_market",
-          "text": "Рынок и геополитика",
-          "nextId": "STEP_3_CAT_MARKET"
+          "id": "a_step_3_objections_3",
+          "text": "Уже купил недвижимость.",
+          "nextId": "OBJ_R6_HANDLE"
         },
         {
-          "id": "a_step3_cat_trust",
-          "text": "Доверие и процесс",
-          "nextId": "STEP_3_CAT_TRUST"
+          "id": "a_step_3_objections_4",
+          "text": "Я не оставлял заявку.",
+          "nextId": "OBJ_R7_HANDLE"
         },
         {
-          "id": "a_step3_cat_working",
-          "text": "Уже работаю / делаю сам",
-          "nextId": "STEP_3_CAT_WORKING"
+          "id": "a_step_3_objections_5",
+          "text": "Отправьте всё в WhatsApp.",
+          "nextId": "OBJ_R8_HANDLE"
         },
         {
-          "id": "a_step3_cat_other",
-          "text": "Статус заявки и прочее",
-          "nextId": "STEP_3_CAT_OTHER"
+          "id": "a_step_3_objections_6",
+          "text": "У меня мало времени.",
+          "nextId": "OBJ_R9_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_7",
+          "text": "Мне некогда.",
+          "nextId": "OBJ_R10_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_8",
+          "text": "Я работаю напрямую с застройщиком.",
+          "nextId": "OBJ_R11_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_9",
+          "text": "Мне сейчас неудобно финансово / нет ликвидности.",
+          "nextId": "OBJ_R12_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_10",
+          "text": "Мне просто не до конца понятно.",
+          "nextId": "OBJ_R13_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_11",
+          "text": "Есть вопрос, пока не могу сформулировать.",
+          "nextId": "OBJ_R14_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_12",
+          "text": "Зачем работать с вами, если можно напрямую?",
+          "nextId": "OBJ_R15_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_13",
+          "text": "Скажите, сколько стоит?",
+          "nextId": "OBJ_R16_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_14",
+          "text": "Слишком дорого: хочу понять цену.",
+          "nextId": "OBJ_R17_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_15",
+          "text": "Цены падают.",
+          "nextId": "OBJ_R18_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_16",
+          "text": "Слишком дорого: не вижу ценности.",
+          "nextId": "OBJ_R19_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_17",
+          "text": "Я не спешу с покупкой.",
+          "nextId": "OBJ_R20_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_18",
+          "text": "Я не уверен, стоит ли сейчас покупать — рынок на пике.",
+          "nextId": "OBJ_R21_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_war_inflation",
+          "text": "Война / геополитика / инфляция.",
+          "nextId": "OBJ_R35_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_19",
+          "text": "Я не знаю, куда именно лучше инвестировать — слишком много вариантов.",
+          "nextId": "OBJ_R22_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_20",
+          "text": "Надёжность застройщика / сроки строительства.",
+          "nextId": "OBJ_R23_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_21",
+          "text": "А если рынок упадёт?",
+          "nextId": "OBJ_R24_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_22",
+          "text": "Не готов покупать дистанционно / без визита в Дубай.",
+          "nextId": "OBJ_R25_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_23",
+          "text": "Я обсужу с женой / семьёй / партнёром.",
+          "nextId": "OBJ_R26_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_24",
+          "text": "Вопрос по документам / переводу денег / визе.",
+          "nextId": "OBJ_R27_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_25",
+          "text": "Я не уверен, кому доверять — слишком много агентов.",
+          "nextId": "OBJ_R28_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_26",
+          "text": "Сейчас не время / подожду до следующего года.",
+          "nextId": "OBJ_R29_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_27",
+          "text": "Сначала продам другую недвижимость / получу деньги.",
+          "nextId": "OBJ_R30_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_28",
+          "text": "Подожду, может, цены снизятся.",
+          "nextId": "OBJ_R31_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_29",
+          "text": "Не уверен в ROI.",
+          "nextId": "OBJ_R32_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_30",
+          "text": "Я посмотрю сам на сайте / позже вернусь к этому.",
+          "nextId": "OBJ_R33_HANDLE"
+        },
+        {
+          "id": "a_step_3_objections_31",
+          "text": "Вопрос доверия к агентам.",
+          "nextId": "OBJ_R34_HANDLE"
         }
       ],
       "meta": {
@@ -2698,34 +2828,129 @@
       "y": 1760,
       "answers": [
         {
-          "id": "a_fu_obj_price",
-          "text": "Цена и деньги",
-          "nextId": "FU_CAT_PRICE"
+          "id": "fu_obj_01",
+          "text": "Не интересно сейчас.",
+          "nextId": "FU_NOT_INTERESTED"
         },
         {
-          "id": "a_fu_obj_project",
-          "text": "Сам проект",
-          "nextId": "FU_CAT_PROJECT"
+          "id": "fu_obj_02",
+          "text": "Хочу подумать.",
+          "nextId": "FU_THINK"
         },
         {
-          "id": "a_fu_obj_market",
-          "text": "Рынок и время",
-          "nextId": "FU_CAT_MARKET"
+          "id": "fu_obj_03",
+          "text": "Нужно посоветоваться.",
+          "nextId": "FU_PARTNER"
         },
         {
-          "id": "a_fu_obj_trust",
-          "text": "Доверие и процесс",
-          "nextId": "FU_CAT_TRUST"
+          "id": "fu_obj_04",
+          "text": "Темп слишком активный.",
+          "nextId": "FU_PRESSURE"
         },
         {
-          "id": "a_fu_obj_working",
-          "text": "Уже работаю / напрямую",
-          "nextId": "FU_CAT_WORKING"
+          "id": "fu_obj_05",
+          "text": "Слишком дорого / цена.",
+          "nextId": "FU_PRICE"
         },
         {
-          "id": "a_fu_obj_decision",
-          "text": "Решение и темп",
-          "nextId": "FU_CAT_DECISION"
+          "id": "fu_obj_06",
+          "text": "Не вижу ценности.",
+          "nextId": "FU_VALUE"
+        },
+        {
+          "id": "fu_obj_07",
+          "text": "Нужно понять ROI.",
+          "nextId": "FU_VALUE_ROI"
+        },
+        {
+          "id": "fu_obj_08",
+          "text": "Рынок падает / цены падают.",
+          "nextId": "FU_MARKET_DROP"
+        },
+        {
+          "id": "fu_obj_09",
+          "text": "Война / геополитика / инфляция.",
+          "nextId": "FU_WAR_OFFPLAN"
+        },
+        {
+          "id": "fu_obj_10",
+          "text": "Сейчас не время.",
+          "nextId": "FU_NOT_TIME"
+        },
+        {
+          "id": "fu_obj_11",
+          "text": "Подожду снижения.",
+          "nextId": "FU_WAIT_DROP"
+        },
+        {
+          "id": "fu_obj_12",
+          "text": "Нет ликвидности / неудобно финансово.",
+          "nextId": "FU_NO_LIQUIDITY"
+        },
+        {
+          "id": "fu_obj_13",
+          "text": "Деньги пока на счёте.",
+          "nextId": "FU_MARKET_INFLATION"
+        },
+        {
+          "id": "fu_obj_14",
+          "text": "Не хочу покупать дистанционно.",
+          "nextId": "FU_REMOTE_TRUST"
+        },
+        {
+          "id": "fu_obj_15",
+          "text": "Документы / перевод денег.",
+          "nextId": "FU_DOCS_TRANSFER"
+        },
+        {
+          "id": "fu_obj_16",
+          "text": "Надёжность застройщика.",
+          "nextId": "FU_DEVELOPER_TRUST"
+        },
+        {
+          "id": "fu_obj_17",
+          "text": "Вопрос доверия к агентам.",
+          "nextId": "FU_AGENT_TRUST"
+        },
+        {
+          "id": "fu_obj_18",
+          "text": "Работаю с другим брокером.",
+          "nextId": "FU_OTHER_BROKER"
+        },
+        {
+          "id": "fu_obj_19",
+          "text": "Хочу напрямую к застройщику.",
+          "nextId": "FU_DIRECT_DEVELOPER"
+        },
+        {
+          "id": "fu_obj_20",
+          "text": "Сначала хочу ещё посмотреть.",
+          "nextId": "FU_MORE_OPTIONS"
+        },
+        {
+          "id": "fu_obj_21",
+          "text": "Проект пока не чувствуется своим.",
+          "nextId": "FU_PROJECT_FIT"
+        },
+        {
+          "id": "fu_obj_22",
+          "text": "Локация не уверяет.",
+          "nextId": "FU_LOCATION"
+        },
+        {
+          "id": "fu_obj_23",
+          "text": "Платёжный план не подходит.",
+          "nextId": "FU_PAYMENT_PLAN"
+        },
+        {
+          "id": "fu_obj_24",
+          "text": "Нужно ещё раз объяснить EOI.",
+          "nextId": "FU_EOI_EXPLAIN"
+        },
+        {
+          "id": "fu_obj_25",
+          "text": "Готов продолжать.",
+          "nextId": "FU_CLOSE_CHOICE"
         }
       ],
       "meta": {
@@ -3190,537 +3415,6 @@
         "activeRoute": true,
         "type": "follow_up_objection",
         "step": 4
-      }
-    },
-    {
-      "id": "STEP_3_CAT_PRICE",
-      "title": "Категория: цена и деньги",
-      "question": "По деньгам — что именно?",
-      "hint": "",
-      "fontScale": 36,
-      "x": 4500,
-      "y": 80,
-      "answers": [
-        {
-          "id": "a_cat_price_1",
-          "text": "Сколько стоит?",
-          "nextId": "OBJ_R16_HANDLE"
-        },
-        {
-          "id": "a_cat_price_2",
-          "text": "Слишком дорого — хочу понять цену",
-          "nextId": "OBJ_R17_HANDLE"
-        },
-        {
-          "id": "a_cat_price_3",
-          "text": "Слишком дорого — не вижу ценности",
-          "nextId": "OBJ_R19_HANDLE"
-        },
-        {
-          "id": "a_cat_price_4",
-          "text": "Нет ликвидности / финансово неудобно",
-          "nextId": "OBJ_R12_HANDLE"
-        },
-        {
-          "id": "a_cat_price_5",
-          "text": "Сначала продам / получу деньги",
-          "nextId": "OBJ_R30_HANDLE"
-        },
-        {
-          "id": "a_cat_price_6",
-          "text": "Не уверен в ROI",
-          "nextId": "OBJ_R32_HANDLE"
-        },
-        {
-          "id": "a_cat_price_7",
-          "text": "Подожду снижения",
-          "nextId": "OBJ_R31_HANDLE"
-        },
-        {
-          "id": "a_cat_price_back",
-          "text": "← Другая категория",
-          "nextId": "STEP_3_OBJECTIONS"
-        }
-      ],
-      "meta": {
-        "type": "step_3_category",
-        "step": 3,
-        "activeRoute": true
-      }
-    },
-    {
-      "id": "STEP_3_CAT_TIME",
-      "title": "Категория: время и сроки",
-      "question": "По времени — что именно?",
-      "hint": "",
-      "fontScale": 36,
-      "x": 4500,
-      "y": 380,
-      "answers": [
-        {
-          "id": "a_cat_time_1",
-          "text": "У меня мало времени сейчас",
-          "nextId": "OBJ_R9_HANDLE"
-        },
-        {
-          "id": "a_cat_time_2",
-          "text": "Мне некогда вообще",
-          "nextId": "OBJ_R10_HANDLE"
-        },
-        {
-          "id": "a_cat_time_3",
-          "text": "Я не спешу с покупкой",
-          "nextId": "OBJ_R20_HANDLE"
-        },
-        {
-          "id": "a_cat_time_4",
-          "text": "Сейчас не время — подожду",
-          "nextId": "OBJ_R29_HANDLE"
-        },
-        {
-          "id": "a_cat_time_back",
-          "text": "← Другая категория",
-          "nextId": "STEP_3_OBJECTIONS"
-        }
-      ],
-      "meta": {
-        "type": "step_3_category",
-        "step": 3,
-        "activeRoute": true
-      }
-    },
-    {
-      "id": "STEP_3_CAT_MARKET",
-      "title": "Категория: рынок и геополитика",
-      "question": "По рынку — что именно?",
-      "hint": "",
-      "fontScale": 36,
-      "x": 4500,
-      "y": 680,
-      "answers": [
-        {
-          "id": "a_cat_market_1",
-          "text": "Цены падают",
-          "nextId": "OBJ_R18_HANDLE"
-        },
-        {
-          "id": "a_cat_market_2",
-          "text": "Рынок на пике",
-          "nextId": "OBJ_R21_HANDLE"
-        },
-        {
-          "id": "a_cat_market_3",
-          "text": "А если рынок упадёт?",
-          "nextId": "OBJ_R24_HANDLE"
-        },
-        {
-          "id": "a_cat_market_4",
-          "text": "Война / геополитика / инфляция",
-          "nextId": "OBJ_R35_HANDLE"
-        },
-        {
-          "id": "a_cat_market_back",
-          "text": "← Другая категория",
-          "nextId": "STEP_3_OBJECTIONS"
-        }
-      ],
-      "meta": {
-        "type": "step_3_category",
-        "step": 3,
-        "activeRoute": true
-      }
-    },
-    {
-      "id": "STEP_3_CAT_TRUST",
-      "title": "Категория: доверие и процесс",
-      "question": "По доверию — что именно?",
-      "hint": "",
-      "fontScale": 36,
-      "x": 4500,
-      "y": 980,
-      "answers": [
-        {
-          "id": "a_cat_trust_1",
-          "text": "Зачем работать с вами, если есть застройщик",
-          "nextId": "OBJ_R15_HANDLE"
-        },
-        {
-          "id": "a_cat_trust_2",
-          "text": "Надёжность застройщика / сроки",
-          "nextId": "OBJ_R23_HANDLE"
-        },
-        {
-          "id": "a_cat_trust_3",
-          "text": "Документы / деньги / виза",
-          "nextId": "OBJ_R27_HANDLE"
-        },
-        {
-          "id": "a_cat_trust_4",
-          "text": "Кому доверять — много агентов",
-          "nextId": "OBJ_R28_HANDLE"
-        },
-        {
-          "id": "a_cat_trust_5",
-          "text": "Вопрос доверия к агентам",
-          "nextId": "OBJ_R34_HANDLE"
-        },
-        {
-          "id": "a_cat_trust_back",
-          "text": "← Другая категория",
-          "nextId": "STEP_3_OBJECTIONS"
-        }
-      ],
-      "meta": {
-        "type": "step_3_category",
-        "step": 3,
-        "activeRoute": true
-      }
-    },
-    {
-      "id": "STEP_3_CAT_WORKING",
-      "title": "Категория: уже работаю / делаю сам",
-      "question": "Расскажите конкретнее.",
-      "hint": "",
-      "fontScale": 36,
-      "x": 4500,
-      "y": 1280,
-      "answers": [
-        {
-          "id": "a_cat_working_1",
-          "text": "Уже работаю с кем-то",
-          "nextId": "OBJ_R5_HANDLE"
-        },
-        {
-          "id": "a_cat_working_2",
-          "text": "Уже купил недвижимость",
-          "nextId": "OBJ_R6_HANDLE"
-        },
-        {
-          "id": "a_cat_working_3",
-          "text": "Работаю напрямую с застройщиком",
-          "nextId": "OBJ_R11_HANDLE"
-        },
-        {
-          "id": "a_cat_working_4",
-          "text": "Не готов дистанционно",
-          "nextId": "OBJ_R25_HANDLE"
-        },
-        {
-          "id": "a_cat_working_5",
-          "text": "Посмотрю сам / позже вернусь",
-          "nextId": "OBJ_R33_HANDLE"
-        },
-        {
-          "id": "a_cat_working_back",
-          "text": "← Другая категория",
-          "nextId": "STEP_3_OBJECTIONS"
-        }
-      ],
-      "meta": {
-        "type": "step_3_category",
-        "step": 3,
-        "activeRoute": true
-      }
-    },
-    {
-      "id": "STEP_3_CAT_OTHER",
-      "title": "Категория: статус заявки / прочее",
-      "question": "Уточните, какой момент?",
-      "hint": "",
-      "fontScale": 36,
-      "x": 4500,
-      "y": 1580,
-      "answers": [
-        {
-          "id": "a_cat_other_1",
-          "text": "Не интересно сейчас",
-          "nextId": "OBJ_R4_HANDLE"
-        },
-        {
-          "id": "a_cat_other_2",
-          "text": "Я не оставлял заявку",
-          "nextId": "OBJ_R7_HANDLE"
-        },
-        {
-          "id": "a_cat_other_3",
-          "text": "Отправьте всё в WhatsApp",
-          "nextId": "OBJ_R8_HANDLE"
-        },
-        {
-          "id": "a_cat_other_4",
-          "text": "Не до конца понятно",
-          "nextId": "OBJ_R13_HANDLE"
-        },
-        {
-          "id": "a_cat_other_5",
-          "text": "Вопрос пока не сформулирован",
-          "nextId": "OBJ_R14_HANDLE"
-        },
-        {
-          "id": "a_cat_other_6",
-          "text": "Слишком много вариантов",
-          "nextId": "OBJ_R22_HANDLE"
-        },
-        {
-          "id": "a_cat_other_7",
-          "text": "Обсудить с семьёй",
-          "nextId": "OBJ_R26_HANDLE"
-        },
-        {
-          "id": "a_cat_other_back",
-          "text": "← Другая категория",
-          "nextId": "STEP_3_OBJECTIONS"
-        }
-      ],
-      "meta": {
-        "type": "step_3_category",
-        "step": 3,
-        "activeRoute": true
-      }
-    },
-    {
-      "id": "FU_CAT_PRICE",
-      "title": "FU Категория: цена и деньги",
-      "question": "По деньгам — что именно?",
-      "hint": "",
-      "fontScale": 36,
-      "x": 5200,
-      "y": 80,
-      "answers": [
-        {
-          "id": "a_fu_price_1",
-          "text": "Слишком дорого / цена",
-          "nextId": "FU_PRICE"
-        },
-        {
-          "id": "a_fu_price_2",
-          "text": "Нужно понять ROI",
-          "nextId": "FU_VALUE_ROI"
-        },
-        {
-          "id": "a_fu_price_3",
-          "text": "Нет ликвидности",
-          "nextId": "FU_NO_LIQUIDITY"
-        },
-        {
-          "id": "a_fu_price_4",
-          "text": "Деньги пока на счёте",
-          "nextId": "FU_MARKET_INFLATION"
-        },
-        {
-          "id": "a_fu_price_5",
-          "text": "Платёжный план не подходит",
-          "nextId": "FU_PAYMENT_PLAN"
-        },
-        {
-          "id": "a_fu_price_back",
-          "text": "← Другая категория",
-          "nextId": "FU_OBJECTIONS"
-        }
-      ],
-      "meta": {
-        "type": "follow_up_category",
-        "step": 2
-      }
-    },
-    {
-      "id": "FU_CAT_PROJECT",
-      "title": "FU Категория: сам проект",
-      "question": "По проекту — что именно?",
-      "hint": "",
-      "fontScale": 36,
-      "x": 5200,
-      "y": 380,
-      "answers": [
-        {
-          "id": "a_fu_proj_1",
-          "text": "Проект не чувствуется своим",
-          "nextId": "FU_PROJECT_FIT"
-        },
-        {
-          "id": "a_fu_proj_2",
-          "text": "Локация не уверяет",
-          "nextId": "FU_LOCATION"
-        },
-        {
-          "id": "a_fu_proj_3",
-          "text": "Не вижу ценности",
-          "nextId": "FU_VALUE"
-        },
-        {
-          "id": "a_fu_proj_4",
-          "text": "Хочу ещё посмотреть",
-          "nextId": "FU_MORE_OPTIONS"
-        },
-        {
-          "id": "a_fu_proj_back",
-          "text": "← Другая категория",
-          "nextId": "FU_OBJECTIONS"
-        }
-      ],
-      "meta": {
-        "type": "follow_up_category",
-        "step": 2
-      }
-    },
-    {
-      "id": "FU_CAT_MARKET",
-      "title": "FU Категория: рынок и время",
-      "question": "По рынку и времени — что именно?",
-      "hint": "",
-      "fontScale": 36,
-      "x": 5200,
-      "y": 680,
-      "answers": [
-        {
-          "id": "a_fu_mkt_1",
-          "text": "Рынок падает / цены падают",
-          "nextId": "FU_MARKET_DROP"
-        },
-        {
-          "id": "a_fu_mkt_2",
-          "text": "Война / геополитика",
-          "nextId": "FU_WAR_OFFPLAN"
-        },
-        {
-          "id": "a_fu_mkt_3",
-          "text": "Сейчас не время",
-          "nextId": "FU_NOT_TIME"
-        },
-        {
-          "id": "a_fu_mkt_4",
-          "text": "Подожду снижения",
-          "nextId": "FU_WAIT_DROP"
-        },
-        {
-          "id": "a_fu_mkt_back",
-          "text": "← Другая категория",
-          "nextId": "FU_OBJECTIONS"
-        }
-      ],
-      "meta": {
-        "type": "follow_up_category",
-        "step": 2
-      }
-    },
-    {
-      "id": "FU_CAT_TRUST",
-      "title": "FU Категория: доверие и процесс",
-      "question": "По доверию — что именно?",
-      "hint": "",
-      "fontScale": 36,
-      "x": 5200,
-      "y": 980,
-      "answers": [
-        {
-          "id": "a_fu_trust_1",
-          "text": "Доверие к агентам",
-          "nextId": "FU_AGENT_TRUST"
-        },
-        {
-          "id": "a_fu_trust_2",
-          "text": "Надёжность застройщика",
-          "nextId": "FU_DEVELOPER_TRUST"
-        },
-        {
-          "id": "a_fu_trust_3",
-          "text": "Документы / перевод денег",
-          "nextId": "FU_DOCS_TRANSFER"
-        },
-        {
-          "id": "a_fu_trust_4",
-          "text": "Не хочу дистанционно",
-          "nextId": "FU_REMOTE_TRUST"
-        },
-        {
-          "id": "a_fu_trust_back",
-          "text": "← Другая категория",
-          "nextId": "FU_OBJECTIONS"
-        }
-      ],
-      "meta": {
-        "type": "follow_up_category",
-        "step": 2
-      }
-    },
-    {
-      "id": "FU_CAT_WORKING",
-      "title": "FU Категория: уже работаю / напрямую",
-      "question": "Расскажите, как сейчас.",
-      "hint": "",
-      "fontScale": 36,
-      "x": 5200,
-      "y": 1280,
-      "answers": [
-        {
-          "id": "a_fu_wrk_1",
-          "text": "Работаю с другим брокером",
-          "nextId": "FU_OTHER_BROKER"
-        },
-        {
-          "id": "a_fu_wrk_2",
-          "text": "Хочу напрямую к застройщику",
-          "nextId": "FU_DIRECT_DEVELOPER"
-        },
-        {
-          "id": "a_fu_wrk_back",
-          "text": "← Другая категория",
-          "nextId": "FU_OBJECTIONS"
-        }
-      ],
-      "meta": {
-        "type": "follow_up_category",
-        "step": 2
-      }
-    },
-    {
-      "id": "FU_CAT_DECISION",
-      "title": "FU Категория: решение и темп",
-      "question": "Что в решении сейчас?",
-      "hint": "",
-      "fontScale": 36,
-      "x": 5200,
-      "y": 1580,
-      "answers": [
-        {
-          "id": "a_fu_dec_1",
-          "text": "Хочу подумать",
-          "nextId": "FU_THINK"
-        },
-        {
-          "id": "a_fu_dec_2",
-          "text": "Нужно посоветоваться",
-          "nextId": "FU_PARTNER"
-        },
-        {
-          "id": "a_fu_dec_3",
-          "text": "Темп слишком активный",
-          "nextId": "FU_PRESSURE"
-        },
-        {
-          "id": "a_fu_dec_4",
-          "text": "Не интересно сейчас",
-          "nextId": "FU_NOT_INTERESTED"
-        },
-        {
-          "id": "a_fu_dec_5",
-          "text": "Объясните ещё раз EOI",
-          "nextId": "FU_EOI_EXPLAIN"
-        },
-        {
-          "id": "a_fu_dec_6",
-          "text": "Готов продолжать",
-          "nextId": "FU_CLOSE_CHOICE"
-        },
-        {
-          "id": "a_fu_dec_back",
-          "text": "← Другая категория",
-          "nextId": "FU_OBJECTIONS"
-        }
-      ],
-      "meta": {
-        "type": "follow_up_category",
-        "step": 2
       }
     },
     {
