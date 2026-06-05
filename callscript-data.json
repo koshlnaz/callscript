@@ -1,5 +1,5 @@
 {
-  "version": "strict_client_facing_flow_v65_why_clean_plus_en_nazar_local_remote_reword",
+  "version": "strict_client_facing_flow_v65_why_clean_plus_en_nazar_local_remote_reword2",
   "startId": "STEP_1_OPENING",
   "questions": [
     {
@@ -19606,7 +19606,7 @@
         {
           "id": "STEP_2_REMOTE",
           "title": "2C. Remote or Visit",
-          "question": "Quick one — do you picture yourself flying out to see it, or are you happy doing this remotely?\nHonestly, most of my clients never get on a plane until handover. Escrow, DLD, RERA — it's all on paper, every step tracked.\nComing over has its own charm, of course. I just want to know how to line it up for you.",
+          "question": "Quick one — do you picture yourself flying out to see it, or are you happy doing this remotely?\nMost of my clients never get on a plane until handover. Escrow, DLD, RERA — it's all on paper, every step tracked.\nComing over has its own charm, of course. I just want to know how to line it up for you.",
           "hint": "",
           "fontScale": 36,
           "x": 1800,
