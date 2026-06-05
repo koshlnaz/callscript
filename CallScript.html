@@ -669,7 +669,8 @@
         <option value="ro">RO</option>
       </select>
       <button class="miniBtn" onclick="saveToFile()">Save</button>
-      <button class="miniBtn" onclick="openFile()">Open</button>
+      <button class="miniBtn" onclick="loadJsonFile()">Open</button>
+      <input id="jsonInput" type="file" accept="application/json,.json" style="display:none" onchange="handleJsonImport(event)"/>
       <button class="miniBtn" onclick="connectDbFile()">DB</button>
       <button class="miniBtn" onclick="saveToConnectedDb()">Save DB</button>
       <button class="miniBtn dangerSoft" onclick="resetToBuiltInDatabase()">Load 7.1</button>
@@ -27312,7 +27313,8 @@ function copyLibraryText(id){
 function openLibraryItemInCall(id){
   if(!q(id)) return;
   app.currentId = id;
-  pushHistory(id);
+  app.selectedId = id;
+  app.history = [];
   persistBrowser();
   setMode("call");
 }
@@ -27505,7 +27507,7 @@ function startFirstCall(){
   if(!q(id)) return;
   app.activeCallMode = "first_call";
   app.currentId = id;
-  app.history = [id];
+  app.history = [];
   app.selectedId = id;
   persistBrowser();
   setMode("call");
@@ -27524,7 +27526,7 @@ function startFollowUpCall(){
   }
   app.activeCallMode = "follow_up";
   app.currentId = id;
-  app.history = [id];
+  app.history = [];
   app.selectedId = id;
   persistBrowser();
   setMode("call");
@@ -27544,7 +27546,7 @@ function startWarmCall(){
   }
   app.activeCallMode = "warm_call";
   app.currentId = id;
-  app.history = [id];
+  app.history = [];
   app.selectedId = id;
   persistBrowser();
   setMode("call");
@@ -27564,7 +27566,7 @@ function startPreviouslyInquiredCall(){
   }
   app.activeCallMode = "previously_inquired";
   app.currentId = id;
-  app.history = [id];
+  app.history = [];
   app.selectedId = id;
   persistBrowser();
   setMode("call");
@@ -27584,7 +27586,7 @@ function startWhyCall(){
   }
   app.activeCallMode = "why";
   app.currentId = id;
-  app.history = [id];
+  app.history = [];
   app.selectedId = id;
   persistBrowser();
   setMode("call");
@@ -27885,7 +27887,7 @@ function openWhatsAppExplain(ev){
     return;
   }
   if(cq){
-    app.history.push({question:cq.question || nodeTitle(cq), answer:"WhatsApp"});
+    app.history.push({question:cq.question || nodeTitle(cq), answer:"WhatsApp", previousId:cq.id});
   }
   app.currentId = "WHATSAPP_EXPLAIN_FIRST_CALL";
   persistBrowser();
