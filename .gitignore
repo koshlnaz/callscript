@@ -7,3 +7,4 @@ callscript-data.before_*.json
 
 # Inner subfolder is its own repo (nvpandpartners/call-script-vadim)
 CallScript_RU_7_1_WHATSAPP_LOGIC_FIX/
+callscript-data.backup_*.json
