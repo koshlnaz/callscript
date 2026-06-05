@@ -664,7 +664,8 @@
     <div class="topActions">
       <select class="langSelect" id="languageSelect" onchange="handleLanguageChange(this.value)" title="Language">
         <option value="ru">RU</option>
-        <option value="en">EN</option>
+        <option value="en">EN-V</option>
+        <option value="en-nazar">EN-N</option>
         <option value="ro">RO</option>
       </select>
       <button class="miniBtn" onclick="saveToFile()">Save</button>
@@ -26760,7 +26761,7 @@ function clone(x){ return JSON.parse(JSON.stringify(x)); }
 function uid(prefix){ return prefix + "_" + Math.random().toString(16).slice(2) + "_" + Date.now(); }
 function escapeHtml(s){ return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
 function supportedLanguage(value){
-  return ["ru", "en", "ro"].includes(value) ? value : "ru";
+  return ["ru", "en", "en-nazar", "ro"].includes(value) ? value : "ru";
 }
 function storageKeyForLanguage(lang){
   return STORAGE_KEY + "_" + supportedLanguage(lang);
